@@ -22,6 +22,13 @@ function SideList() {
                 </li><br/>
 
                 <li className="nav-item">
+                  <Link to="/coordinateur/profile">
+                  <i class="nav-icon   fas fa-user-cog"></i>
+                    Profil
+                  </Link>
+                </li><br/>
+
+                <li className="nav-item">
                   <Link to="/coordinateur/afficher-tous">
                     <i class="nav-icon  fas fa-clipboard-list"></i>
                     Consulter Utilisateurs
@@ -35,6 +42,7 @@ function SideList() {
                   </Link>
                 </li><br/>
 
+             
           {/*       <li className="nav-item">
                   <Link to="/deconnexion">
                     <i class="nav-icon  fas fa-ban"></i>

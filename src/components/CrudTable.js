@@ -8,10 +8,10 @@ function CrudTable() {
 
 
 //Activer ou Désactiver
-const [etatcheckbox,setEtatcheckbox]= useState([]);
+//const [etatcheckbox,setEtatcheckbox]= useState([]);
  
 //Activer ou Désactiver
-const handleCheckbox = (e) => {
+/* const handleCheckbox = (e) => {
   e.preventDefault();
   
  
@@ -21,7 +21,7 @@ const handleCheckbox = (e) => {
     console.log("Vous étes", etatcheckbox.etat);
   
  
-}
+} */
 
 
    
@@ -44,18 +44,34 @@ const handleCheckbox = (e) => {
 var afficher_User_Table ="";
 
 if(loading){
-  return <h5>Loading Comptes...</h5>
+  //return <h5>Loading Comptes...</h5>
+  return <div className="d-flex justify-content-center ">
+  <h2 >Loading...</h2>
+</div>
 }
 else{
+  //etat
+  var UtiEtat = '';
    afficher_User_Table =
   userlist.filter(val =>{
     if(searchTerm === ""){
       return val;
-    }else if( val.nom.toLowerCase().includes(searchTerm.toLowerCase())) {
+    }else if( val.nom.toLowerCase().includes(searchTerm.toLowerCase()) ||val.prenom.toLowerCase().includes(searchTerm.toLowerCase())) {
       return val;
     }
   }).map( (item , index) => {
     
+    //etat
+    if(item.etat == 'Active'){
+    UtiEtat = <i className=" fas fa-user-check  text-success"></i>
+   
+    //UtiEtat = 'vous Active';
+    }
+    else if(item.etat == 'Désactive'){
+     UtiEtat =<i className=" fas fa-user-alt-slash  text-danger"> </i>
+   
+      //UtiEtat = 'vous Désactive';
+    }
      return(
            
            <tr key={item._id}>
@@ -65,37 +81,49 @@ else{
               <td>{item.prenom}</td>
               <td>{item.email}</td>
               <td>{item.numTel}</td>
-              <td>{item.datenaissance}</td>
+            
               <td>{item.matricule}</td>
-               <td>{item.role}</td> 
-               <td>{item.etat}</td> 
+              <td>{item.departement}</td>
+              <td  className="btn btn-primary btn-sm p-0 rounded-pill mt-2">{item.role}</td> 
+               <td>{UtiEtat}</td>
+
+              
+             
+                {/* <td>{item.password}</td>  */}
+               {/* <td>{item.etat == '1'? "you active" :  "you inactive" }</td>  */}
                
+               {/* <td>{item.etat == true ?<i className=" fas fa-user-alt-slash  text-danger"></i>:  <i className=" fas fa-user-check  text-success"></i> }</td> 
+                */}
               <td>
                  <Link to={`/coordinateur/modifier-compte/${item._id}`}>
                    <i className="fas fa-pencil-alt  text-success"></i></Link>
               </td>
-              <td>  
+
+          
+
+
+                {/*  <td>  
                    
-                {/*    <i className=" fas fa-user-alt-slash  text-danger"></i>
+                <i className=" fas fa-user-alt-slash  text-danger"></i>
                    <i className=" fas fa-user-check  text-primary"></i>
  */}
                
 
 
-             <form onSubmit={handleCheckbox}>
-                   {/* Activer ou Désactiver checkbox etat "désactiver ou activer utilisateur" à cocher  */}
+             {/* <form onSubmit={handleCheckbox}>
+                   Activer ou Désactiver checkbox etat "désactiver ou activer utilisateur" à cocher  
              <div className='col-md-6 mt-4'>
                 <div className='form-check'>
-               <input type="checkbox"  name="etat" onChange={ handleCheckbox} defaultChecked={etatcheckbox === 'inactive' ? true : false }  className="form-check-input"/>
+               <input type="checkbox"  name="etat" onChange={ handleCheckbox} defaultChecked={etatcheckbox.etat === "inactive" ? true : false }  className="form-check-input"/>
                   <p  className='text-secondary form-check-label ' ><i className=" fas fa-user-alt-slash  text-danger"></i></p>
                 </div>
               </div> 
-{/* defaultChecked={etatcheckbox === 'inactive' ? true : false } */}
-              <button type="submit" className="btn btn-danger btn-sm float-right">Désactiver</button>
+            defaultChecked={etatcheckbox === 'inactive' ? true : false } 
+               <button type="submit" className="btn btn-danger btn-sm float-right">Désactiver</button> 
            </form>
-           
+         
 
-              </td>
+              </td>   */}
            </tr> 
      )
   });
@@ -165,9 +193,9 @@ else{
           </div>
 
      
-        <Link to="/coordinateur/ajouter-compte" className="btn btn-primary btn-sm float-right">
+    {/*     <Link to="/coordinateur/ajouter-compte" className="btn btn-primary btn-sm float-right">
            <i className="fas fa-plus"> </i>Ajouter Compte</Link> 
-
+ */}
 
      <div className="card-body mt-4"> 
          <br/>
@@ -179,10 +207,15 @@ else{
                <th>Prénom</th>
                <th>Email</th>
                <th>NumTél</th>
-               <th>Date naissance</th>
-               <th>Matricule</th>
+               {/* <th>Date naissance</th> */}
+              
+               <th>Matricule</th> 
+               <th>Département</th>
                <th>Rôle</th> 
-               <th>Etat</th> 
+               <th>Etat</th>
+              
+                {/* <th>Mot de passe </th> */}
+               {/* <th>Etat</th>  */}
               
              </tr>
            </thead>
@@ -201,6 +234,8 @@ else{
   </div>
 
 </div>
+
+<br/><br/><br/><br/><br/><br/>
     </>
   )
 }

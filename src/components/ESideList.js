@@ -17,7 +17,13 @@ function ESideList() {
                     Acceuil
                   </Link>
                 </li><br/>
-                
+
+                <li className="nav-item">
+                  <Link to="/encadrant/profile">
+                    <i class="nav-icon   fas fa-user-cog"></i>
+                    Profil
+                  </Link>
+                </li><br/>
                  
         <li className="nav-item">
                   <Link to="/encadrant/ajouter-sujet-stage">
@@ -34,14 +40,16 @@ function ESideList() {
                     Afficher Sujets 
                   </Link>
                 </li><br/>   
+
                 
-                <br/>
                 <li className="nav-item">
-                  <Link to="/encadrant/profile">
-                    <i class="nav-icon   fas fa-user-cog"></i>
-                    Profile
+                  <Link to="/encadrant/noter-travail">
+                    <i class="nav-icon  fas fa-window-maximize"></i>
+                    Noter
                   </Link>
-                </li><br/>
+                </li><br/>  
+                
+            
 
       </ul>
     </nav>

@@ -2,11 +2,11 @@ import React , { useEffect, useState } from 'react'
 import { useNavigate ,Link , NavLink ,useParams} from 'react-router-dom';
 import axios from 'axios';
 import swal from 'sweetalert';
-
+import Swal from 'sweetalert2';
 
 function PageModifierDepartement() {
 
-
+  const Swal = require('sweetalert2');
   const navigate = useNavigate();
 
     //validation erreurs
@@ -31,7 +31,7 @@ function PageModifierDepartement() {
         setDept(res.data.dept);
        }
        else if(res.data.status === 404){
-         swal("Error",res.data.message,"error");
+        Swal.fire ("Erreur",res.data.message,"error");
          navigate('/service-de-formation/afficher-departements');
        }
         setLoading(false);
@@ -94,17 +94,17 @@ function PageModifierDepartement() {
  
     axios.put(`api/modifier-departement/${deptId}` , data).then( res => {
       if(res.data.status === 200){
-        swal("Sucess" , res.data.message , "success");
+        Swal.fire("Succès" , res.data.message , "success");
         navigate('/service-de-formation/afficher-departements');
         setError([]);
  
       }
        else if(res.data.status === 422){
              setError(res.data.validation_errors);
-             swal("erreur dans champs" , " ", "error");
+             Swal.fire("Erreur dans les champs" , "Vérifier les champs!", "error");
       }
       else if(res.data.status === 404){
-       swal("Error" , res.data.message , "error");
+        Swal.fire("Erreur" , res.data.message , "error");
        navigate('/service-de-formation/afficher-departements');
       }
     });
@@ -194,7 +194,7 @@ function PageModifierDepartement() {
    
           <button className="persb-btn">
 
-           <Link to="/service-de-formation/afficher-departementss">
+           <Link to="/service-de-formation/afficher-departements"  style={{color: 'white'}}>
           Annuler
             </Link> 
 
@@ -204,7 +204,7 @@ function PageModifierDepartement() {
 
     
         <div className="form-group col-lg-3  i">
-          <button type="submit" className="login100-form-btn">
+          <button type="submit" className="login100-form-btn"  style={{color: 'white'}}>
             
           Modifier Département
          

@@ -16,13 +16,13 @@ function ChSideList() {
                     <i class="nav-icon  fas fa-window-maximize"></i>
                     Acceuil
                   </Link>
-                </li><br/><br/>
+                </li><br/>
 
 
                 <li className="nav-item">
                   <Link to="/chef-departement/profile">
                     <i class="nav-icon   fas fa-user-cog"></i>
-                    Profile
+                    Profil
                   </Link>
                 </li><br/>
       </ul>

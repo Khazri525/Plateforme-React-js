@@ -4,7 +4,7 @@ import { useNavigate  ,useParams } from 'react-router-dom';
 import swal from 'sweetalert';
 import Swal from 'sweetalert2';
 
-function Profile() {
+function MonProfile() {
 
   const Swal = require('sweetalert2');
   const navigate = useNavigate();
@@ -96,80 +96,9 @@ function Profile() {
      
 
     };
-    //.test changer
-
-      //update profile
-     
-
-/* 
-      useEffect(() => {
-    
-        const userId = userprofile._id;
-         
-        axios.get(`api/comptes/${userId}`).then(res =>{
-           if(res.data.status === 200 ){
-            setUser(res.data.user);
-           }
-           else if(res.data.status === 404){
-             swal("Error",res.data.message,"error");
-           
-           }
-            setLoading(false);
-         });
-      }, []);
+  
 
 
-     
- 
-const handleInput = (e) => {
-  e.persist();
- 
-  setUser({ ... userInput , [e.target.name]: e.target.value})
-
-} */
-
-
-
-/* 
-const updateUser = (e) => {
-  e.preventDefault();
-
-  const userId = userprofile._id ;
-  const data = userInput;
-
-
-
-  axios.put(`api/comptes/${userId}` , data).then( res => {
-    if(res.data.status === 200){
-      swal("Sucess" , res.data.message , "success");
-      navigate('/coordinateur/afficher-tous');
-      setError([]);
-
-    } */
-  /*   else if(res.data.status === 422){
-           setError(res.data.validation_errors);
-           swal("erreur dans champs" , " ", "error");
-    } */
-  /*   else if(res.data.status === 404){
-     swal("Error" , res.data.message , "error");
-     navigate('/coordinateur/afficher-tous');
-    } */
- // });
-
-
-
-
-//}
-
-
-
-      
-
-
-
-
-
-      //.update profile
 
 
 
@@ -186,23 +115,7 @@ const updateUser = (e) => {
       
 
       else if(userInput.role === 'encadrant' || userInput.role === 'chef_dept' ||userInput.role === 'service_formation'  ){
-    /*     if(  userprofile.role === 'encadrant'){  
-            setToroute ='/encadrant/acceuil';
-            setTorouteprofile ='encadrant/profile';
-        }
-    
-        else if(  userprofile.role === 'chef_dept'){  
-            setToroute ='/chef-departement/acceuil'; 
-            setTorouteprofile ='chef-departement/profile';
-        }
-    
-        else if(  userprofile.role === ''){  
-            setToroute ='/service-de-formation/acceuil';
-            setTorouteprofile ='service-de-formation/profile';
-        }else{
-            setToroute ='/stagiaire/acceuil';
-            setTorouteprofile ='stagiaire/profile';
-        } */
+   
           return(
        
 
@@ -224,15 +137,7 @@ const updateUser = (e) => {
       <div className="col-sm-6">
         <h1>Profile</h1>
       </div>
-     {/*  <div className="col-sm-6">
-        <ol className="breadcrumb float-sm-right">
-       
-            <NavLink className={(ndata) => ndata.isActive && "active" }  to={toroute}>Acceuil</NavLink>  <span> / </span>
-            <NavLink className={(ndata) => ndata.isActive && "active" }  to={torouteprofile}>Profile</NavLink>
-        
-     
-        </ol>
-      </div> */}
+   
     </div>
   </div>
 </section>
@@ -271,27 +176,12 @@ const updateUser = (e) => {
      <div className="tab-content">
 
 
- {/* profile     */}
+
+ {/* profile  utilisateur   */}
 
 
 
 
-
-{/*        <section className="content-header " >
-<div className="container-fluid">
-<div className="row mb-2">
-<div className="col-sm-6">
-  <h1>Profile</h1>
-</div>
-<div className="col-sm-6">
-  <ol className="breadcrumb float-sm-right">
-    <li className="breadcrumb-item"><a href="#">Home</a></li>
-    <li className="breadcrumb-item active"> Profile</li>
-  </ol>
-</div>
-</div>
-</div>
-</section> */}
 <section className="content tab-pane" id="activity">
   <div className="container-fluid">
     <div className="row">
@@ -340,6 +230,9 @@ const updateUser = (e) => {
               <li className="list-group-item ">
                 <b className="text-dark">Date naissance</b> <a className="float-right  text-secondary">{userInput.datenaissance}</a>
               </li>
+              <li className="list-group-item ">
+                <b className="text-dark">Password</b> <a className="float-right  text-secondary">{userInput.password}</a>
+              </li>
         
             </ul>
                    
@@ -348,7 +241,7 @@ const updateUser = (e) => {
 
            </div>
 
-            {/* <a href="#" className="btn btn-primary btn-block col-md-3"><b>Modifier</b></a> */}
+ 
           </div>
        
         </div>
@@ -405,35 +298,7 @@ const updateUser = (e) => {
                <input type="text" className="form-control  bg-light" id="inputSkills" placeholder="Matricule" name="matricule"  onChange={handleInput} value={userInput.matricule} />
              </div>
            </div>
-         {/*   <div className="form-group row">
-             <label htmlFor="inputSkills" className="col-sm-2 col-form-label text-dark">Role</label>
-             <div className="col-sm-10">
-               <input type="text" className="form-control  bg-light" id="inputSkills" placeholder="Matricule" name="role" onChange={handleInput} value={userprofile.role}  />
-             </div>
-           </div>
- */}
 
-
-  {/* Role */}
-{/*   <div className="wrap-input100   col-lg-12 mb-4  " >
-<select  name="role"   onChange={handleInput} value={userInput.role}  className="input100 border-0 " type="text">
-       <option disabled selected="true" >Rôle</option> 
-        
-  
-        <option  name="role"  value="encadrant">Encadrant</option>
-        <option  name="role"  value="chef_dept">Chef département</option> 
-        <option  name="role"   value="service_formation"> Service formation</option>
- </select>
-
-        
-          <span className="focus-input111" />
-          <span className="symbol-input111">
-            <i className="fas fa-user-tie" aria-hidden="true" />
-          </span>
-        </div>
-
- 
- */}
 
 
           
@@ -489,22 +354,6 @@ else{
  
 
   <>
-{/*       <section className="content-header">
-<div className="container-fluid">
-<div className="row mb-2">
-<div className="col-sm-6">
-  <h1>Profile</h1>
-</div>
-<div className="col-sm-6">
-  <ol className="breadcrumb float-sm-right">
-    <li className="breadcrumb-item"><a href="#">Home</a></li>
-    <li className="breadcrumb-item active"> Profile</li>
-  </ol>
-</div>
-</div>
-</div>
-</section>
- */}
 
 
 
@@ -518,15 +367,7 @@ else{
       <div className="col-sm-6">
         <h1>Profile</h1>
       </div>
-     {/*  <div className="col-sm-6">
-        <ol className="breadcrumb float-sm-right">
-       
-            <NavLink className={(ndata) => ndata.isActive && "active" }  to={toroute}>Acceuil</NavLink>  <span> / </span>
-            <NavLink className={(ndata) => ndata.isActive && "active" }  to={torouteprofile}>Profile</NavLink>
-        
-     
-        </ol>
-      </div> */}
+
     </div>
   </div>
 </section>
@@ -556,7 +397,7 @@ else{
    <div className="card-header p-2">
      <ul className="nav nav-pills">
        <li className="nav-item"><a className="nav-link" href="#activity" data-toggle="tab">Profile</a></li>
-       {/* <li className="nav-item"><a className="nav-link" href="#timeline" data-toggle="tab">Modifier</a></li> */}
+       <li className="nav-item"><a className="nav-link" href="#timeline" data-toggle="tab">Modifier</a></li> 
      </ul>
    </div>{/* /.card-header */}
 
@@ -570,22 +411,6 @@ else{
 
 
 
-
-{/*        <section className="content-header " >
-<div className="container-fluid">
-<div className="row mb-2">
-<div className="col-sm-6">
-  <h1>Profile</h1>
-</div>
-<div className="col-sm-6">
-  <ol className="breadcrumb float-sm-right">
-    <li className="breadcrumb-item"><a href="#">Home</a></li>
-    <li className="breadcrumb-item active"> Profile</li>
-  </ol>
-</div>
-</div>
-</div>
-</section> */}
 <section className="content tab-pane"  id="activity">
   <div className="container-fluid">
     <div className="row">
@@ -666,36 +491,36 @@ else{
 {/* modifier profile */}
 
        {/* /.tab-pane */}
-      {/*  <div className="tab-pane" id="timeline">
+      <div className="tab-pane" id="timeline">
          <form className="form-horizontal">
            <div className="form-group row">
              <label htmlFor="inputName" className="col-sm-2 col-form-label text-dark">Nom</label>
              <div className="col-sm-10">
-               <input  type="email" className=" form-control bg-light" id="inputName" placeholder="Nom" />
+               <input  type="text" className=" form-control bg-light" id="inputName"  name="name"   onChange={handleInput} value={userInput.name} placeholder="Nom" />
              </div>
            </div>
            <div className="form-group row">
              <label htmlFor="inputEmail" className="col-sm-2 col-form-label text-dark">Prénom</label>
              <div className="col-sm-10">
-               <input type="email" className="form-control  bg-light" id="inputEmail" placeholder="Prénom" />
+               <input type="text" className="form-control  bg-light" id="inputEmail" name="prenom"   onChange={handleInput} value={userInput.prenom} placeholder="Prénom" />
              </div>
            </div>
            <div className="form-group row">
              <label htmlFor="inputName2" className="col-sm-2 col-form-label text-dark">Email</label>
              <div className="col-sm-10">
-               <input type="text" className="form-control  bg-light" id="inputName2" placeholder="Email" />
+               <input type="email" className="form-control  bg-light" id="inputName2" name="email"   onChange={handleInput} value={userInput.email} placeholder="Email" />
              </div>
            </div>
            <div className="form-group row">
              <label htmlFor="inputName2" className="col-sm-2 col-form-label text-dark">Num CIN</label>
              <div className="col-sm-10">
-               <input type="text" className="form-control  bg-light" id="inputName2" placeholder="Num Télephone" />
+               <input type="text" className="form-control  bg-light" id="inputName2" name="cin"   onChange={handleInput} value={userInput.cin} placeholder="Num Télephone" />
              </div>
            </div>
            <div className="form-group row">
              <label htmlFor="inputName2" className="col-sm-2 col-form-label text-dark">Date naissance</label>
              <div className="col-sm-10">
-               <input type="text" className="form-control  bg-light" id="inputName2" placeholder="Date naissance" />
+               <input type="text" className="form-control  bg-light" id="inputName2" name="datenaissance"   onChange={handleInput} value={userInput.datenaissance} placeholder="Date naissance" />
              </div>
            </div>
           
@@ -703,35 +528,35 @@ else{
            <div className="form-group row">
              <label htmlFor="inputSkills" className="col-sm-2 col-form-label text-dark">Num Télephone</label>
              <div className="col-sm-10"> 
-               <input type="text" className="form-control  bg-light" id="inputSkills" placeholder="Num Télephone" />
+               <input type="text" className="form-control  bg-light" id="inputSkills" name="numtel"   onChange={handleInput} value={userInput.numtel} placeholder="Num Télephone" />
              </div>
            </div>
 
            <div className="form-group row">
              <label htmlFor="inputSkills" className="col-sm-2 col-form-label text-dark">Adresse</label>
              <div className="col-sm-10">
-               <input type="text" className="form-control  bg-light" id="inputSkills" placeholder="Adresse" />
+               <input type="text" className="form-control  bg-light" id="inputSkills" name="adresse"   onChange={handleInput} value={userInput.adresse} placeholder="Adresse" />
              </div>
            </div>
 
            <div className="form-group row">
              <label htmlFor="inputSkills" className="col-sm-2 col-form-label text-dark">Niveau d'étude</label>
              <div className="col-sm-10">
-               <input type="text" className="form-control  bg-light" id="inputSkills" placeholder="Niveau d'étude" />
+               <input type="text" className="form-control  bg-light" id="inputSkills" name="niveauetude"   onChange={handleInput} value={userInput.niveauetude}  placeholder="Niveau d'étude" />
              </div>
            </div>
 
            <div className="form-group row">
              <label htmlFor="inputSkills" className="col-sm-2 col-form-label text-dark">Spécialité</label>
              <div className="col-sm-10">
-               <input type="text" className="form-control  bg-light" id="inputSkills" placeholder="Spécialité" />
+               <input type="text" className="form-control  bg-light" id="inputSkills" name="specialite"   onChange={handleInput} value={userInput.specialite} placeholder="Spécialité" />
              </div>
            </div>
 
            <div className="form-group row">
              <label htmlFor="inputSkills" className="col-sm-2 col-form-label text-dark">Filiére</label>
              <div className="col-sm-10">
-               <input type="text" className="form-control  bg-light" id="inputSkills" placeholder="Filiére" />
+               <input type="text" className="form-control  bg-light" id="inputSkills"  name="filiere"   onChange={handleInput} value={userInput.filiere} placeholder="Filiére" />
              </div>
            </div>
 
@@ -744,7 +569,7 @@ else{
              </div>
            </div>
          </form>
-       </div> */}
+       </div> 
        {/* /.tab-pane */}
 {/* end modifier profile */}
 
@@ -797,4 +622,4 @@ else{
 
 }
 
-export default Profile
+export default MonProfile

@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom';
 
 import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 function PageConsulterSujetStage() {
    
-  
 
   //rechercher
   const[searchTerm,setSearchTerm] = useState("");
@@ -25,11 +25,67 @@ function PageConsulterSujetStage() {
       }); 
   },[]);
   
-     
-  
-  
 
 
+
+  
+//supprimer sujet
+/*  const supprimerSujet = (e , id) => {
+  e.preventDefault();
+  const thisClicked = e.currentTarget;
+  axios.delete(`api/supprimer-sujet/${id}`).then(res=>{
+       if(res.data.status === 200){
+
+         swal("Success", res.data.message ,"success");
+         thisClicked.closest("tr").remove();
+   
+       }
+         else if(res.data.status === 404){
+        swal("Error", res.data.message ,"error");
+       } 
+  });
+}  
+ */
+const Swal = require('sweetalert2');
+const confirmer = (e ,id) => {
+  
+  const thisClicked = e.currentTarget;
+  e.preventDefault();
+
+  Swal.fire({
+    title: 'Confirmer?',
+    text: "Vous étes sur vous voulez supprimer sujet!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Oui,Supprimer!',
+    cancelButtonText: 'Annuler',
+
+  }).then((result) =>  {
+    if (result.isConfirmed) {
+      
+      axios.delete(`api/supprimer-sujet/${id}`).then(res=>{
+           if(res.data.status === 200){
+    
+             Swal.fire("Succès", res.data.message ,"success")
+             thisClicked.closest("tr").remove();
+       
+           }
+             else if(res.data.status === 404){
+            swal("Erreur", res.data.message ,"error");
+           } 
+      });
+
+      // Swal.fire(
+      //   'Deleted!',
+      //   'Your file has been deleted.',
+      //   'success'
+      // )
+    }
+  })
+ 
+}
 
   
  
@@ -38,6 +94,7 @@ if(loading){
  return <h5>Loading Sujets de Stages...</h5>
 }
 else{
+  var SujetEtat = '';
  var afficher_Sujet_Cards ="";
   afficher_Sujet_Cards =
   sujetlist.filter(val =>{
@@ -48,10 +105,22 @@ else{
     }
   }).map( (item , index) => {
     
+      //etat
+      if(item.etatsujet == 'Publié'){
+        SujetEtat =  <p  className="btn btn-success btn-sm p-1 rounded-pill mt-4 float-left ">{item.etatsujet}</p>
+       
+        //UtiEtat = 'vous Active';
+        }
+        else if(item.etatsujet == 'Dépublié'){
+          SujetEtat = <p  className="btn btn-danger btn-sm p-1 rounded-pill mt-4 float-left ">{item.etatsujet}</p>
+       
+          //UtiEtat = 'vous Désactive';
+        }
      return(
          <>
+<tr key={item._id} className="col-md-offset-3 col-md-6">
          {/* Card 1 */}
-<div className="col-md-offset-3 col-md-6" > 
+{/* <div className="col-md-offset-3 col-md-6" >  */}
 <div className="card card-primary bg-light" >
   <div className="card-header">
   
@@ -59,17 +128,35 @@ else{
   <div className="card-body"    >
     
   
-  
-    <strong><i className="fas fa-book mr-1" />Sujet{index+1}</strong>
+  {/* <strong><i className="  fas fa-copy" />Durée</strong> <i className=" fas fa-code" />*/}
+
+
+  <strong>Durée</strong>
+      <p>{item.periode} mois</p>
+
+    <strong>Sujet{index+1}</strong>
       <p>{item.sujet}</p>
   
   
-    <strong><i className="fas fa-book mr-1" />Technologies:</strong>
-      <p>{item.technologies}</p>
+    <strong>Technologies:</strong>
+      <p className="text-uppercase">{item.technologies}</p>
+
+     {SujetEtat}
+    
+  
+     
+  
+  
+      {/* <strong><i className="fas fa-file-alt" />Description:</strong>
+      <p>...</p> */}
   
  
     
  
+
+
+
+
 
 
 {/* Afficher détails   */}
@@ -78,13 +165,99 @@ else{
   
   <div className="text-right py-0 align-middle">
 <div class="btn-group btn-group-sm ">
-                        {/* <a href="#" class="btn btn-info" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pencil-alt"></i></a> */}
+                        {/* <a href="#" class="btn btn-info" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-eye"></i></a> */}
+                        {/* <a href="#" class="btn btn-danger" ><i class="fas fa-trash"></i></a>  */}
+                       
+
+                        
+</div></div>
+
+{/* 
+<i className="fas fa-file-alt" /> 
+<i className=" fas fa-code" />
+<i className=" fas fa-code" />
+<i className="  fas fa-copy" />
+<i className="fas fa-file-alt" />
+
+*/}
+
+  {/* Modal */}
+  <div className="modal fade" id="exampleModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div className="modal-dialog">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h5 className="modal-title" id="exampleModalLabel">Sujet{index+1} En Détails</h5>
+          <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div className="modal-body">
+        <strong className="text-secondary"> Etat Sujet  </strong>{item.etatsujet} <br/><br/>
+        <strong className="text-secondary"> Période  </strong>{item.periode}/ mois <br/><br/>
+        <strong className="text-secondary"> Date Début  </strong>{item.datedebut} <br/><br/>
+        <strong className="text-secondary"> Type Stage  </strong>{item.typestage} <br/><br/>
+        <strong className="text-secondary"> Domaine  </strong>{item.domaine} <br/><br/>
+        <strong className="text-secondary">Sujet{index+1} </strong>{item.sujet} <br/><br/>
+        <strong className="text-secondary "> Technologies  </strong> {item.technologies} <br/><br/>
+        <strong className="text-secondary"> Description</strong>{item.description} <br/><br/>
+      
+        </div>
+        <div className="modal-footer">
+          <button type="button" className="btn btn-secondary text-uppercase" data-dismiss="modal">Fermer</button>
+          {/* <button type="button" className="btn btn-primary">Save changes</button> */}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{/* .Afficher détails   */}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{/* Button  */}
+<div>
+  
+  
+  <div className="text-right py-0 align-middle">
+<div class="btn-group btn-group-sm ">
+                       
+                       <Link to="#" class="btn btn-info" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-eye"></i></Link>
                         < Link to={`/encadrant/modifier-sujet/${item._id}`}   class="btn btn-primary" ><i class="fas fa-pencil-alt"></i></Link>
-                        {/* < Link to= "#" class="btn btn-danger" ><i class="fas fa-trash"></i></Link> */}
-
-
-                        <Link to="#" class="btn btn-danger" ><i class="fas fa-ban"></i></Link> 
-                        <Link to="#" class="btn btn-success" > <i class="fas fa-chevron-circle-down"></i></Link> 
+                        {/* <Link to="#" class="btn btn-danger" ><i class="fas fa-ban"></i></Link>  */}
+                        {/* <Link to="#" class="btn btn-success" > <i class="fas fa-chevron-circle-down"></i></Link>  */}
+                        {/* <Link to="#" class="btn btn-danger" ><i class="fas fa-trash"></i></Link>  */}
+                        {/* <button type="button" className="btn btn-danger" onClick={ (e) =>supprimerSujet(e ,item._id)}><i className="fas fa-trash  confirmer"></i></button> */}
+                        <button type="button" className="btn btn-danger " onClick= { (e) => confirmer(e ,item._id)} ><i className="fas fa-trash "></i></button>
+                   
 </div></div>
 
 
@@ -93,11 +266,11 @@ else{
 
 </div>
 </div>
-</div>
+{/* </div> */}
 {/* .Card 1 */}
          
          
-         
+</tr>
          </>
      )
   });
@@ -178,6 +351,10 @@ return (
 </div>
     </div>
 
+
+
+
+   
   </>
 )
 

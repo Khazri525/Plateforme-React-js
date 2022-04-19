@@ -1,15 +1,44 @@
-import React from 'react'
-import { useNavigate ,Link} from 'react-router-dom';
-function SForgotPassword() {
+import React, { Component }  from 'react'
+import { Link  } from 'react-router-dom';
+import axios from 'axios';
+import swal from 'sweetalert';
+
+
+class SForgotPassword extends Component{
+
+
+
+
+  state= {};
+  handleSubmit = (e) => {
+    e.preventDefault();
+
+    const data = {
+      email:this.email
+    };
+    axios.post('api/s-forgot-password',data).then(res =>{
+    if(res.status ===200){
+      swal("vérifier votre email" , " ", "success");
+    }
+    else{
+      swal("no stagiaire avec cet email...." , " ", "error");
+    }
+    }
+    )
+  };
+
+  render() {
+    
+
+   
+
   return (
     <>
-      
-
- 
+   
   {/* <div className="container-login100"> */}
         <div className="wrap-login102">
-      <form  className="login100-form validate-form"  >
-      {/* {message} onSubmit={this.handleSubmit}*/}
+      <form  className="login100-form validate-form"  onSubmit={this.handleSubmit}>
+     
       
         <div className="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
           <input className="input100" type="email" name="email" placeholder="Email" onChange={(e) =>this.email = e.target.value} />
@@ -30,41 +59,16 @@ function SForgotPassword() {
         </div>
 
         <br/>
-        <div className="text-center p-t-136 ">
-        <Link to="/login-stagiaire"  className="text-decoration-none">Connecter</Link>  
-        </div>
-
-      
-      
-
-
-   {/*      <div className="container-login100-form-btn">
-          <button className="login100-form-btn">
-
-           <Link to="/reset-password">
-        
-           Réinintialiser Mot de passe
-            </Link> 
-
-          </button>
-        </div>
-        <br/>
         <div className="text-center p-t-136">
-        
-          <Link to="/login"  className="txt2">
-          Connecter
-            </Link> 
+        <Link to="/login" className="text-decoration-none" >Connecter</Link>  
         </div>
- */}
-
-
       </form>
     </div>
 
 {/* </div> */}
     
-    </>
-  )
+</>
+    )
+  }
 }
-
 export default SForgotPassword

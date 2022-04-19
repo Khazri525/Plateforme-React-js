@@ -4,28 +4,21 @@ import axios from 'axios';
 import swal from 'sweetalert';
 import Swal from 'sweetalert2';
 
-function DemandeStage() {
+function DemandeStageAvecSujet() {
 
   const Swal = require('sweetalert2');
+
     const navigate = useNavigate();
-
-     //file cv 
-      const [ filedata , setFiledata] = useState([]);
-      //const [ file , setFile] = useState();
-
+  
      //validation erreurs
      const [ error , setError] =useState ([]);
 
-     
-   
-
 
     const [ userInput , setUser] =useState ({
-        niveauetude: '',
-       typestage:'',
+      //  niveauetude: '',
+        typestage:'',
         nom_dept:'', 
         cinoupassport_demande:'', 
-       // cv:[],
         error_list:[],
      
       
@@ -35,51 +28,43 @@ function DemandeStage() {
       const handleInput = (e) => {
         e.persist();
        
-        setUser({ ...userInput , [e.target.name]: e.target.value} )
+        setUser({ ...userInput , [e.target.name]: e.target.value})
      
       }     
 
    
- 
- /*  const handleChange = (e) =>{
-    setFile(e.target.cv == e.target.files[0]);
-   }; */
-  
- 
+       
+ const [ filedata , setFiledata] = useState([]);
 
+ /* 
+  const handleChange = (file) =>{
+    setFiledata(file[0]);
+   };
+  */
+ 
    const handleFile  = (e) =>{
-    //setFiledata({ cv:e.target.files[0]});
-    setFiledata({cv:e.target.files[0]});
-   }
+     setFiledata({ cv: e.target.files[0]});
+    }
  
 
       const demandeSubmit = (e) => {
         e.preventDefault();
       
       
-         const data = {
+        const data = {
           //niveauetude:userInput.niveauetude,
-          cinoupassport_demande:userInput.cinoupassport_demande,
           typestage:userInput.typestage,
           nom_dept:userInput.nom_dept,
+          cinoupassport_demande:userInput.cinoupassport_demande,
           cv:filedata.cv,
-        // cv:filedata.cv,
           
-          } 
-
-       /*    const formData = new FormData();
-
-		formData.append('cv', filedata.cv);
-    formData.append('cin', userInput.cin);
-    formData.append('typestage', userInput.typestage);
-    formData.append('nom_dept', userInput.nom_dept); */
-
+          }
       
       
        
-           axios.post('api/ajouter-demande-stage',data ).then(res =>{
+           axios.post('api/ajouter-demande-stage', data).then(res =>{
                 if(res.data.status === 200){
-                  Swal.fire("Succès" , res.data.message ,"success");
+                  Swal.fire ("Succès" , res.data.message , "success");
                   navigate('/test-psychotéchnique');
                   setError([]);
                   
@@ -87,7 +72,7 @@ function DemandeStage() {
               
                 else if(res.data.status === 400){
                   setError(res.data.validation_errors);
-                  Swal.fire("Erreur" , " Vous devez remplir tous les champs", "error");
+                  Swal.fire("Erreur" , " Vous devez remplir tous les champs","error");
            }
          
       
@@ -145,9 +130,9 @@ function DemandeStage() {
 <div className="wrap-input100   col-lg-12 mb-4  " >
 <select  name="typestage"  onChange={handleInput} value={userInput.typestage} className="input100 border-0 " type="text" >
 <option  selected hidden>--Type de stage--</option>
-    {/* <option name="typestage" value="PFE">PFE</option> */}
+    <option name="typestage" value="PFE">PFE</option> 
     <option name="typestage" value="Pérfectionnement">Pérfectionnement</option>
-    <option name="typestage" value="Observation">Observation</option>
+    {/* <option name="typestage" value="Observation">Observation</option> */}
  </select>
 <span className="focus-input111" />
 <span className="symbol-input111">
@@ -176,18 +161,17 @@ function DemandeStage() {
  
 
        {/*Cv */}
-      <div className="wrap-input100   col-lg-12 mb-4  form-group " >
-          <input className="input100 mt-4 " type="file"  name="cv"  onChange={handleFile}   />
+{/*  <div className="wrap-input100   col-lg-12 mb-4  form-group " >
+          <input className="input100 mt-4" type="file"  name="cv"  onChange={handleFile}   />
           <span className="focus-input111" />
           <span className="symbol-input111">
            <i className=" fas fa-cloud-upload-alt "  aria-hidden="true" />
-              
           </span>
-        </div>  
+       
+        </div>  */}
 
 
-{/* cv */}
-{/* <div className="wrap-input100   col-lg-12 mb-4  form-group " >   
+<div className="wrap-input100   col-lg-12 mb-4  form-group " >   
 <p className="text-center   text-secondary"> Déposer votre CV</p>
      
    <div className="frame">
@@ -195,44 +179,30 @@ function DemandeStage() {
        
           <div className="dropzone">
               <img src="http://100dayscss.com/codepen/upload.svg" className="upload-icon  " />
-              <input type="file" name="cv"  onChange={handleChange}  className="upload-input " />
+              <input type="file" name="cv"  onChange={handleFile}  className="upload-input " />
          </div>
      </div> 
 
 
   </div>
-</div> */}
+</div>
        
-      
-    {/*    <label class="form-label" for="customFile">Default file input example</label>
-<input type="file"  onChange={handleFile}   class="form-control" id="customFile" />
- */}
-        {/*Cv */}
-        {/* <div class="custom-file">
-                      <input type="file" name="cv"  onChange={handleFile}   className="custom-file-input" id="customFile"/>
-                      <label className="custom-file-label" for="customFile">Choose file</label>
-         </div> */}
 
 
 
 
 
-    <div className="container-login100-form-btn col-md-6 ">
-          <button type="submit" className="login100-form-btn" >
+
+
+     <div className="container-login100-form-btn col-md-6 ">
+          <button type="submit" className="login100-form-btn">
           Envoyer
           </button>
         </div>
 
-     
-   {/*  
-        <div className="container-login100-form-btn col-md-6 ">
-        <Link className="login100-form-btn " to="/">Annuler</Link>
-        </div>
-  */}
 
 {/* 
-  
-<div className="container-login100-form-btn col-md-6 ">
+        <div className="container-login100-form-btn col-md-6 ">
         <Link  to="#" className="login100-form-btn" style={{color: 'white'}}>Envoyer</Link>
         </div>
   */}
@@ -241,6 +211,7 @@ function DemandeStage() {
         <div className="container-login100-form-btn col-md-6 ">
         <Link  to="/" className="login100-form-btn" style={{color: 'white'}}>Annuler</Link>
         </div>
+ 
  
 
  </div>
@@ -380,4 +351,4 @@ function DemandeStage() {
   )
 }
 
-export default DemandeStage
+export default DemandeStageAvecSujet

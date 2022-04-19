@@ -2,10 +2,12 @@ import React , { useState} from 'react'
 import { useNavigate ,Link , NavLink} from 'react-router-dom';
 import axios from 'axios';
 import swal from 'sweetalert';
-
+import Swal from 'sweetalert2';
 
 function PageAjouterCompte() {
 
+  
+  const Swal = require('sweetalert2');
   const navigate = useNavigate();
 
   
@@ -32,6 +34,7 @@ function PageAjouterCompte() {
    datenaissance: '',
    matricule: '',
    role:'',
+   departement:'',
    password: '',
    error_list:[],
 
@@ -95,7 +98,7 @@ const handleInput = (e) => {
          
 
             //erreur étre string  ... 
-       if( !(userInput.nom.match('[a-z-A-Z]')) ) {  
+       if(  !userInput.nom.match('[a-zA-Z]')) { // !(userInput.nom.match('[a-z-A-Z]')) 
         setUtiErrstrn(true)
        }
        else{
@@ -103,7 +106,7 @@ const handleInput = (e) => {
        }
 
           //erreur étre string  ... 
-          if( !(userInput.prenom.match('[a-z-A-Z]')) ) {  
+          if(  !userInput.prenom.match('[a-zA-Z]') ) { // !(userInput.prenom.match('[a-z-A-Z]'))
             setUtiErrstrp(true)
            }
            else{
@@ -126,6 +129,7 @@ const compteSubmit = (e) => {
     datenaissance:userInput.datenaissance,
     matricule:userInput.matricule,
     role:userInput.role,
+    departement:userInput.departement,
     password:userInput.password,
     password_confirmation:userInput.password_confirmation,
    
@@ -142,15 +146,16 @@ const compteSubmit = (e) => {
             
             
           if( res.data.password === res.data.password_confirmation){
-            swal ("Success" , res.data.message);
+            Swal.fire("Succès" , res.data.message ,"success");
             navigate('/coordinateur/afficher-tous');
+            console.log(res.data.departement)
             setError([]);
             
           }   }
         
           else if(res.data.status === 422){
             setError(res.data.validation_errors);
-            swal("erreur dans champs" , " ", "error");
+            Swal.fire("Erreur dans les champs" , " Vérifier les champs!", "error");
      }
    
 
@@ -301,11 +306,13 @@ const compteSubmit = (e) => {
 
 
  {/* Role */}
-<div className="wrap-input100   col-lg-12 mb-4 " >
+<div className="wrap-input100   col-lg-6 mb-4 " >
+
+
+
 <select  name="role"  onChange={handleInput} value={userInput.role}  className="input100 border-0 " type="text" >
-       <option disabled selected="true" >Rôle</option> 
-        
-  
+        <option   selected hidden>--Rôle--</option>
+        <option  name="role"  value="coordinateur">Coordinateur</option>
         <option  name="role"  value="encadrant">Encadrant</option>
         <option  name="role"  value="chef_dept">Chef département</option> 
         <option  name="role"   value="service_formation"> Service formation</option>
@@ -318,8 +325,18 @@ const compteSubmit = (e) => {
           </span>
         </div>
 
- 
-
+ {/* Nom département */}
+      
+        <div className="wrap-input100   col-lg-6 mb-4 " >
+<select  name="departement" onChange={handleInput} value={userInput.departement}   className="input100 border-0 " type="text" >
+  
+       <option   selected hidden>--Nom département--</option>
+  
+        <option  name="departement"  value="Marketing">Marketing</option>
+        <option  name="departement" value="BI">BI</option> 
+        <option  name="departement"  value="Développement"> Développement</option>
+ </select>
+</div>
 
 
  {/* Password */}

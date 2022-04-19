@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom';
 
 import swal from 'sweetalert';
-
+import Swal from 'sweetalert2';
 function PageConsulterDemandeStage() {
    
-  
+  const Swal = require('sweetalert2');
 
   //rechercher
   const[searchTerm,setSearchTerm] = useState("");
@@ -14,7 +14,7 @@ function PageConsulterDemandeStage() {
 
 
   //Demande de stage
-  const[demandelist,setDemandelist] = useState([]);
+/*   const[demandelist,setDemandelist] = useState([]);
 
   useEffect(()=> {
      axios.get('api/afficher-demandes-stages').then(res=> {
@@ -23,7 +23,7 @@ function PageConsulterDemandeStage() {
         }
         setLoading(false);
       }); 
-  },[]);
+  },[]); */
   
      
   //Stagiaire
@@ -37,11 +37,157 @@ function PageConsulterDemandeStage() {
       setLoading(false);
     });
 },[]);
-
-
-
-
  
+
+//accepter demande de stage
+const accepter = (e) => {
+  e.preventDefault();
+
+
+
+  Swal.fire({
+    title: 'Accepter Demande de Stage ?',
+  
+    html: `<input type="text" id="name" class="swal2-input" placeholder="Nom">
+    <input type="text" id="prenom" class="swal2-input" placeholder="Prénom">
+    <input type="email" id="email" class="swal2-input" placeholder="Email">`, 
+    inputAttributes: {
+      autocapitalize: 'off'
+    }, 
+    showCancelButton: true,
+    confirmButtonText: 'Accepter',
+    cancelButtonText: 'Annuler',
+    showLoaderOnConfirm: true,
+    preConfirm: () => {
+      //return fetch(`//api.github.com/users/${login}`)
+      const name = Swal.getPopup().querySelector ('#name').value
+      const prenom = Swal.getPopup().querySelector('#prenom').value
+      const email = Swal.getPopup().querySelector('#email').value  
+      const data = {
+           name: name,
+           prenom:prenom,
+           email:email
+    
+        }
+ 
+
+      axios.post('api/accepter-demande',data).then(res=>{
+        if(res.data.status === 200){
+ 
+          Swal.fire("Succès","Email Acceptation du stagiaire envoyé avec succès" ,"success")//res.data.message
+       
+    
+        }
+          else if(res.data.status === 500){
+            Swal.fire("Erreur","Email Acceptation stagiaire non envoyé réessayer!"  ,"error");//res.data.message
+        } 
+   });
+   
+    },
+    allowOutsideClick: () => !Swal.isLoading()
+  }).then((result) => {
+    if (result.isConfirmed) {
+     /*  Swal.fire({
+        title: `${result.value.login}'s avatar`,
+        
+      }) */
+
+
+     // Swal.fire("Success", 'Email Acceptation Envoyé',"success")
+
+     
+    }
+  })
+
+}
+
+
+
+
+
+
+//refuser demande de stage
+const refuser = (e , id) => {
+
+  const thisClicked = e.currentTarget;
+  e.preventDefault();
+
+          
+
+
+  Swal.fire({
+    title: 'Refuser Demande de Stage ?',
+  
+    html: `<input type="text" id="name" class="swal2-input" placeholder="Nom">
+    <input type="text" id="prenom" class="swal2-input" placeholder="Prénom">
+    <input type="email" id="email" class="swal2-input" placeholder="Email">`, 
+    inputAttributes: {
+      autocapitalize: 'off'
+    }, 
+    showCancelButton: true,
+    confirmButtonText: 'Refuser',
+    cancelButtonText: 'Annuler',
+    showLoaderOnConfirm: true,
+    preConfirm: () => {
+      //return fetch(`//api.github.com/users/${login}`)
+      const name = Swal.getPopup().querySelector ('#name').value
+      const prenom = Swal.getPopup().querySelector('#prenom').value
+      const email = Swal.getPopup().querySelector('#email').value
+      const data = {
+           name: name,
+           prenom:prenom,
+           email:email
+        }
+ 
+
+
+      axios.post('api/refuser-demande',data).then(res=>{
+        if(res.data.status === 200){
+          Swal.fire("Succès","Email Refus du stagiaire envoyé avec succès","success")// res.data.message 
+                
+             //supprimer demande de stage
+             axios.delete(`api/supprimer-demandes-stages/${id}`).then(res =>{
+              if(res.data.status === 200){
+              //  Swal.fire("Sucess" , res.data.message , "success"); 
+               thisClicked.closest("tr").remove();
+              }
+              /* else{
+                Swal.fire("Error" , res.data.message , "Error");
+             
+              } */
+          });
+          //.supprimer demande de stage 
+          
+        }
+          else if(res.data.status === 500){
+            Swal.fire("Erreur", "Email Refus stagiaire non envoyé réessayer!" ,"error");//res.data.message
+        } 
+
+   });
+
+    },
+    allowOutsideClick: () => !Swal.isLoading()
+  }).then((result) => {
+    if (result.isConfirmed) {
+     /*  Swal.fire({
+        title: `${result.value.login}'s avatar`,
+        
+      }) */
+
+
+     // Swal.fire("Success", 'Email Acceptation Envoyé',"success")
+
+     
+    }
+  })
+
+}
+
+
+
+
+
+
 
 if(loading){
  return <h5>Loading Demandes de Stages...</h5>
@@ -65,18 +211,29 @@ if(loading){
    else{
  var afficher_Demande_Cards ="";
   afficher_Demande_Cards =
-    demandelist.filter(val =>{
+  userlist.filter(val =>{
+    if(val.demandeStages){
+
+  
     if(searchTerm === ""){
-      return val;
-    }else if( val.niveauetude.toLowerCase().includes(searchTerm.toLowerCase())) {
+     
       return val;
     }
+    
+    
+    else if(  val.demandeStages[0][0].toLowerCase().includes(searchTerm.toLowerCase()) || val.demandeStages[0][1].toLowerCase().includes(searchTerm.toLowerCase())  ) {
+      return val;
+    }
+      }//////
   }).map( (dm , index) => { 
 
   
 
- if(dm.cin == '12345678')        
+      
 
+
+
+if(dm.demandeStages ){
 
 
 
@@ -90,30 +247,40 @@ if(loading){
 
 
 
-         {/* Card 1 */}
-<div className="col-md-offset-3 col-md-3" > 
+         {/* Card 1 <i className="fas fa-book mr-1" />*/}
+<tr className="col-md-offset-3 col-md-3" > 
 <div className="card card-primary  bg-light">
   <div className="card-header">
     <h3 className="card-title">Demande{index+1}</h3>
   </div>
   <div className="card-body"    >
-    <strong><i className="fas fa-book mr-1" />Nom et Prénom:</strong>
-      <p>Khalil Khazri</p>
-  
+    <strong>Nom et Prénom:</strong>
+      <p>{dm.name} {dm.prenom} </p>
+
+      <strong>Email:</strong>
+      <p>{dm.email} </p>
+
+   <strong>Cin ou Passport</strong>
+      <p>{dm.cinoupassport_stagiaire}</p>
   
     {/* <strong><i className="fas fa-book mr-1" />Niveau d'étude:</strong>
       <p>{dm.niveauetude}</p> */}
   
-  
-    <strong><i className="fas fa-book mr-1" />Type de stage:</strong>
-      <p>{dm.typestage}</p>
+ 
+    <strong>Type de stage</strong>  <br/>
+      <p>{dm.demandeStages[0][0]}</p>
+
+
+      <strong>Nom Département</strong>  <br/>
+     
+      <p>{dm.demandeStages[0][1]}</p>
   
  
-    <strong><i className="fas fa-book mr-1" />CV:</strong>
-      <p>{dm.cv}</p>
+    <strong>CV</strong>
+    <p>{dm.demandeStages[0][2]}</p>
+     
 
-      <strong><i className="fas fa-book mr-1" />:CIN</strong>
-      <p>{dm.cin}</p>
+     
  
 
 
@@ -124,7 +291,11 @@ if(loading){
   <div className="text-right py-0 align-middle">
 <div class="btn-group btn-group-sm ">
                         <a href="#" class="btn btn-info" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-eye"></i></a>
-                        <a href="#" class="btn btn-danger" ><i class="fas fa-trash"></i></a> 
+                        {/* <a href="#" class="btn btn-danger" ><i class="fas fa-trash"></i></a> */}
+                       {/* <Link to="#" class="btn btn-danger" ><i class="fas fa-ban"></i></Link>  */}
+                   {/* <Link to="#" class="btn btn-success" > <i class="fas fa-chevron-circle-down"></i></Link>    */}
+                   <button type="button" className="btn btn-success" onClick={(e) => accepter(e)} ><i className="fas fa-chevron-circle-down"></i></button>
+                   <button type="button" className="btn btn-danger " onClick={(e) => refuser(e , dm._id)} ><i className="fas fa-ban"></i></button>
                        
 
                         
@@ -135,30 +306,45 @@ if(loading){
     <div className="modal-dialog">
       <div className="modal-content">
         <div className="modal-header">
-          <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
+          <h5 className="modal-title" id="exampleModalLabel">Demande</h5>
           <button type="button" className="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
         <div className="modal-body">
-       Nom: <br/>
-        Prénom: <br/>
-        Date de naissance:<br/>
-        Email:<br/> 
-        Cin: <br/>
-        Niveau étude:<br/>
-        Spécialite:<br/>
-        Filiére:<br/>
-        Adresse:<br/>
-        Télephone:<br/>
-        Type de stage:<br/>
-        Nom département:<br/>
-        Le CV:
+
+  <div className="col-md-offset-3 col-md-12">
+       <strong> Nom </strong> {dm.name} <br/>
+       <strong>Prénom</strong>  {dm.prenom} <br/>
+       <strong>Date de naissance</strong>  {dm.datenaissance} <br/>
+       <strong> Email</strong>{dm.email} <br/> 
+       <strong>Cin ou Passport </strong> {dm.cinoupassport_stagiaire} <br/>
+       <strong>Niveau étude</strong> {dm.niveauetude} <br/>
+       <strong>Spécialite</strong>{dm.specialite} <br/>
+       <strong>Filiére</strong> {dm.filiere} <br/>
+       <strong>Adresse</strong>{dm.adresse} <br/>
+       <strong>Télephone</strong>{dm. telephone} <br/>
        
+       <strong>Type de stage:</strong> {dm.demandeStages[0][0]}<br/>
+       <strong>Nom département:</strong>  {dm.demandeStages[0][1]}<br/>
+       <strong>CV</strong> {dm.demandeStages[0][2]}
+{/* 
+       <form>
+               {/* utilisateur matricule 
+            <strong >Matricule Encadrant </strong> 
+          <div className="wrap-input100   col-lg-6 mb-4" >
+        <input className="input100" type="number" placeholder="Matricule" name="Matricule" />
+          <span className="focus-input111" />
+          <span className="symbol-input111">
+            
+          </span>
+          </div>
+       </form> */}
+  </div>
         </div>
         <div className="modal-footer">
-          <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" className="btn btn-primary">Save changes</button>
+          <button type="button" className="btn btn-secondary" data-dismiss="modal">Fermer</button>
+          {/* <button type="button" className="btn btn-primary">Save changes</button> */}
         </div>
       </div>
     </div>
@@ -168,7 +354,7 @@ if(loading){
 {/* .Afficher détails   */}
 </div>
 </div>
-</div>
+</tr>
 {/* .Card 1 */}
          
          
@@ -181,7 +367,7 @@ if(loading){
          </>
      )
 
-
+    }
 
 
 

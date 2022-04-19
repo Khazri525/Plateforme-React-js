@@ -19,6 +19,14 @@ function SSideList() {
                 </li><br/>
 
                 
+
+                <li className="nav-item">
+                  <Link to="/service-de-formation/profile">
+                    <i class="nav-icon   fas fa-user-cog"></i>
+                    Profil
+                  </Link>
+                </li><br/>
+
                 
 
                 <li className="nav-item">
@@ -44,14 +52,7 @@ function SSideList() {
                 
 
                 
-                <br/>
-                <li className="nav-item">
-                  <Link to="/service-de-formation/profile">
-                    <i class="nav-icon   fas fa-user-cog"></i>
-                    Profile
-                  </Link>
-                </li><br/>
-
+         
 
                
             

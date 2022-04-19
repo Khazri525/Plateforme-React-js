@@ -6,19 +6,19 @@ import swal from 'sweetalert';
 
 class TResetPassword extends Component {
  
- /*  state = {};
+  state = {};
    params= useParams();
    
   handleSubmit = (e) => {
     e.preventDefault();
     const data = {
-      token: this.params.id,
+      token: this.$params.id,
       password:this.password,
       password_confirmation:this.password_confirmation
     };
 
 
-    axios.post(`api/reset-password${data.token}`,data).then(
+    /* axios.post(`api/reset-password/${data.token}`,data).then(
       res => {
         console.log(res);
         swal("vérifier votre email" , " ", "success");
@@ -35,8 +35,19 @@ class TResetPassword extends Component {
         swal("erreur..." , " ", "error");
       }
     )
-  };
- */
+  }; */
+
+  axios.post(`api/reset-password/${data.token}`,data).then( res => {
+    if(res.data.status === 200 ){
+      swal("Succes",res.data.message,"sucess");
+    }else{
+      swal("Error",res.data.message,"error");
+    }
+     
+    }
+
+  )};
+
 
 render() {
     

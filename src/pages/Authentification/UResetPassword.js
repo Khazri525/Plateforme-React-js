@@ -1,56 +1,63 @@
-import React, { Component } from 'react'
-import {useNavigate,useParams} from 'react-router-dom'
+import React , { useEffect, useState } from 'react'
+import { useNavigate ,Link , NavLink ,useParams} from 'react-router-dom';
 import axios from 'axios';
+import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 
-class UResetPassword extends Component {
- 
-  state = {};
-   params= useParams();
+function UResetPassword (){
+  
+  const Swal = require('sweetalert2');
+
+  const params=useParams();
+  const [ passInput , setPass] =useState ([]);
+
+  const handleInput = (e) => {
+    e.persist();
    
-  handleSubmit = (e) => {
-    e.preventDefault();
-    const data = {
-      token: this.params.id,
-      password:this.password,
-      password_confirmation:this.password_confirmation
-    };
+    setPass({ ... passInput , [e.target.name]: e.target.value})
+  } 
+  
 
+  
+ const resetPass = (e) => {
+  e.preventDefault();
 
-    axios.post('api/reset',data).then(
-      res => {
-        console.log(res);
-        this.setState({
-         reset:true
-       
-        })
-      }
+  
 
-    ).catch(
-      err => {
-        console.log(err)
-      }
-    )
+  const data = {
+    token:params.token,
+    email:passInput.email,
+    password:passInput.password,
+    password_confirmation:passInput.password_confirmation
   };
 
+  //const token= params.id;
 
-render() {
-    
-    
-  
-    return (
+  axios.post(`api/u-reset-password`,data).then( res => {
+    if(res.data.status === 200){
+      Swal.fire ("Succès" , res.data.message , "success");
+     // navigate('/service-de-formation/afficher-departements');
+      //setError([]);
 
- 
+    }
+     else {
+           //setError(res.data.validation_errors);
+           Swal.fire ("Erreur " , res.data.message, "error");
+    }
+   
+  });
 
-<>
- 
+}
 
-<div className="container-login100">
+  return (
+    <>
+
 <div className="wrap-login102">
-<form  className="login100-form validate-form"  onSubmit={this.handleSubmit}>
+<form onSubmit={resetPass} className="login100-form validate-form" >
 
 <div className="wrap-input100 validate-input" >
-  <input className="input100" type="password" name="password" placeholder="mot de passe" onChange={(e) =>this.password = e.target.value} />
+  <input className="input100" type="email" name="email" onChange={handleInput} value={passInput.email}  placeholder="votre email" />
   <span className="focus-input100" />
   <span className="symbol-input100">
     <i className="fa fa-envelope" aria-hidden="true" />
@@ -58,10 +65,18 @@ render() {
 </div>
 
 <div className="wrap-input100 validate-input" >
-  <input className="input100" type="password"  name="password_confirmation"  placeholder="confirmer mot de passe" onChange={(e) =>this.password_confirmation = e.target.value} />
+  <input className="input100" type="password" name="password" onChange={handleInput} value={passInput.password}  placeholder="nouveau mot de passe" />
   <span className="focus-input100" />
   <span className="symbol-input100">
-    <i className="fa fa-envelope" aria-hidden="true" />
+    <i className="fa fa-lock" aria-hidden="true" />
+  </span>
+</div>
+
+<div className="wrap-input100 validate-input" >
+  <input className="input100" type="password"  name="password_confirmation" onChange={handleInput} value={passInput.password_confirmation}  placeholder="confirmer nouveau mot de passe"  />
+  <span className="focus-input100" />
+  <span className="symbol-input100">
+    <i className="fa fa-lock" aria-hidden="true" />
   </span>
 </div>
 
@@ -81,10 +96,8 @@ render() {
 </form>
     </div>
 
-</div>
-</>
-    )
-  }
+    </>
+  )
 }
 
 export default UResetPassword

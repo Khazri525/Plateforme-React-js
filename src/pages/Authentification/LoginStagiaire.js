@@ -2,9 +2,10 @@ import React , { useState} from 'react'
 import { useNavigate ,Link} from 'react-router-dom';
 import axios from 'axios';
 import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 function LoginStagiaire() {
 
-
+  const Swal = require('sweetalert2');
 
 
     const navigate = useNavigate();
@@ -12,6 +13,14 @@ function LoginStagiaire() {
     const [stgErremail,setStgErremail]=useState(false);
     const [stgErrmtpasse,setStgErrmtpasse]=useState(false);
 
+    
+   //fois
+   const [count, setCount] = useState(0);
+
+   const incrementCount = () => {
+    setCount(count + 1);
+    console.log(count)
+  };
     //Login
  
     const [ loginInput , setLogin] =useState ({
@@ -67,16 +76,23 @@ function LoginStagiaire() {
             if(res.data.status === 200){
                 localStorage.setItem('auth_token' , res.data.access_token);
                 localStorage.setItem('auth_name' , res.data.username);
-               swal ("Success" , res.data.message);
+                localStorage.setItem('role' , 'stagiaire');
+                Swal.fire("Succès" , res.data.message , "success");
                
               
-                 navigate('/stagiaire/acceuil' );
+                //  navigate('/stagiaire/acceuil' );
+                navigate('/');
+
               
  
  
             }
             else if(res.data.status === 401){
-              swal ("Warning " , res.data.message);
+              Swal.fire(" " , res.data.message , "warning");
+              if( count>3){
+                Swal.fire ("" , "réinitialiser votre mot de passe", "warning");
+                 navigate('/S-forgot');
+            }
             } 
                
            /*  else{
@@ -125,7 +141,7 @@ function LoginStagiaire() {
 
 
         <div className="container-login100-form-btn ">
-          <button type="submit" className="login100-form-btn">
+          <button type="submit" className="login100-form-btn" onClick={incrementCount} >
             
           Connecter
          

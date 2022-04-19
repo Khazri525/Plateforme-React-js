@@ -3,10 +3,30 @@ import React , { useState} from 'react'
 import { useNavigate ,Link} from 'react-router-dom';
 import axios from 'axios';
 import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 
 function RegisterStagiaire() {
+  const Swal = require('sweetalert2');
+//
+const [etatcheckbox,setEtatcheckbox]= useState([]);
 
+const handleCheckbox = (e) => {
+  e.preventDefault();
+  
+ 
+    //Désactiver
+    setEtatcheckbox({ ...etatcheckbox,[e.target.name]:e.target.checked});
+  
+    console.log("Vous étes", etatcheckbox.etat);
+  
+ 
+}
+
+
+
+
+//
 
 
 
@@ -29,7 +49,7 @@ function RegisterStagiaire() {
        prenom: '',
        datenaissance:'',
        email: '',
-       cin:'', 
+       cinoupassport_stagiaire:'', 
        niveauetude:'', 
        specialite:'',
        filiere:'',
@@ -95,16 +115,16 @@ function RegisterStagiaire() {
   
        //erreur cin
      
-       if(!(registerInput.cin.match('[0-9]{7}')) ){
+     /*   if(!(registerInput. cinoupassport_stagiaire.match('[0-9]{7}')) ){
         setStgErrcin(true)
        }
        else{
         setStgErrcin(false)
-       }
+       } */
   
        //erreur telephone
      
-       if( !(registerInput.telephone.match('[0-9]{7}')) ) {  
+       if( !(registerInput.telephone.match('[0-9]{7}' )) ) {  
         setStgErrtelephone(true)
        }
        else{
@@ -176,7 +196,8 @@ function RegisterStagiaire() {
         prenom:registerInput.prenom,
         datenaissance:registerInput.datenaissance,
         email:registerInput.email,
-        cin:registerInput.cin,
+        cinoupassport_stagiaire:registerInput.cinoupassport_stagiaire,
+        //passport: registerInput.passport,
         niveauetude:registerInput.niveauetude,
         specialite:registerInput.specialite,
         filiere:registerInput.filiere,
@@ -198,8 +219,10 @@ function RegisterStagiaire() {
               }
                 
               if( res.data.password === res.data.password_confirmation){
-                     swal ("Success" , res.data.message);
-                     navigate('/etudiant/acceuil');
+                Swal.fire("Succès" , res.data.message , "success");
+                    // navigate('/etudiant/acceuil');
+                     navigate('/login-stagiaire');
+                    
                   }
                  
          else{
@@ -238,7 +261,39 @@ function RegisterStagiaire() {
 
 
 
-
+  var afficher_champ="";
+  if(etatcheckbox.etat){
+  afficher_champ =
+   
+           <>
+            <div className="wrap-input100 validate-input" >
+            <input className="input100" type="number" name="cinoupassport_stagiaire" onChange={handleInput} value={registerInput.cinoupassport_stagiaire} placeholder="Num Passport" required/>
+            <span className="focus-input100" />
+            <span className="symbol-input100">
+              <i className="fas fa-atlas"  aria-hidden="true" />
+            </span>
+          </div>
+         {/* {stgErrcin ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> le numéro de cin doit contenir 8 chiffres </span> :""}   */}
+  
+           
+           </>
+        
+             
+          
+  }else {
+   afficher_champ =
+    <>
+   
+    <div className="wrap-input100 validate-input">
+    <input className="input100" type="number" name="cinoupassport_stagiaire" onChange={handleInput} value={registerInput.cinoupassport_stagiaire} placeholder="Num Cin" required/>
+    <span className="focus-input100" />
+    <span className="symbol-input100">
+      <i className=" fas fa-address-card"  aria-hidden="true" />
+    </span>
+  </div>
+  {/* {stgErrcin ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> le numéro de cin doit contenir 8 chiffres </span> :""}   */}
+  </>
+  }
 
 
 
@@ -310,7 +365,8 @@ function RegisterStagiaire() {
         {/* {registerInput.error_list.datenaissance ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />{registerInput.error_list.datenaissance}  </span> :""}  */}
 
 
-        <div className="wrap-input100 validate-input">
+
+    {/* <div className="wrap-input100 validate-input">
           <input className="input100" type="number" name="cin" onChange={handleInput} value={registerInput.cin} placeholder="Num Cin" required/>
           <span className="focus-input100" />
           <span className="symbol-input100">
@@ -326,10 +382,41 @@ function RegisterStagiaire() {
           <span className="symbol-input100">
             <i className="fas fa-atlas"  aria-hidden="true" />
           </span>
-        </div>
+        </div> */}
+       {/* {stgErrcin ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> le numéro de cin doit contenir 8 chiffres </span> :""}   */}
+ 
+   
+   
+   {/* Test */}
+
+  {/*  <div className="d-flex justify-content-center">
+   <input type="checkbox"  name="etat" onChange={ handleCheckbox} defaultChecked={etatcheckbox.etat}  className="form-check-input"/>
+   <p>je suis un étranger</p>
+   </div> 
+ */}
+   <div className="form-group form-check">
+    <input type="checkbox"  name="etat" onChange={ handleCheckbox} defaultChecked={etatcheckbox.etat}   class="form-check-input" id="exampleCheck1" />
+    <label className="form-check-label text-secondary" for="exampleCheck1">je suis un étranger</label>
+  </div>
+
+
+      {afficher_champ} 
+
+
+
+
+
+
+     {/*   <div className="wrap-input100 validate-input" >
+          <input className="input100" type="number" name="passport" onChange={handleInput} value={registerInput.passport} placeholder="Num Passport" required/>
+          <span className="focus-input100" />
+          <span className="symbol-input100">
+            <i className="fas fa-atlas"  aria-hidden="true" />
+          </span>
+        </div> */}
        {/* {stgErrcin ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> le numéro de cin doit contenir 8 chiffres </span> :""}   */}
 
-
+   {/* .Test */}
   
 
 

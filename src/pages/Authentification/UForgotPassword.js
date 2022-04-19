@@ -2,6 +2,7 @@ import React, { Component }  from 'react'
 import { Link  } from 'react-router-dom';
 import axios from 'axios';
 import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 
 class UForgotPassword extends Component{
@@ -11,17 +12,18 @@ class UForgotPassword extends Component{
 
   state= {};
   handleSubmit = (e) => {
+    const Swal = require('sweetalert2');
     e.preventDefault();
 
     const data = {
       email:this.email
     };
-    axios.post('api/forgot-password',data).then(res =>{
+    axios.post('api/u-forgot-password',data).then(res =>{
     if(res.status ===200){
-      swal("vérifier votre email" , " ", "success");
+      Swal.fire("Succès" , res.data.message, "success");
     }
     else{
-      swal("erreur...." , " ", "error");
+      Swal.fire("Erreur" ,  res.data.message, "error");
     }
     }
     )
@@ -30,7 +32,7 @@ class UForgotPassword extends Component{
   render() {
     
 
-   
+    
 
   return (
     <>

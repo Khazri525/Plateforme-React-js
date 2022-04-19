@@ -2,18 +2,20 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useNavigate ,Link} from 'react-router-dom';
 import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 function Header() {
+  const Swal = require('sweetalert2');
     const navigate = useNavigate();
 //profile
 
-const [ userInput , setUser] =useState ([]);
+//const [ userInput , setUser] =useState ([]);
 
 
-useEffect(()=> {
+/* useEffect(()=> {
   axios.get('api/profile').then(res=> {
     if(res.status ===200){
-      setUser(res.data.user.original)
+      setUser(res.user)
       // console.log(userInput._id)
      
       
@@ -21,7 +23,7 @@ useEffect(()=> {
    
   });
 },[]);
-
+ */
 
 
 
@@ -37,7 +39,8 @@ useEffect(()=> {
            if(res.data.status === 200){
             localStorage.removeItem('auth_token');
             localStorage.removeItem('auth_name');
-           swal ("Success" , res.data.message);
+            localStorage.removeItem('role');
+            Swal.fire ("Succès" , res.data.message ,"success");
            navigate('/');
            }
     });

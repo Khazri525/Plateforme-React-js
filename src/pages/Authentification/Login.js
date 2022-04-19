@@ -2,14 +2,26 @@ import React , { useState} from 'react'
 import { useNavigate ,Link} from 'react-router-dom';
 import axios from 'axios';
 import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 function Login() {
 
+  const Swal = require('sweetalert2');
   const navigate = useNavigate();
 
    //validation erreurs
    const [utiErremail,setUtiErremail]=useState(false);
    const [utiErrmtpasse,setUtiErrmtpasse]=useState(false);
+
+
+
+   //fois
+   const [count, setCount] = useState(0);
+
+   const incrementCount = () => {
+    setCount(count + 1);
+    console.log(count)
+  };
 
 
    //Login
@@ -60,19 +72,23 @@ function Login() {
      email:loginInput.email,
      password:loginInput.password,
      
+     
    }
 
 
    axios.get('/sanctum/csrf-cookie').then(response => {
       axios.post('api/login', data).then(res =>{
            if(res.data.status === 200){
-               localStorage.setItem('auth_token' , res.data.access_token);
+
+         
+              localStorage.setItem('auth_token' , res.data.access_token);
                localStorage.setItem('auth_name' , res.data.username);
+               localStorage.setItem('auth_lastname' , res.data.lastname);
+           
                localStorage.setItem('role' , res.data.role);
-              swal ("Success" , res.data.message);
+              
+               Swal.fire ("Succès" , res.data.message , "success");
             
-
-
 
               
               if(res.data.role === 'encadrant'){
@@ -87,13 +103,30 @@ function Login() {
              /*  else{
                 navigate('/');
               } */
+              else if(res.data.role === 'coordinateur'){
+                navigate('/coordinateur/acceuil');
+              }
 
+
+            
              } 
           
-
+          
            else if(res.data.status === 401){
-            swal ("Warning " , res.data.message);
+            Swal.fire ("" , res.data.message , "warning");
+            if( count>3){
+                Swal.fire ("" , "réinitialiser votre mot de passe", "warning");
+                 navigate('/U-forgot');
+            }
+
+          }
+         
+
+
+          else if(res.data.status === 402){
+            Swal.fire ("" , res.data.message , "error");
           } 
+         
           /*  else{
            
             swal("Error",res.data.message);
@@ -117,11 +150,15 @@ function Login() {
       <form onSubmit={loginSubmit}>
         
         <div className="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-          <input className="input100" type="text"  name="email"  onChange={handleInput} value={loginInput.email}  placeholder="Email" />
+          <input className="input100" type="text"  name="email"  onChange={handleInput} value=  {loginInput.email}  placeholder="Email" />
          
           <span className="focus-input100" />
           <span className="symbol-input100">
             <i className="fa fa-envelope" aria-hidden="true" />
+           
+         
+           
+
           </span>
         </div>
         {utiErremail ? <span className='text-warning txt00 '><i className="far fa-times-circle" aria-hidden="true" /> email doit contenir symbol @ </span> :""}  
@@ -139,7 +176,7 @@ function Login() {
 
 
         <div className="container-login100-form-btn ">
-          <button type="submit" className="login100-form-btn">
+          <button type="submit" className="login100-form-btn" onClick={incrementCount} >
             
           Connecter
          

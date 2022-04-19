@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom';
 import _ from "lodash";
 import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 function DeptCrudTable() {
 
@@ -25,7 +26,12 @@ function DeptCrudTable() {
    },[]);
 
 
-  const deleteDept = (e, id) => {
+
+
+
+
+   //
+  /* const deleteDept = (e, id) => {
       e.preventDefault();
 
    const thisClicked = e.currentTarget;
@@ -47,7 +53,51 @@ function DeptCrudTable() {
        }
   });
 
- }
+ } */
+//
+
+//////////////////////////////////confirmation
+const Swal = require('sweetalert2');
+const deleteDept = (e ,id) => {
+  const thisClicked = e.currentTarget;
+  e.preventDefault();
+
+  Swal.fire({
+    title: 'Confirmer?',
+    text: "Vous étes sur vous voulez supprimer département!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Oui,Supprimer!',
+    cancelButtonText: 'Annuler',
+
+  }).then((result) =>  {
+    if (result.isConfirmed) {
+      
+      axios.delete(`api/supprimer-departement/${id}`).then(res =>{
+        if(res.data.status === 200){
+          Swal.fire("Succès" , res.data.message , "success"); 
+         thisClicked.closest("tr").remove();
+         //<i className=" fas fa-trash-alt  text-danger"></i>
+        }
+        else{
+          Swal.fire("Erreur" , res.data.message , "error");
+         // thisClicked.innerText ="Delete"
+         //<i className=" fas fa-trash  text-danger"></i>
+        }
+   });
+     
+      // Swal.fire(
+      //   'Deleted!',
+      //   'Your file has been deleted.',
+      //   'success'
+      // )
+    }
+  })
+}
+
+///////////////////////.confirmation
 
 
 var afficher_Dept_Table ="";

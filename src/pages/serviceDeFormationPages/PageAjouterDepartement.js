@@ -2,9 +2,11 @@ import React , { useState} from 'react'
 import { useNavigate ,Link , NavLink} from 'react-router-dom';
 import axios from 'axios';
 import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 function PageAjouterDepartement() {
 
+  const Swal = require('sweetalert2');
 
     const navigate = useNavigate();
 
@@ -88,8 +90,9 @@ function PageAjouterDepartement() {
   
         axios.post('api/ajouter-departement', data).then(res =>{
              if(res.data.status === 200){
-              swal ("Success" , res.data.message);
+              Swal.fire ("Succès" , res.data.message ,"success");
               navigate('/service-de-formation/afficher-departements');
+             
              }
 
           else if(res.data.status === 400){
@@ -161,7 +164,7 @@ function PageAjouterDepartement() {
 
 
    {/* Nom département */}
-   <div className="wrap-input100   col-lg-6 mb-4  validate-input" data-validate="Valid email is required: ex@abc.xyz">
+ {/*   <div className="wrap-input100   col-lg-6 mb-4  validate-input" data-validate="Valid email is required: ex@abc.xyz">
           <input className="input100" type="text"  name="nom_dept"  onChange={handleInput} value={deptInput.nom_dept}  placeholder="Nom déparatement" />
           <span className="focus-input111" />
           <span className="symbol-input111">
@@ -171,8 +174,18 @@ function PageAjouterDepartement() {
           {utiErrnomdept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> nom dept max20 caractéres!</span> :""}  
          
         </div>
-        
-        
+         */}
+       
+<div className="wrap-input100   col-lg-6 mb-4 " >
+<select  name="nom_dept" onChange={handleInput} value={deptInput.nom_dept}  className="input100 border-0 " type="text" >
+  
+       <option   selected hidden>--Nom département--</option>
+  
+        <option  name="nom_dept"  value="Marketing">Marketing</option>
+        <option  name="nom_dept" value="BI">BI</option> 
+        <option  name="nom_dept"  value="Développement"> Développement</option>
+ </select>
+</div>
    
      {/* Nom Chef département */}
      <div className="wrap-input100   col-lg-6 mb-4  validate-input" data-validate="Valid email is required: ex@abc.xyz">
@@ -199,7 +212,7 @@ function PageAjouterDepartement() {
    
           <button className="persb-btn">
 
-           <Link to="/service-de-formation/afficher-departements">
+           <Link to="/service-de-formation/afficher-departements"  style={{color: 'white'}}>
           Annuler
             </Link> 
 
@@ -209,7 +222,7 @@ function PageAjouterDepartement() {
 
     
         <div className="form-group col-lg-3  i">
-          <button type="submit" className="login100-form-btn">
+          <button type="submit" className="login100-form-btn"  style={{color: 'white'}}>
             
           Ajouter Département
          
