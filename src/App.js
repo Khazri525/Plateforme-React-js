@@ -61,6 +61,16 @@ import EtuProtectedRoute from './components/privateRoute/EtuProtectedRoute';
 import CoProtectedRoute from './components/privateRoute/CoProtectedRoute';
 import MonProfile from './components/MonProfile';
 import TProfile from './components/TProfile';
+import PageCalendrier from './pages/encadrantPages/PageCalendrier';
+
+import ParamQuiz from './pages/serviceDeFormationPages/ParamQuiz';
+import Pretest from './components/TestPsycho/PreTest';
+import Quiz from './components/TestPsycho/Quiz';
+import PageConsulterQuestionReponse from './pages/serviceDeFormationPages/PageConsulterQuestionReponse';
+import PageModifierQuestion from './pages/serviceDeFormationPages/PageModifierQuestion';
+import PageModifierReponse from './pages/serviceDeFormationPages/PageModifierReponse';
+
+import PageParamsQuiz from './pages/serviceDeFormationPages/PageParamsQuiz';
 
 
 
@@ -102,7 +112,7 @@ axios.interceptors.request.use(function (config){
          <Route path="/" exact element={ <Landing/>}>
              <Route path="login" exact element={<Login/>} />
 
-             <Route path="U-forgot"  exact element={<UForgotPassword   />}/>
+             <Route path="U-forgot"  exact element={<UForgotPassword />}/>
              <Route path="U-reset/:token"   exact element={< UResetPassword />}/>
 
              <Route path="S-forgot"  exact element={<SForgotPassword />}/>
@@ -124,13 +134,17 @@ axios.interceptors.request.use(function (config){
 
 
 
-         <Route path="/" element={< EtuProtectedRoute/> }> 
+        {/* <Route path="/" element={< EtuProtectedRoute/> }>  */}
          <Route path="/" exact element={ <Landing/>}>
            <Route path="demande-stage" exact element={<DemandeStage/>} />
            <Route path="liste-sujets" exact element={<ListeSujets/>} />
            <Route path="demande-stage-avec-sujet" exact element={<DemandeStageAvecSujet/>} />
-         </Route>
-       </Route>
+           <Route path="pre-test" exact element={<Pretest/>} />
+          
+         
+         </Route> 
+         <Route path="/quiz/test" exact element={<Quiz/>} />
+        {/* </Route>  */}
 
          
    {/* public routes */}
@@ -154,7 +168,7 @@ axios.interceptors.request.use(function (config){
         {/* Interface Coordinateur */}
 
 
-  {/* <Route path="/" element={< CoProtectedRoute   /> }>  */}
+   {/* <Route path="/" element={< CoProtectedRoute   /> }>   */}
         <Route path="/coordinateur/" element={<Dashboard/>} > 
           <Route path="acceuil"  element={<Acceuil/>} />
           <Route path="afficher-tous" element={<CrudTable/>} />
@@ -162,12 +176,12 @@ axios.interceptors.request.use(function (config){
           <Route path="modifier-compte/:id" exact element={<PageModifierCompte/>} />
           <Route path="profile" exact  element={< TProfile />} />
         </Route>
-  {/* </Route> */}
+   {/* </Route> */}
  
  {/* to protected routes Stagiaire*/}    
    {/* <Route path="/" element={<SProtectedRoutes/> }> */}
  {/* <Route path="/" element={<AuthPrivateRoute/> }>     */}
-   <Route path="/" element={< StProtectedRoute/> }> 
+   {/* <Route path="/" element={< StProtectedRoute/> }>  */}
        {/* Interface Stagiaire */}
          <Route path="/etudiant/acceuil"  exact element={<Acceuil/>} ></Route> 
           <Route path="/stagiaire/" element={<StDashboard/>} > 
@@ -180,7 +194,7 @@ axios.interceptors.request.use(function (config){
 
 
           </Route>
-    </Route>
+    {/* </Route> */}
   {/* </Route>   */}
 
  
@@ -207,9 +221,8 @@ axios.interceptors.request.use(function (config){
     </Route>    
 
 
-{/*  
- <Route path="/" element={<EProtectedRoute   />}>    */}
-<Route path="/" element={< EProtectedRoute/>}>   
+{/* 
+ <Route path="/" element={< EProtectedRoute/>}>    */}
         <Route path="encadrant/" element={<EDashboard/>} >  
              <Route path="acceuil"  element={<Acceuil/>} />
               <Route path="profile" exact  element={< TProfile  />} />
@@ -217,15 +230,16 @@ axios.interceptors.request.use(function (config){
               <Route path="afficher-sujets-stages" element={<PageConsulterSujetStage/>} /> 
               <Route path="modifier-sujet/:id" exact  element={<PageModifierSujet/>} /> 
               <Route path="noter-travail" exact  element={<PageNoterTravail/>} /> 
+              <Route path="calendrier" exact  element={<PageCalendrier/>} /> 
         </Route> 
-</Route>
-{/* </Route>   */}
+{/* </Route>  */}
 
 
 
 
-{/* <Route path="/" element={< SProtectedRoute />}   >  */}
-<Route path="/" element={< SProtectedRoute/>}>  
+
+{/* 
+ <Route path="/" element={< SProtectedRoute/>}>    */}
         {/* Interface Service de formation */}
       <Route path="service-de-formation/" element={<SDashboard/>} > 
           <Route path="acceuil"  element={<Acceuil/>} />
@@ -234,11 +248,24 @@ axios.interceptors.request.use(function (config){
           <Route path="afficher-departements" element={<DeptCrudTable/>} /> 
           <Route path="modifier-departement/:id" exact  element={<PageModifierDepartement/>} /> 
           <Route path="afficher-demandes-stages"  element={< PageConsulterDemandeStage  />} />
-      </Route>
-</Route>
+         
+          {/* <Route path="ajouterQuestion" element={<PageAjouterQuestion/>} />
+          <Route path="afficherQuestion" element={<PageConsulterQuestion/>} />
+          <Route path="ajouterReponse" element={<PageAjouterReponse/>} />
+          <Route path="afficherReponse" element={< PageConsulterReponse  />} /> */}
+
+           <Route path="afficherQuestionReponse" element={< PageConsulterQuestionReponse />} />
+           <Route path="modifier-question/:id" exact  element={< PageModifierQuestion  />} /> 
+           <Route path="modifier-reponse/:id" exact  element={< PageModifierReponse  />} /> 
+           <Route path="paramQuiz" element={< PageParamsQuiz />} />
+          {/* <Route path="paramQuiz" element={< ParamQuiz />} /> */}
+   
+
+     </Route>
+      {/* </Route>  */}
 {/* </Route>  */}
   
-{/* </Route> */}
+
         
 
 

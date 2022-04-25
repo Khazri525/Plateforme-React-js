@@ -80,7 +80,7 @@ function DemandeStage() {
            axios.post('api/ajouter-demande-stage',data ).then(res =>{
                 if(res.data.status === 200){
                   Swal.fire("Succès" , res.data.message ,"success");
-                  navigate('/test-psychotéchnique');
+                  navigate('/pre-test');
                   setError([]);
                   
                  }

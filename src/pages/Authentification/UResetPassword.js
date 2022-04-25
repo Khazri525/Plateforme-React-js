@@ -41,7 +41,13 @@ function UResetPassword (){
       //setError([]);
 
     }
-     else {
+    else if(res.data.status === 422){
+      Swal.fire ("Attention" , res.data.message , "warning");
+     // navigate('/service-de-formation/afficher-departements');
+      //setError([]);
+
+    }
+    else if(res.data.status === 500){
            //setError(res.data.validation_errors);
            Swal.fire ("Erreur " , res.data.message, "error");
     }

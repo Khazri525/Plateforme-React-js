@@ -49,6 +49,14 @@ function ESideList() {
                   </Link>
                 </li><br/>  
                 
+                <li className="nav-item">
+                  <Link to="/encadrant/calendrier">
+                    <i class="nav-icon  fas fa-window-maximize"></i>
+                    Calendrier
+                  </Link>
+                </li><br/>  
+
+                
             
 
       </ul>

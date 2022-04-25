@@ -44,7 +44,7 @@ const handleCheckbox = (e) => {
 var afficher_User_Table ="";
 
 if(loading){
-  return <h5>Loading Comptes...</h5>
+  return <h5>Loading Notes...</h5>
 }
 else{
    afficher_User_Table =
@@ -146,8 +146,8 @@ else{
               
 
 
-<NavLink className={(ndata) => ndata.isActive && "active" }  to='/coordinateur/acceuil'>Acceuil </NavLink> <span> / </span>
-<NavLink className={(ndata) => ndata.isActive && "active" }  to='/coordinateur/afficher-tous'>Comptes</NavLink>
+<NavLink className={(ndata) => ndata.isActive && "active" }  to='/encadrant/acceuil'>Acceuil </NavLink> <span> / </span>
+<NavLink className={(ndata) => ndata.isActive && "active" }  to='/encadrant/noter-travail'>Notes</NavLink>
 
 
             

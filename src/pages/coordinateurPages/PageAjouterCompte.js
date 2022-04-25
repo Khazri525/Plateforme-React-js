@@ -215,7 +215,7 @@ const compteSubmit = (e) => {
           <input className="input100" type="text"  name="nom"  onChange={handleInput} value={userInput.nom}  placeholder="Nom"  required/>
           <span className="focus-input111" />
           <span className="symbol-input111">
-            <i className="fas fa-user"  aria-hidden="true" />
+            {/* <i className="fas fa-user"  aria-hidden="true" /> */}
           </span>
           {utiErrstrn ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> nom est chaine de caractéres! </span> :""}  
           {utiErrnom ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> nom entre 3 et 20 caractéres!</span> :""}  
@@ -230,7 +230,7 @@ const compteSubmit = (e) => {
           <input className="input100" type="text"  name="prenom"  onChange={handleInput} value={userInput.prenom}  placeholder="Prénom" required />
           <span className="focus-input111" />
           <span className="symbol-input111">
-            <i className="fas fa-user"  aria-hidden="true" />
+            {/* <i className="fas fa-user"  aria-hidden="true" /> */}
           </span>
             {utiErrstrp ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> prénom est chaine de caractéres!  </span> :""}  
             {utiErrprenom ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />prénom entre 3 et 20 caractéres!</span> :""}  
@@ -243,7 +243,7 @@ const compteSubmit = (e) => {
           <input className="input100" type="text"  name="email"  onChange={handleInput} value={userInput.email}  placeholder="Email" required/>
           <span className="focus-input111" />
           <span className="symbol-input111">
-            <i className="fas fa-envelope"  aria-hidden="true" />
+            {/* <i className="fas fa-envelope"  aria-hidden="true" /> */}
           </span>
            {utiErremail ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> email doit contenir symbol @ </span> :""}  
 
@@ -258,7 +258,7 @@ const compteSubmit = (e) => {
           <input className="input100" type="tel"  name="numTel"  onChange={handleInput} value ={userInput.numTel}  placeholder="Num Telephone" required />
           <span className="focus-input111" />
           <span className="symbol-input111">
-            <i className="fas fa-phone-alt"  aria-hidden="true" />
+            {/* <i className="fas fa-phone-alt"  aria-hidden="true" /> */}
           </span>
           {utiErrtelephone ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />le numéro de télephone doit contenir 8 chiffres </span> :""}  
 
@@ -276,7 +276,7 @@ const compteSubmit = (e) => {
           <input className="input100" type="date"  name="datenaissance"  onChange={handleInput} value={userInput.datenaissance}  placeholder="Date naissance" required/>
           <span className="focus-input111" />
           <span className="symbol-input111">
-            <i className="fas fa-calendar"  aria-hidden="true" />
+            {/* <i className="fas fa-calendar"  aria-hidden="true" /> */}
           </span>
         </div>
     
@@ -293,7 +293,7 @@ const compteSubmit = (e) => {
           <input className="input100" type="text"  name="matricule"  onChange={handleInput} value={userInput.matricule}  placeholder="Matricule" required />
           <span className="focus-input111" />
           <span className="symbol-input111">
-            <i className=" fas fa-clone" aria-hidden="true" />
+            {/* <i className=" fas fa-clone" aria-hidden="true" /> */}
           </span>
         </div>
       
@@ -321,7 +321,7 @@ const compteSubmit = (e) => {
         
           <span className="focus-input111" />
           <span className="symbol-input111">
-            <i className="fas fa-user-tie" aria-hidden="true" />
+            {/* <i className="fas fa-user-tie" aria-hidden="true" /> */}
           </span>
         </div>
 
@@ -344,7 +344,7 @@ const compteSubmit = (e) => {
           <input className="input100" type="password"  name="password"  onChange={handleInput} value ={userInput.password}  placeholder="Mot de passe"  required/>
           <span className="focus-input111" />
           <span className="symbol-input111">
-            <i className=" fas fa-lock"  aria-hidden="true" />
+            {/* <i className=" fas fa-lock"  aria-hidden="true" /> */}
           </span>
             {utiErrmtpasse? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />le mot de passe doit contenir au minimum  5 caractères </span> :""}  
 
@@ -359,7 +359,7 @@ const compteSubmit = (e) => {
           <input className="input100" type="password"  name="password_confirmation"  onChange={handleInput} value={userInput.password_confirmation}  placeholder="Confirmer Mot de passe" required />
           <span className="focus-input111" />
           <span className="symbol-input111">
-            <i className=" fas fa-lock"  aria-hidden="true" />
+            {/* <i className=" fas fa-lock"  aria-hidden="true" /> */}
           </span>
           {error.password? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> vous devez Confirmer le mot de passe</span> :""}  
 

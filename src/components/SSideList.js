@@ -49,12 +49,29 @@ function SSideList() {
                     Afficher Demandes de stages
                   </Link>
                 </li><br/>
+
+  
+                <li className="nav-item">
+                  <Link to="/service-de-formation/afficherQuestionReponse">
+                  <i class="nav-icon  fas fa-clipboard-list"></i>
+                    Afficher Question/Reponse
+                  </Link>
+                </li><br/>
+
+                <li className="nav-item">
+                  <Link to="/service-de-formation/paramQuiz">
+                  <i class="nav-icon  fas fa-clipboard-list"></i>
+                     Paramètres Quiz
+                  </Link>
+                </li><br/>
+
+              
+                
+              
                 
 
-                
-         
 
-               
+            
             
        
       </ul>

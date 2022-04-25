@@ -11,17 +11,17 @@ function PageAjouterSujet() {
     //validation erreurs
     const [utiErrsujet,setUtiErrsujet]=useState(false);
     const [utiErrtechnologies,setUtiErrtechnologies]=useState(false);
-    const [utiErrdomaine,setUtiErrdomaine]=useState(false);
+    const [utiErrnom_dept,setUtiErrnom_dept]=useState(false);
 
     const [utiErrstrsujet,setUtiErrstrsujet]=useState(false);
-    const [utiErrstrdomaine ,setUtiErrstrdomaine ]=useState(false);
+    const [utiErrstrnom_dept ,setUtiErrstrnom_dept ]=useState(false);
     const [utiErrstrtechnologies,setUtiErrstrtechnologies ]=useState(false);
     
     const [ sujetInput , setSujet] =useState ({
       sujet: '',
       technologies: '',
       description: '',
-      domaine: '',
+      nom_dept: '',
       datedebut:'',
       typestage:'',
       periode:'',
@@ -57,13 +57,13 @@ function PageAjouterSujet() {
            }
 
            
-          //erreur domaine
+          //erreur nom_dept
   
-          if(sujetInput.domaine.length > 30){
-            setUtiErrdomaine(true)
+          if(sujetInput.nom_dept.length > 30){
+            setUtiErrnom_dept(true)
            }
            else{
-            setUtiErrdomaine(false)
+            setUtiErrnom_dept(false)
            }
         
        
@@ -83,12 +83,12 @@ function PageAjouterSujet() {
           setUtiErrstrtechnologies(false)
          }
 
-          //erreur étre string  domaine
-       if( !(sujetInput.domaine.match('[a-z-A-Z]')) ) {  
-        setUtiErrstrdomaine(true)
+          //erreur étre string  nom_dept
+       if( !(sujetInput.nom_dept.match('[a-z-A-Z]')) ) {  
+        setUtiErrstrnom_dept(true)
        }
        else{
-        setUtiErrstrdomaine(false)
+        setUtiErrstrnom_dept(false)
        }
 
         
@@ -105,7 +105,7 @@ function PageAjouterSujet() {
        technologies:sujetInput.technologies,
        description:sujetInput.description,
 
-       domaine:sujetInput.domaine,
+       nom_dept:sujetInput.nom_dept,
        datedebut:sujetInput.datedebut,
        periode:sujetInput.periode,
        typestage:sujetInput.typestage,
@@ -231,15 +231,15 @@ function PageAjouterSujet() {
             <i className="fas fa-user-tie" aria-hidden="true" />
           </span> */}
         </div>
-{/* Domaine*/}
+{/* Département*/}
 <div className="wrap-input100   col-lg-6 mb-4  " >
-          <input className="input100" type="text"  name="domaine"  onChange={handleInput} value={sujetInput.domaine}  placeholder="Domaine" required/>
+          <input className="input100" type="text"  name="nom_dept"  onChange={handleInput} value={sujetInput.nom_dept}  placeholder="Nom Département" required/>
           <span className="focus-input111" />
           {/* <span className="symbol-input111">
             <i className="fas fa-calendar"  aria-hidden="true" />
           </span> */}
-       {utiErrstrdomaine ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Domaine domaine est chaine de caractéres!</span> :""}  
-          {utiErrdomaine ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Domaine max 30 caractéres!</span> :""}  
+       {utiErrstrnom_dept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Nom Département chaine de caractéres!</span> :""}  
+          {utiErrnom_dept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Nom Département max 30 caractéres!</span> :""}  
         </div>
 
 

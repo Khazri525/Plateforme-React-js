@@ -20,10 +20,10 @@ class UForgotPassword extends Component{
     };
     axios.post('api/u-forgot-password',data).then(res =>{
     if(res.status ===200){
-      Swal.fire("Succès" , res.data.message, "success");
+      Swal.fire("" , res.data.message, "");//Succès success
     }
-    else{
-      Swal.fire("Erreur" ,  res.data.message, "error");
+    else if(res.status ===404) {
+      Swal.fire("" ,  res.data.message, "");//Erreur error
     }
     }
     )
