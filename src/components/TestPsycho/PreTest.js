@@ -26,7 +26,7 @@ function Pretest() {
 
       const[preInput,setpre] = useState({
           email:"",
-          cin:"",
+          cinoupassport_stagiaire:"",
           niveauetude:"",
           error_list:[],
       });
@@ -40,7 +40,7 @@ const submitPre = (e) => {
     e.preventDefault();
      const data ={
          email:preInput.email,
-         cin:preInput.cin,
+         cinoupassport_stagiaire:preInput.cinoupassport_stagiaire,
          niveauetude:preInput.niveauetude,
      }
      axios.get('/sanctum/csrf-cookie').then(response => {
@@ -74,9 +74,9 @@ const submitPre = (e) => {
         <p>Email</p>
         <input type="email" className="inputbox" name="email" required  onChange={handleInput} value={preInput.email} />
         <span>{preInput.error_list.email}</span>
-        <p>Carte d'identité</p>
-        <input type="text" className="inputbox" name="cin" id="cin" required onChange={handleInput} value={preInput.cin}  />
-        <span>{preInput.error_list.cin}</span>
+        <p>Num Cin ou Passport</p>
+        <input type="text" className="inputbox" name="cinoupassport_stagiaire" id="cinoupassport_stagiaire" required onChange={handleInput} value={preInput.cinoupassport_stagiaire}  />
+        <span>{preInput.error_list.cinoupassport_stagiaire}</span>
         <p>niveau d'étude</p>
         <select className="inputbox" name="niveauetude" onChange={handleInput} value={preInput.niveauetude} id="niveauetude" required>
           <option value>--Sélectionner un niveau de stagiaire--</option>
