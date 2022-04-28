@@ -17,12 +17,14 @@ function PageAjouterDepartement() {
     const [utiErrnomchefdept,setUtiErrnomchefdept]=useState(false);
     const [utiErrstrdept,setUtiErrstrdept]=useState(false);
     const [utiErrstrchefdept,setUtiErrstrchefdept]=useState(false);
+
+    const [ error , setError] =useState ([]);
   
     const [ deptInput , setDept] =useState ({
       nom_dept: '',
       nom_chef_dept: '',
      
-      error_list:[],
+     // error_list:[],
 
     });
    
@@ -98,8 +100,10 @@ function PageAjouterDepartement() {
              }
 
           else if(res.data.status === 400){
+            Swal.fire("Erreur dans les champs" , "Vérifier les champs!", "error");
           
-           setDept({...deptInput  , error_list : res.data.validation_errors});
+           //setDept({...deptInput  , error_list : res.data.validation_errors});
+           setError(res.data.validation_errors);
            
         }
       
@@ -179,22 +183,27 @@ function PageAjouterDepartement() {
          */}
        
 <div className="wrap-input100   col-lg-6 mb-4 " >
-<select  name="nom_dept" onChange={handleInput} value={deptInput.nom_dept}  className="input100 border-0 " type="text" >
+<select  name="nom_dept" onChange={handleInput} value={deptInput.nom_dept}  className="input100 border-0 " type="text" required >
   
        <option   selected hidden>--Nom département--</option>
-  
-        <option  name="nom_dept"  value="Marketing">Marketing</option>
-        <option  name="nom_dept" value="BI">BI</option> 
-        <option  name="nom_dept"  value="Développement"> Développement</option>
+       <option name="nom_dept" value="IT">IT</option>
+    <option name="nom_dept" value="Marketing">Marketing</option>
+    <option name="nom_dept" value="BI"> BI</option>
+    <option name="nom_dept" value="Développement">Développement </option>
+    <option name="nom_dept" value="DSI">DSI </option>
+    <option name="nom_dept" value="Finance">Finance </option>
+
  </select>
+ {error.nom_dept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Vous devez choisir une Département!</span> :""}  
+
 </div>
    
      {/* Nom Chef département */}
-     <div className="wrap-input100   col-lg-6 mb-4  validate-input" data-validate="Valid email is required: ex@abc.xyz">
-          <input className="input100" type="text"  name="nom_chef_dept"  onChange={handleInput} value={deptInput.nom_chef_dept}  placeholder="Nom Chef déparatement" />
+     <div className="wrap-input100   col-lg-6 mb-4" >
+          <input className="input100" type="text"  name="nom_chef_dept"  onChange={handleInput} value={deptInput.nom_chef_dept}  placeholder="Nom Chef déparatement"  required/>
           <span className="focus-input111" />
           <span className="symbol-input111">
-            <i className=" fas fa-user-tie"  aria-hidden="true" />
+            {/* <i className=" fas fa-user-tie"  aria-hidden="true" /> */}
           </span>
           {utiErrstrchefdept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> nom chef est chaine de caractéres! </span> :""}  
           {utiErrnomchefdept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> nom chef max 20 caractéres!</span> :""}  

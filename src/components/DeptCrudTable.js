@@ -106,6 +106,8 @@ if(loading){
  return <h5>Loading Départements...</h5>
 }
 else{
+    //etat
+    var DeptEtat = '';
   afficher_Dept_Table =
  deptlist.filter(val =>{
    if(searchTerm === ""){
@@ -114,7 +116,19 @@ else{
      return val;
    }
  }).map( (item , index) => {
+     
    
+    //etat-------
+    if(item.etat == 'Active'){
+   
+        DeptEtat =  <button type="button" className="btn btn-success btn-sm  rounded-pill " ><i className="fas fa-check "></i>{item.etat}</button> 
+      
+        }
+        else if(item.etat == 'Désactive'){
+     
+          DeptEtat =  <button type="button" className="btn btn-danger btn-sm rounded-pill" ><i className="fas  fas fa-ban "></i>{item.etat}</button> 
+        
+        }
     return(
           
           <tr key={item._id}>
@@ -127,9 +141,11 @@ else{
                 <Link to={`/service-de-formation/modifier-departement/${item._id}`}>
                   <i className="fas fa-pencil-alt  text-success"></i></Link>
              </td>
-             <td>  
+          {/*    <td>  
                   <i onClick={ (e) => deleteDept(e , item._id)}  className=" fas fa-trash  text-danger"></i>
              </td>
+ */}
+             <td>{DeptEtat}</td>
           </tr>
     )
  });
@@ -194,9 +210,9 @@ else{
           </div>
 
      
-          <Link to="/service-de-formation/ajouter-departement" className="btn btn-primary btn-sm float-right">
+        {/*   <Link to="/service-de-formation/ajouter-departement" className="btn btn-primary btn-sm float-right">
            <i className="fas fa-plus"> </i>Ajouter Département</Link> 
-   
+    */}
 
      <div className="card-body mt-4"> 
          <br/>

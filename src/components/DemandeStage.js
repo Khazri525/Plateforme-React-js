@@ -148,6 +148,7 @@ function DemandeStage() {
     {/* <option name="typestage" value="PFE">PFE</option> */}
     <option name="typestage" value="Pérfectionnement">Pérfectionnement</option>
     <option name="typestage" value="Observation">Observation</option>
+    <option name="typestage" value="Initiation">Initiation</option>
  </select>
 <span className="focus-input111" />
 <span className="symbol-input111">
@@ -161,10 +162,13 @@ function DemandeStage() {
 <div className="wrap-input100   col-lg-12 mb-4  " >
 <select name="nom_dept" onChange={handleInput} value={userInput.nom_dept} className="input100 border-0 " type="text" >
 <option   selected hidden>--Nom Département--</option>
-    <option name="nom_dept" value="IT">IT</option>
+<option name="nom_dept" value="IT">IT</option>
     <option name="nom_dept" value="Marketing">Marketing</option>
     <option name="nom_dept" value="BI"> BI</option>
-    <option name="nom_dept" value="Développement web">Développement web</option>
+    <option name="nom_dept" value="Développement">Développement </option>
+    <option name="nom_dept" value="DSI">DSI </option>
+    <option name="nom_dept" value="Finance">Finance </option>
+
  </select>
 <span className="focus-input111" />
 <span className="symbol-input111">

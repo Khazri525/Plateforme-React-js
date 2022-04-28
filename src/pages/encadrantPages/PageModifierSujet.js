@@ -12,9 +12,9 @@ function PageModifierSujet() {
     const [utiErrsujet,setUtiErrsujet]=useState(false);
     const [utiErrtechnologies,setUtiErrtechnologies]=useState(false);
     const [utiErrstrsujet,setUtiErrstrsujet]=useState(false);
-    const [utiErrdomaine,setUtiErrdomaine]=useState(false);
+    const [utiErrnom_dept,setUtiErrnom_dept]=useState(false);
 
-    const [utiErrstrdomaine ,setUtiErrstrdomaine ]=useState(false);
+    const [utiErrstrnom_dept ,setUtiErrstrnom_dept ]=useState(false);
     const [utiErrstrtechnologies,setUtiErrstrtechnologies ]=useState(false);
     
 
@@ -68,13 +68,13 @@ function PageModifierSujet() {
             setUtiErrtechnologies(false)
            }
 
-               //erreur domaine
+               //erreur  nom_dept
   
-          if(sujetInput.domaine.length > 30){
-            setUtiErrdomaine(true)
+          if(sujetInput. nom_dept.length > 30){
+            setUtiErrnom_dept(true)
            }
            else{
-            setUtiErrdomaine(false)
+            setUtiErrnom_dept(false)
            }
         
        
@@ -95,12 +95,12 @@ function PageModifierSujet() {
           setUtiErrstrtechnologies(false)
          }
 
-          //erreur étre string  domaine
-       if( !(sujetInput.domaine.match('[a-z-A-Z]')) ) {  
-        setUtiErrstrdomaine(true)
+          //erreur étre string   nom_dept
+       if( !(sujetInput.nom_dept.match('[a-z-A-Z]')) ) {  
+        setUtiErrstrnom_dept(true)
        }
        else{
-        setUtiErrstrdomaine(false)
+        setUtiErrstrnom_dept(false)
        }
 
         
@@ -127,6 +127,7 @@ function PageModifierSujet() {
        else if(res.data.status === 422){
              setError(res.data.validation_errors);
              swal("Erreur dans les champs" , "Vérifier les champs!", "error");
+             
       }
       else if(res.data.status === 404){
         Swal.fire("Erreur" , res.data.message , "error");
@@ -217,30 +218,38 @@ function PageModifierSujet() {
 
 
 <option name="typestage" value="Pérfectionnement">Pérfectionnement</option>
-    <option name="typestage" value="Observation">Observation</option>
+ 
  </select>
-
-        
           <span className="focus-input111" />
-          {/* <span className="symbol-input111">
-            <i className="fas fa-user-tie" aria-hidden="true" />
-          </span> */}
+  </div>
+   {error.typestage ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Vous devez choisir un Type de Stage!</span> :""}  
+{/*  Département*/}
+{/* <div className="wrap-input100   col-lg-6 mb-4  " >
+          <input className="input100" type="text"  name=" nom_dept"  onChange={handleInput} value={sujetInput.nom_dept}  placeholder="Nom Département" required/>
+          <span className="focus-input111" />
+          
+       {utiErrstrnom_dept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Nom Département est chaine de caractéres!</span> :""}  
+          {utiErrnom_dept? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Nom Département max 30 caractéres!</span> :""}  
         </div>
-{/* Domaine*/}
+ */}
 <div className="wrap-input100   col-lg-6 mb-4  " >
-          <input className="input100" type="text"  name="domaine"  onChange={handleInput} value={sujetInput.domaine}  placeholder="Domaine" required/>
-          <span className="focus-input111" />
-          {/* <span className="symbol-input111">
-            <i className="fas fa-calendar"  aria-hidden="true" />
-          </span> */}
-       {utiErrstrdomaine ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Domaine domaine est chaine de caractéres!</span> :""}  
-          {utiErrdomaine ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Domaine max 30 caractéres!</span> :""}  
-        </div>
-
-
+<select name="nom_dept" onChange={handleInput} value={sujetInput.nom_dept} className="input100 border-0 " type="text" required>
+<option   selected hidden>--Nom Département--</option>
+    <option name="nom_dept" value="IT">IT</option>
+    <option name="nom_dept" value="Marketing">Marketing</option>
+    <option name="nom_dept" value="BI"> BI</option>
+    <option name="nom_dept" value="Développement">Développement </option>
+    <option name="nom_dept" value="DSI">DSI </option>
+    <option name="nom_dept" value="Finance">Finance </option>
+ </select>
+<span className="focus-input111" />
+<span className="symbol-input111">
+{/* <i className=" fas fa-building"  aria-hidden="true" /> */}
+</span>
+</div>
 {/* Date*/}
 <div className="wrap-input100   col-lg-6 mb-4  " >
-          <input className="input100" type="date"  name="datedebut"  onChange={handleInput} value={sujetInput.datedebut}  required/>
+          <input className="input100" type="date"  name="datedebut"  onChange={handleInput} value={sujetInput.datedebut}  required/> 
           <span className="focus-input111" />
           <span className="symbol-input111">
             {/* <i className="fas fa-calendar"  aria-hidden="true" /> */}
@@ -248,7 +257,7 @@ function PageModifierSujet() {
         </div>
   {/* Période de stage */}
   <div className="wrap-input100   col-lg-6 mb-4  validate-input" >
-          <input className="input100" type="number"  name="periode"  onChange={handleInput} value={sujetInput.periode}  placeholder="Période de stage par mois" />
+          <input className="input100" type="number" min="1" max="12"  name="periode"  onChange={handleInput} value={sujetInput.periode}  placeholder="Période de stage par mois" />
           <span className="focus-input111" />
           {/* <span className="symbol-input111">
             <i className=" fas fa-copy"  aria-hidden="true" />
@@ -257,6 +266,9 @@ function PageModifierSujet() {
           {utiErrsujet ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> sujet max 50 caractéres!</span> :""}  
           */}
         </div>
+
+
+
 
 
 
@@ -288,18 +300,44 @@ function PageModifierSujet() {
 
 </div>
 
+{/* Stutus */}
+{/* <div className="wrap-input100   col-lg-6 mb-4 " >
+<select  name="stusujet"  onChange={handleInput} value={sujetInput.stusujet}  className="input100 border-0 " type="text" >
+
+  
+        <option selected  name="stusujet"  value="Active">Activer</option>
+        <option  name="stusujet"  value="Désactive">Désactiver</option> 
+ </select>
+
+        
+          <span className="focus-input111" />
+          <span className="symbol-input111">
+        
+          </span>
+        </div>
+ */}
 
 
 
-
+{/* matricule sj*/}
+<div className="wrap-input100   col-lg-6 mb-4  validate-input" >
+          <input className="input100" type="number" min="0"  name="matricule_sj"  onChange={handleInput} value={sujetInput.matricule_sj}  placeholder="Matricule" />
+          <span className="focus-input111" />
+          {/* <span className="symbol-input111">
+            <i className=" fas fa-copy"  aria-hidden="true" />
+          </span> */}
+        {/*    {utiErrstrsujet ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> sujet est chaine de caractéres!</span> :""}  
+          {utiErrsujet ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> sujet max 50 caractéres!</span> :""}  
+          */}
+        </div>
 
 
  {/*Description */}
- <div className="wrap-input100   col-lg-6 mb-4  form-group" >
+ <div className="wrap-input100   col-lg-12 mb-4  form-group" >
           <textarea className="input100" type="text"  name="description"  onChange={handleInput}  value={sujetInput.description} placeholder="Description"  style={{height: '80px'}}/>
           <span className="focus-input111" />
           <span className="symbol-input111">
-            <i className=" fas fa-file-alt"  aria-hidden="true" /> 
+            {/* <i className=" fas fa-file-alt"  aria-hidden="true" />  */}
           </span>
        
         </div>

@@ -148,13 +148,9 @@ const refuser = (e , id) => {
              //supprimer demande de stage
              axios.delete(`api/supprimer-demandes-stages/${id}`).then(res =>{
               if(res.data.status === 200){
-              //  Swal.fire("Sucess" , res.data.message , "success"); 
                thisClicked.closest("tr").remove();
               }
-              /* else{
-                Swal.fire("Error" , res.data.message , "Error");
-             
-              } */
+            
           });
           //.supprimer demande de stage 
           
@@ -295,7 +291,7 @@ if(dm.demandeStages ){
                        {/* <Link to="#" class="btn btn-danger" ><i class="fas fa-ban"></i></Link>  */}
                    {/* <Link to="#" class="btn btn-success" > <i class="fas fa-chevron-circle-down"></i></Link>    */}
                    <button type="button" className="btn btn-success" onClick={(e) => accepter(e)} ><i className="fas fa-chevron-circle-down"></i></button>
-                   <button type="button" className="btn btn-danger " onClick={(e) => refuser(e , dm._id)} ><i className="fas fa-ban"></i></button>
+                   <button type="button" className="btn btn-danger " onClick={(e) => refuser(e , dm.demandeStages[0][1] )} ><i className="fas fa-ban"></i></button>
                        
 
                         
@@ -489,21 +485,6 @@ return (
   
   </>
 )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
 export default PageConsulterDemandeStage

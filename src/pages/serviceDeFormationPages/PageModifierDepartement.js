@@ -158,25 +158,42 @@ function PageModifierDepartement() {
 
 
    {/* Nom département */}
-   <div className="wrap-input100   col-lg-6 mb-4  validate-input" data-validate="Valid email is required: ex@abc.xyz">
+  {/* <div className="wrap-input100   col-lg-6 mb-4  validate-input" data-validate="Valid email is required: ex@abc.xyz">
           <input className="input100" type="text"  name="nom_dept"  onChange={handleInput} value={deptInput.nom_dept}  placeholder="Nom déparatement" />
           <span className="focus-input111" />
           <span className="symbol-input111">
-            <i className=" fas fa-building"  aria-hidden="true" />
+            {/* <i className=" fas fa-building"  aria-hidden="true" />
           </span>
+
+          {error.nom_dept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Vous devez choisir une Département!</span> :""}  
 
           {utiErrstrdept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> nom dept est chaine de caractéres!</span> :""}  
           {utiErrnomdept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> nom dept max20 caractéres!</span> :""}  
-         
         </div>
-         
-   
+        
+    */}
+    <div className="wrap-input100   col-lg-6 mb-4 " >
+<select  name="nom_dept" onChange={handleInput} value={deptInput.nom_dept}  className="input100 border-0 " type="text" required >
+  
+       <option   selected hidden>--Nom département--</option>
+       <option name="nom_dept" value="IT">IT</option>
+    <option name="nom_dept" value="Marketing">Marketing</option>
+    <option name="nom_dept" value="BI"> BI</option>
+    <option name="nom_dept" value="Développement">Développement </option>
+    <option name="nom_dept" value="DSI">DSI </option>
+    <option name="nom_dept" value="Finance">Finance </option>
+
+ </select>
+ {error.nom_dept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Vous devez choisir une Département!</span> :""}  
+
+</div>
+
      {/* Nom Chef département */}
-     <div className="wrap-input100   col-lg-6 mb-4  validate-input" data-validate="Valid email is required: ex@abc.xyz">
-          <input className="input100" type="text"  name="nom_chef_dept"    onChange={handleInput} value={deptInput.nom_chef_dept}  placeholder="Nom Chef déparatement" />
+     <div className="wrap-input100   col-lg-6 mb-4  " >
+          <input className="input100" type="text"  name="nom_chef_dept"    onChange={handleInput} value={deptInput.nom_chef_dept}  placeholder="Nom Chef déparatement"  required/>
           <span className="focus-input111" />
           <span className="symbol-input111">
-            <i className=" fas fa-user-tie"  aria-hidden="true" />
+            {/* <i className=" fas fa-user-tie"  aria-hidden="true" /> */}
           </span>
            {utiErrstrchefdept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> nom chef est chaine de caractéres! </span> :""}  
           {utiErrnomchefdept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> nom chef max 20 caractéres!</span> :""}  
@@ -185,12 +202,26 @@ function PageModifierDepartement() {
       
 
 
+{/* Etat */}
+<div className="wrap-input100   col-lg-6 mb-4 " >
+<select  name="etat"  onChange={handleInput} value={deptInput.etat}  className="input100 border-0 " type="text" >
+{/* <option  selected hidden>--Etat--</option> */}
+  
+        <option selected  name="etat"  value="Active">Activer</option>
+        <option  name="etat"  value="Désactive">Désactiver</option> 
+ </select>
 
+        
+          <span className="focus-input111" />
+          <span className="symbol-input111">
+            {/* <i className="fas fa-user-tie" aria-hidden="true" /> */}
+          </span>
+        </div>
 
 
  
     {/* Cancel Button */}
-    
+    <div className="wrap-input100   col-lg-6 mb-4 " ></div>
     <div className="form-group col-lg-2 ">
    
           <button className="persb-btn">
@@ -204,7 +235,7 @@ function PageModifierDepartement() {
         </div>
 
     
-        <div className="form-group col-lg-3  i">
+        <div className="form-group col-lg-3  ">
           <button type="submit" className="login100-form-btn"  style={{color: 'white'}}>
             
           Modifier Département

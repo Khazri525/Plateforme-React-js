@@ -174,6 +174,7 @@ axios.interceptors.request.use(function (config){
           <Route path="afficher-tous" element={<CrudTable/>} />
           <Route path="ajouter-compte" element={<PageAjouterCompte/>} /> 
           <Route path="modifier-compte/:id" exact element={<PageModifierCompte/>} />
+        
           <Route path="profile" exact  element={< TProfile />} />
         </Route>
    {/* </Route> */}

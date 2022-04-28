@@ -43,6 +43,8 @@ const handleCheckbox = (e) => {
     const [stgErrconfmtpasse,setStgErrconfmtpasse]=useState(false);
     const [stgErrstrn,setStgErrstrn]=useState(false);
     const [stgErrstrp,setStgErrstrp]=useState(false);
+
+    const [ error , setError] =useState ([]);
       //Register
      const [ registerInput , setRegister] =useState ({
        name: '',
@@ -220,17 +222,24 @@ const handleCheckbox = (e) => {
                 
               if( res.data.password === res.data.password_confirmation){
                 Swal.fire("Succès" , res.data.message , "success");
-                    // navigate('/etudiant/acceuil');
+               // navigate('/etudiant/acceuil');
                      navigate('/login-stagiaire');
                     
                   }
                  
-         else{
+        else if(res.data.status === 422){
+          Swal.fire("Erreur" , res.data.message , "error");
                   setRegister({...registerInput  , error_list : res.data.validation_errors});
-                  
-               
-              } 
+              }  
   
+
+        
+        //  else {
+        //     Swal.fire("Erreur" , res.data.message , "error");
+        //          setError(res.data.uni_errors);
+        //        // setRegister({...registerInput  , error_list : res.data.validation_errors});
+              
+        //     } 
       });
     });
     
@@ -267,7 +276,7 @@ const handleCheckbox = (e) => {
    
            <>
             <div className="wrap-input100 validate-input" >
-            <input className="input100" type="number" name="cinoupassport_stagiaire" onChange={handleInput} value={registerInput.cinoupassport_stagiaire} placeholder="Num Passport" required/>
+            <input className="input100" type="number" min="0"   name="cinoupassport_stagiaire" onChange={handleInput} value={registerInput.cinoupassport_stagiaire} placeholder="Num Passport" required/>
             <span className="focus-input100" />
             <span className="symbol-input100">
               <i className="fas fa-atlas"  aria-hidden="true" />
@@ -285,11 +294,13 @@ const handleCheckbox = (e) => {
     <>
    
     <div className="wrap-input100 validate-input">
-    <input className="input100" type="number" name="cinoupassport_stagiaire" onChange={handleInput} value={registerInput.cinoupassport_stagiaire} placeholder="Num Cin" required/>
+    <input className="input100" type="number"  min="0"  name="cinoupassport_stagiaire" onChange={handleInput} value={registerInput.cinoupassport_stagiaire} placeholder="Num Cin" required/>
     <span className="focus-input100" />
     <span className="symbol-input100">
       <i className=" fas fa-address-card"  aria-hidden="true" />
     </span>
+    {error.cinoupassport_stagiaire? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Cin Déjà existe!</span> :""}  
+
   </div>
   {/* {stgErrcin ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> le numéro de cin doit contenir 8 chiffres </span> :""}   */}
   </>
@@ -499,7 +510,7 @@ const handleCheckbox = (e) => {
 
       
         <div className="wrap-input100 validate-input" >
-          <input className="input100" type="number" name="telephone" onChange={handleInput} value={registerInput.telephone} placeholder="Télephone" required/>
+          <input className="input100" type="number" min="0"  name="telephone" onChange={handleInput} value={registerInput.telephone} placeholder="Télephone" required/>
           <span className="focus-input100" />
           <span className="symbol-input100">
             <i className="  fas fa-phone-alt" aria-hidden="true" />

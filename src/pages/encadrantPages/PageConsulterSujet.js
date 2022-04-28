@@ -95,6 +95,7 @@ if(loading){
 }
 else{
   var SujetEtat = '';
+  // var StuEtat = '';
  var afficher_Sujet_Cards ="";
   afficher_Sujet_Cards =
   sujetlist.filter(val =>{
@@ -105,17 +106,33 @@ else{
     }
   }).map( (item , index) => {
     
-      //etat
+      //etat-------
       if(item.etatsujet == 'Publié'){
-        SujetEtat =  <p  className="btn btn-success btn-sm p-1 rounded-pill mt-4 float-left ">{item.etatsujet}</p>
-       
-        //UtiEtat = 'vous Active';
+      //  SujetEtat =  <p  className="btn btn-success btn-sm p-1 rounded-pill mt-4 float-left ">{item.etatsujet}</p>
+        SujetEtat =  <button type="button" className="btn btn-success " ><i className="fas fa-check "></i>{item.etatsujet}</button> 
+      
         }
         else if(item.etatsujet == 'Dépublié'){
-          SujetEtat = <p  className="btn btn-danger btn-sm p-1 rounded-pill mt-4 float-left ">{item.etatsujet}</p>
-       
-          //UtiEtat = 'vous Désactive';
+          //SujetEtat = <p  className="btn btn-danger btn-sm p-1 rounded-pill mt-4 float-left ">{item.etatsujet}</p>
+          SujetEtat =  <button type="button" className="btn btn-danger " ><i className="fas  fas fa-ban "></i>{item.etatsujet}</button> 
+        
         }
+
+
+
+
+        //status sujet--------
+    /*     if(item.stusujet == 'Active'){
+         
+         StuEtat =  <button type="button" className="btn btn-success " ><i className="fas fa-check "></i></button> 
+        
+          }
+          else if(item.stusujet == 'Désactive'){
+          
+          StuEtat =  <button type="button" className="btn btn-danger " ><i className="fas  fas fa-ban "></i></button> 
+            
+          } */
+        
      return(
          <>
 <tr key={item._id} className="col-md-offset-3 col-md-6">
@@ -141,7 +158,7 @@ else{
     <strong>Technologies:</strong>
       <p className="text-uppercase">{item.technologies}</p>
 
-     {SujetEtat}
+    
     
   
      
@@ -196,7 +213,8 @@ else{
         <strong className="text-secondary"> Période  </strong>{item.periode}/ mois <br/><br/>
         <strong className="text-secondary"> Date Début  </strong>{item.datedebut} <br/><br/>
         <strong className="text-secondary"> Type Stage  </strong>{item.typestage} <br/><br/>
-        <strong className="text-secondary"> Domaine  </strong>{item.domaine} <br/><br/>
+        <strong className="text-secondary"> Département </strong>{item.nom_dept} <br/><br/>
+        <strong className="text-secondary"> Matricule </strong>{item.matricule_sj} <br/><br/>
         <strong className="text-secondary">Sujet{index+1} </strong>{item.sujet} <br/><br/>
         <strong className="text-secondary "> Technologies  </strong> {item.technologies} <br/><br/>
         <strong className="text-secondary"> Description</strong>{item.description} <br/><br/>
@@ -256,7 +274,10 @@ else{
                         {/* <Link to="#" class="btn btn-success" > <i class="fas fa-chevron-circle-down"></i></Link>  */}
                         {/* <Link to="#" class="btn btn-danger" ><i class="fas fa-trash"></i></Link>  */}
                         {/* <button type="button" className="btn btn-danger" onClick={ (e) =>supprimerSujet(e ,item._id)}><i className="fas fa-trash  confirmer"></i></button> */}
-                        <button type="button" className="btn btn-danger " onClick= { (e) => confirmer(e ,item._id)} ><i className="fas fa-trash "></i></button>
+                        {/* <button type="button" className="btn btn-danger " onClick= { (e) => confirmer(e ,item._id)} ><i className="fas fa-trash "></i></button> */}
+
+                        {/* {StuEtat} */}
+                        {SujetEtat}
                    
 </div></div>
 
@@ -334,10 +355,10 @@ return (
             </div>
           </div>
 
-          
+        {/*   
           <Link to="/encadrant/ajouter-sujet-stage" className="btn btn-primary btn-sm float-right mb-2 ">
            <i className="fas fa-plus"> </i>Ajouter Sujet</Link> 
-      
+       */}
 
 
     <div className="row container "> 

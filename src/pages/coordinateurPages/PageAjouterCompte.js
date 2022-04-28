@@ -331,10 +331,13 @@ const compteSubmit = (e) => {
 <select  name="departement" onChange={handleInput} value={userInput.departement}   className="input100 border-0 " type="text" >
   
        <option   selected hidden>--Nom département--</option>
-  
-        <option  name="departement"  value="Marketing">Marketing</option>
-        <option  name="departement" value="BI">BI</option> 
-        <option  name="departement"  value="Développement"> Développement</option>
+       <option name="nom_dept" value="IT">IT</option>
+    <option name="nom_dept" value="Marketing">Marketing</option>
+    <option name="nom_dept" value="BI"> BI</option>
+    <option name="nom_dept" value="Développement">Développement </option>
+    <option name="nom_dept" value="DSI">DSI </option>
+    <option name="nom_dept" value="Finance">Finance </option>
+
  </select>
 </div>
 
@@ -361,7 +364,7 @@ const compteSubmit = (e) => {
           <span className="symbol-input111">
             {/* <i className=" fas fa-lock"  aria-hidden="true" /> */}
           </span>
-          {error.password? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> vous devez Confirmer le mot de passe</span> :""}  
+          {error.password ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> vous devez Confirmer le mot de passe</span> :""}  
 
 
         </div>

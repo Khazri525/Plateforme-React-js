@@ -45,7 +45,7 @@ const submitPre = (e) => {
      }
      axios.get('/sanctum/csrf-cookie').then(response => {
     
-        axios.post('/api/identifier/stag',data).then(res => {
+        axios.post('api/identifier/stage',data).then(res => {
         if(res.data.status === 200) {
          swal("Success",res.data.message,"success");
          navigate("/quiz");
