@@ -47,7 +47,10 @@ import Swal from 'sweetalert2';
         }
     
    
-
+      /*   if(Authentificated && localStorage.getItem('premlog')==0){
+            Swal.fire("La Premiére connexion" , "réinitialiser votre mot de passe !!","warning");
+            return <Navigate to ="/U-forgot"/>
+        }  */
       if(Authentificated && localStorage.getItem('role')=='encadrant'){
             return <Outlet/>  
       }else if(Authentificated && (localStorage.getItem('role')=='chef_dept' ||localStorage.getItem('role')=='service_formation'|| localStorage.getItem('role')=='stagiaire' || localStorage.getItem('role')=='coordinateur')){
@@ -58,11 +61,6 @@ import Swal from 'sweetalert2';
         return <Navigate to ="/login"/>
       }
    
-   
-
-
-     
-
         }
 export default EProtectedRoute
  

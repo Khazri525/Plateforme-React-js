@@ -61,6 +61,7 @@ function UResetPassword (){
     if(res.data.status === 200){
       Swal.fire ("Succès" , res.data.message , "success");
      // navigate('/service-de-formation/afficher-departements');
+     localStorage.setItem('premlog' , res.data.premlog);
       setError([]);
 
     }

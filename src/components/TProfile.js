@@ -24,6 +24,67 @@ function TProfile() {
      // const[torouteprofile,setTorouteprofile] = useState([]);
 
 
+
+
+      //erreurs
+      const [utiErremail,setUtiErremail]=useState(false);
+      const [utiErrtelephone,setUtiErrtelephone]=useState(false);
+      const [utiErrtel,setUtiErrtel]=useState();
+
+      //.erreurs
+  
+  
+      const handleInput = (e) => {
+        e.persist();
+       
+        setUserInput({ ... userInput , [ e.target.name ]: e.target.value})
+
+     
+          //erreur e-mail
+          if(!userInput.email.includes('@')){
+            setUtiErremail(true)
+           }
+           else{
+            setUtiErremail(false)
+           }
+
+           
+   //erreur telephone
+     
+   if( !(userInput.numTel.match('[0-9]{7}'))  ||  !(userInput.telephone.match('[0-9]{7}'))) {  
+    setUtiErrtelephone(true)
+   }
+   else{
+    setUtiErrtelephone(false)
+   }
+
+
+      /*   if( !(userInput.telephone.match('[0-9]{7}')) ) {  
+          setUtiErrtel(true)
+         }
+         else{
+          setUtiErrtel(false)
+         }
+   */
+
+          //erreur e-mail
+       if(!userInput.email.includes('@')){
+        setUtiErremail(true)
+       }
+       else{
+        setUtiErremail(false)
+       }
+
+
+
+    
+
+
+
+
+      }    
+  
+
      useEffect(()=> {
         axios.get('api/profile').then(res=> {
           //if(res.status ===200){
@@ -37,14 +98,7 @@ function TProfile() {
       //test changer 
       
       //const [nom, setName] = useState(); 
-  
-  
-      const handleInput = (e) => {
-        e.persist();
-       
-        setUserInput({ ... userInput , [ e.target.name]: e.target.value})
-      }    
-  
+
       const updatProfile = (e) => {
         e.preventDefault();
         // let userObj = { displayName: nom };
@@ -55,12 +109,13 @@ function TProfile() {
   
         axios.put('api/modifier-profile' , data ).then(res=> {
           if(res.status ===200){
-            Swal.fire("Succès" , res.data.message , "success");
+            Swal.fire("Succès" , res.data.message , "success ");
+            window.location.reload(false);
             
           }
           else if(res.data.status === 422){
             setError(res.data.validation_errors);
-            Swal.fire("Erreur dans les champs" , " Vérifier les champs!", "error");
+            Swal.fire("Erreur dans les champs" , "Vérifier les champs!", "error");
      }
          
         }); 
@@ -84,12 +139,13 @@ function TProfile() {
         axios.put('api/modifier-profile-stagiaire' , data ).then(res=> {
           if(res.status ===200){
             Swal.fire("Succès" , res.data.message , "success");
-            
+            window.location.reload(false);
           }
           else if(res.data.status === 422){
             setError(res.data.validation_errors);
             Swal.fire("Erreur dans les champs" , " Vérifier les champs!", "error");
      }
+     
          
         }); 
    
@@ -99,7 +155,17 @@ function TProfile() {
     
       
     if(loading){
-        return <h5>Loading Profile...</h5>
+      return <div class="d-flex justify-content-center "
+ style={{marginTop: '.150' ,  position: 'absolute',
+ height: '100px',
+ width: '100px',
+ top:' 50%',
+ left: '50%',
+}}>
+ <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+ <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+ <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+</div>
       }
       else if(userInput.role === 'encadrant' || userInput.role === 'chef_dept' ||userInput.role === 'service_formation'||userInput.role === 'coordinateur'  ){
   return (
@@ -243,7 +309,7 @@ function TProfile() {
  
      {/* utilisateur */}
      <div className="wrap-input100   col-lg-6 mb-4" >
-          <input className="input100" type="text"  placeholder="Nom" name="nom"   onChange={handleInput} value={userInput.nom} />
+          <input className="input100" type="text"  placeholder="Nom" name="nom"   onChange={handleInput} value={userInput.nom} readOnly/>
           <span className="focus-input111" />
           <span className="symbol-input111">
         
@@ -252,7 +318,7 @@ function TProfile() {
         </div>
              {/* utilisateur */}
      <div className="wrap-input100   col-lg-6 mb-4" >
-          <input className="input100" type="text" placeholder="Prénom"  name="prenom" onChange={handleInput} value={userInput.prenom} />
+          <input className="input100" type="text" placeholder="Prénom"  name="prenom" onChange={handleInput} value={userInput.prenom} readOnly/>
           <span className="focus-input111" />
           <span className="symbol-input111">
          
@@ -260,23 +326,32 @@ function TProfile() {
         
         </div>
              {/* utilisateur */}
-     <div className="wrap-input100   col-lg-6 mb-4" >
-          <input className="input100" type="email"   placeholder="Email" name="email" onChange={handleInput} value={userInput.email}/>
+     <div className="wrap-input100   col-lg-12 mb-4" >
+          <input className="input100" type="text"   placeholder="Email" name="email" onChange={handleInput} value={userInput.email}/>
+       
+      
+          {utiErremail ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> email doit contenir symbol @ </span> :""}  
 
+         
+        
         </div>
+
+       
 
         {/* utilisateur */}
      <div className="wrap-input100   col-lg-6 mb-4" >
-          <input className="input100" type="number"  placeholder="Num Télephone" name="numTel"   onChange={handleInput} value={userInput.numTel}  />
+          <input className="input100" type="number" min="0"  placeholder="Num Télephone" name="numTel"   onChange={handleInput} value={userInput.numTel}  required />
           <span className="focus-input111" />
           <span className="symbol-input111">
-          
-          </span>
         
+         
+          </span>
+          {utiErrtelephone ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />le numéro de télephone doit contenir 8 chiffres </span> :""}  
+
         </div>
              {/* utilisateur */}
      <div className="wrap-input100   col-lg-6 mb-4" >
-          <input className="input100" type="date"  placeholder="Date naissance"  name="datenaissance" onChange={handleInput} value={userInput.datenaissance} />
+          <input className="input100" type="date"  placeholder="Date naissance"  name="datenaissance" onChange={handleInput} value={userInput.datenaissance} readOnly />
           <span className="focus-input111" />
           <span className="symbol-input111">
            
@@ -286,7 +361,7 @@ function TProfile() {
 
           {/* utilisateur */}
           <div className="wrap-input100   col-lg-6 mb-4" >
-          <input className="input100" type="number" placeholder="Matricule" name="matricule"  onChange={handleInput} value={userInput.matricule} />
+          <input className="input100" type="number" placeholder="Matricule" name="matricule"  onChange={handleInput} value={userInput.matricule} readOnly/>
           <span className="focus-input111" />
           <span className="symbol-input111">
             
@@ -303,7 +378,7 @@ function TProfile() {
        <option  name="role"  value="coordinateur">coordinateur</option>
        <option  name="role"  value="encadrant">Encadrant</option>
         <option  name="role"  value="chef_dept">Chef département</option> 
-        <option  name="role"   value="service_formation"> Service formation</option>
+        <option  name="role"   value="service_formation"> Responsable de formation</option>
  </select>
 </div>
  
@@ -513,7 +588,7 @@ function TProfile() {
        
            {/* utilisateur */}
            <div className="wrap-input100   col-lg-6 mb-4" >
-                <input className="input100" type="text"  placeholder="Nom" name="name"   onChange={handleInput} value={userInput.name} />
+                <input className="input100" type="text"  placeholder="Nom" name="name"   onChange={handleInput} value={userInput.name} readOnly/>
                 <span className="focus-input111" />
                 <span className="symbol-input111">
               
@@ -522,7 +597,7 @@ function TProfile() {
               </div>
                    {/* utilisateur */}
            <div className="wrap-input100   col-lg-6 mb-4" >
-                <input className="input100" type="text" placeholder="Prénom"  name="prenom" onChange={handleInput} value={userInput.prenom} />
+                <input className="input100" type="text" placeholder="Prénom"  name="prenom" onChange={handleInput} value={userInput.prenom} readOnly />
                 <span className="focus-input111" />
                 <span className="symbol-input111">
                
@@ -530,23 +605,25 @@ function TProfile() {
               
               </div>
                    {/* utilisateur */}
-           <div className="wrap-input100   col-lg-6 mb-4" >
-                <input className="input100" type="email"   placeholder="Email" name="email" onChange={handleInput} value={userInput.email}/>
-      
+           <div className="wrap-input100   col-lg-12 mb-4" >
+                <input className="input100" type="text"   placeholder="Email" name="email" onChange={handleInput} value={userInput.email}/>
+                {utiErremail ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> email doit contenir symbol @ </span> :""}  
+
               </div>
       
               {/* utilisateur */}
            <div className="wrap-input100   col-lg-6 mb-4" >
-                <input className="input100" type="number"  placeholder="Num Télephone" name="telephone"   onChange={handleInput} value={userInput.telephone}  />
-                <span className="focus-input111" />
-                <span className="symbol-input111">
-                
-                </span>
-              
+                <input className="input100" type="number" min="0"  placeholder="Num Télephone" name="telephone"   onChange={handleInput} value={userInput.telephone}  required/>
+               <span className="focus-input111" />
+                <span className="symbol-input111"> 
+               
+                </span> 
+                 {utiErrtel? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />le numéro de télephone doit contenir 8 chiffres </span> :""}  
+
               </div>
                    {/* utilisateur */}
            <div className="wrap-input100   col-lg-6 mb-4" >
-                <input className="input100" type="date"  placeholder="Date naissance"  name="datenaissance" onChange={handleInput} value={userInput.datenaissance} />
+                <input className="input100" type="date"  placeholder="Date naissance"  name="datenaissance" onChange={handleInput} value={userInput.datenaissance} readOnly />
                 <span className="focus-input111" />
                 <span className="symbol-input111">
                  
@@ -555,8 +632,8 @@ function TProfile() {
               </div>
       
                 {/* utilisateur */}
-                <div className="wrap-input100   col-lg-6 mb-4" >
-                <input className="input100" type="text" placeholder="Adresse" name="adresse"  onChange={handleInput} value={userInput.adresse} />
+                <div className="wrap-input100   col-lg-12 mb-4" >
+                <input className="input100" type="text" placeholder="Adresse" name="adresse"  onChange={handleInput} value={userInput.adresse}  required />
                 <span className="focus-input111" />
                 <span className="symbol-input111">
                   
@@ -565,8 +642,8 @@ function TProfile() {
               </div>
 
                 {/* utilisateur */}
-                <div className="wrap-input100   col-lg-6 mb-4" >
-                <input className="input100" type="text" placeholder="Niveau d'étude" name="niveauetude"  onChange={handleInput} value={userInput.niveauetude} />
+                <div className="wrap-input100   col-lg-12 mb-4" >
+                <input className="input100" type="text" placeholder="Niveau d'étude" name="niveauetude"  onChange={handleInput} value={userInput.niveauetude}  required/>
                 <span className="focus-input111" />
                 <span className="symbol-input111">
                   
@@ -574,8 +651,8 @@ function TProfile() {
               
               </div>
                 {/* utilisateur */}
-                <div className="wrap-input100   col-lg-6 mb-4" >
-                <input className="input100" type="text" placeholder="Spécialite" name="specialite"  onChange={handleInput} value={userInput.specialite} />
+                <div className="wrap-input100   col-lg-12 mb-4" >
+                <input className="input100" type="text" placeholder="Spécialite" name="specialite"  onChange={handleInput} value={userInput.specialite}  required/>
                 <span className="focus-input111" />
                 <span className="symbol-input111">
                   
@@ -584,8 +661,8 @@ function TProfile() {
               </div>
 
                    {/* utilisateur */}
-                   <div className="wrap-input100   col-lg-6 mb-4" >
-                <input className="input100" type="text" placeholder="Filiére" name="filiere"  onChange={handleInput} value={userInput.filiere} />
+                   <div className="wrap-input100   col-lg-12 mb-4" >
+                <input className="input100" type="text" placeholder="Filiére" name="filiere"  onChange={handleInput} value={userInput.filiere} required/>
                 <span className="focus-input111" />
                 <span className="symbol-input111">
                   

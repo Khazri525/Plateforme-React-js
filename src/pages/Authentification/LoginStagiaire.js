@@ -74,11 +74,14 @@ function LoginStagiaire() {
     axios.get('/sanctum/csrf-cookie').then(response => {
        axios.post( 'api/login-stagiaire', data).then(res =>{
             if(res.data.status === 200){
+                localStorage.setItem('id' , res.data.id);
                 localStorage.setItem('auth_token' , res.data.access_token);
-                localStorage.setItem('auth_name' , res.data.username);
+                localStorage.setItem('auth_name' , res.data.username);  
                 localStorage.setItem('role' , 'stagiaire');
+                localStorage.setItem('etatSt' , ' etudiant');
+                localStorage.setItem('dossiervalideSt' , res.data.dossiervalideSt);
                 Swal.fire("Succès" , res.data.message , "success");
-               
+                window.location.href="/"
               
                 //  navigate('/stagiaire/acceuil' );
                 navigate('/');

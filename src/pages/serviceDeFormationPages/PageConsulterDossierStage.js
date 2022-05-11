@@ -5,26 +5,83 @@ import _ from "lodash";
 import swal from 'sweetalert';
 import Swal from 'sweetalert2';
 
-function DeptCrudTable() {
+function PageConsulterDossierStage() {
 
 
     
   
    const[loading,setLoading] = useState(true);
-   const[deptlist,setDeptlist] = useState([]);
+
 
    //rechercher
    const[searchTerm,setSearchTerm] = useState("");
 
-   useEffect(()=> {
-      axios.get('api/afficher-departements').then(res=> {
-         if(res.status ===200){
-           setDeptlist(res.data.dept) //user 
-         }
-         setLoading(false);
-       }); 
-   },[]);
 
+     //Stagiaire
+  const[userlist,setUserlist] = useState([]);
+  useEffect(()=> {
+    axios.get('api/afficher-stagiaire').then(res=> {
+      if(res.status ===200){
+        setUserlist(res.data.stagiaire)
+      }
+      setLoading(false);
+    });
+},[]);
+ 
+
+
+
+
+  const valideDoss = (e, id) => {
+      e.preventDefault();
+
+   const thisClicked = e.currentTarget ;
+  /*   thisClicked.innerText = "Effacé"; */
+
+ 
+
+
+  axios.put(`api/valide-dossier/${id}`).then(res =>{
+       if(res.data.status === 200){
+        swal("Sucess" , res.data.message , "success"); 
+        thisClicked.closest("tr").remove();
+        //<i className=" fas fa-trash-alt  text-danger"></i>
+       }
+       else{
+        swal("Error" , res.data.message , "Error");
+        // thisClicked.innerText ="Delete"
+       // <i className=" fas fa-trash  text-danger"></i>
+       }
+  });
+
+ }
+
+ 
+
+
+ const invalideDoss = (e, id) => {
+  e.preventDefault();
+
+//const thisClicked = e.currentTarget ;
+/*   thisClicked.innerText = "Effacé"; */
+
+
+
+
+axios.put(`api/invalide-dossier/${id}`).then(res =>{
+   if(res.data.status === 200){
+    swal("Sucess" , res.data.message , "success"); 
+    //thisClicked.closest("tr").remove();
+    //<i className=" fas fa-trash-alt  text-danger"></i>
+   }
+   else{
+    swal("Error" , res.data.message , "Error");
+    // thisClicked.innerText ="Delete"
+   // <i className=" fas fa-trash  text-danger"></i>
+   }
+});
+
+}
 
 
 
@@ -100,54 +157,59 @@ const deleteDept = (e ,id) => {
 ///////////////////////.confirmation
 
 
-var afficher_Dept_Table ="";
+var afficher_Dossier_Table ="";
 
 if(loading){
- return <h5>Loading Départements...</h5>
+  return <div class="d-flex justify-content-center "
+ style={{marginTop: '.150' ,  position: 'absolute',
+ height: '100px',
+ width: '100px',
+ top:' 50%',
+ left: '50%',
+}}>
+ <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+ <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+ <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+</div>
 }
 else{
-    //etat
-    var DeptEtat = '';
-  afficher_Dept_Table =
- deptlist.filter(val =>{
+  var afficher_Dossier_Table ="";
+  afficher_Dossier_Table=
+ userlist.filter(val =>{
    if(searchTerm === ""){
      return val;
-   }else if( val.nom_dept.toLowerCase().includes(searchTerm.toLowerCase()) ||   val.nom_chef_dept.toLowerCase().includes(searchTerm.toLowerCase())) {
+   }else if( val.name.toLowerCase().includes(searchTerm.toLowerCase()) ||   val.prenom.toLowerCase().includes(searchTerm.toLowerCase())) {
      return val;
    }
- }).map( (item , index) => {
+ }).map( (doss, index) => {
      
-   
-    //etat-------
-    if(item.etat == 'Active'){
-   
-        DeptEtat =  <button type="button" className="btn btn-success btn-sm  rounded-pill " ><i className="fas fa-check "></i>{item.etat}</button> 
-      
-        }
-        else if(item.etat == 'Désactive'){
-     
-          DeptEtat =  <button type="button" className="btn btn-danger btn-sm rounded-pill" ><i className="fas  fas fa-ban "></i>{item.etat}</button> 
-        
-        }
+      if(doss.DossierStage !==null  ){    
     return(
-          
-          <tr key={item._id}>
-
+   <>
+          <tr key={doss._id}>
              <td>{index+1}</td>
-             <td>{item.nom_dept}</td>
-             <td>{item.nom_chef_dept}</td>
+             <td>{doss.name}</td>
+             <td>{doss.prenom}</td>
+             <td>{doss.DossierStage.cinfile}</td>
+             <td>{doss.DossierStage.convfile}</td>
+             <td>{doss.DossierStage.cvfile}</td>
+             <td>{doss.DossierStage.lettfile}</td>
              
-             <td>
+             {/* <td>
                 <Link to={`/service-de-formation/modifier-departement/${item._id}`}>
                   <i className="fas fa-pencil-alt  text-success"></i></Link>
-             </td>
-          {/*    <td>  
+             </td> 
+            <td>  
                   <i onClick={ (e) => deleteDept(e , item._id)}  className=" fas fa-trash  text-danger"></i>
              </td>
- */}
-             <td>{DeptEtat}</td>
+
+             <td>{DeptEtat}</td>*/}
+             <td>
+             <button type="button" className="btn btn-success btn-sm  mt-2 rounded-pill " onClick={ (e) => valideDoss(e , doss._id)}   ><i className="fas fa-check "></i>Valide</button>
+             <button type="button" className="btn btn-danger btn-sm  mt-2  ml-2 rounded-pill" onClick={ (e) => invalideDoss(e , doss._id)}  ><i className="fas  fas fa-ban "></i>Invalide</button> 
+             </td>
           </tr>
-    )
+   </> )}
  });
 }
 
@@ -161,8 +223,8 @@ else{
         <div className="row mb-2">
 
           <div className="col-sm-6">
-            <h3>Départements</h3>
-    
+            <h3>Dossiers de  stage</h3>
+        
 
           </div>
 
@@ -175,7 +237,7 @@ else{
 
 
 <NavLink className={(ndata) => ndata.isActive && "active" }  to='/service-de-formation/acceuil'>Acceuil </NavLink> <span> / </span>
-<NavLink className={(ndata) => ndata.isActive && "active" }  to='/service-de-formation/afficher-departements'>Départements</NavLink>
+<NavLink className={(ndata) => ndata.isActive && "active" }  to='/service-de-formation/afficher-dossies-stage'>Dossiers de  stage</NavLink>
 
 
             
@@ -219,15 +281,20 @@ else{
          <table className="table table-striped projects ">
            <thead>
              <tr>
+            
                <th>ID</th>
-               <th>Nom Département</th>
-               <th>Nom Chef Département</th>
+               <th>Nom</th>
+               <th>Prénom</th>
+               <th>convention de stage</th>
+               <th>lettre d’affectation </th>
+               <th>proposition de stage </th>
+               <th>CV</th>
              </tr>
            </thead>
 
            <tbody >
 
-                {afficher_Dept_Table}
+                { afficher_Dossier_Table}
 
            </tbody>
          </table>
@@ -249,4 +316,4 @@ else{
   )
 }
 
-export default DeptCrudTable
+export default PageConsulterDossierStage

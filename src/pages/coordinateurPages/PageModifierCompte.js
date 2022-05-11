@@ -342,10 +342,10 @@ if(loading){
 <select  name="role"  onChange={handleInput} value={userInput.role}  className="input100 border-0 " type="text">
 <option   selected hidden>--Rôle--</option>
         
-  
+        <option  name="role"  value="coordinateur">Coordinateur</option>
         <option  name="role"  value="encadrant">Encadrant</option>
         <option  name="role"  value="chef_dept">Chef département</option> 
-        <option  name="role"   value="service_formation"> Service formation</option>
+        <option  name="role"   value="service_formation"> Responsable de formation</option>
  </select>
 
         
@@ -361,12 +361,16 @@ if(loading){
 <select  name="departement" onChange={handleInput} value={userInput.departement}   className="input100 border-0 " type="text" >
   
        <option   selected hidden>--Nom département--</option>
-  
-        <option  name="departement"  value="Marketing">Marketing</option>
-        <option  name="departement" value="BI">BI</option> 
-        <option  name="departement"  value="Développement"> Développement</option>
+       <option name="nom_dept" value="IT">IT</option>
+    <option name="nom_dept" value="Marketing">Marketing</option>
+    <option name="nom_dept" value="BI"> BI</option>
+    <option name="nom_dept" value="Développement">Développement </option>
+    <option name="nom_dept" value="DSI">DSI </option>
+    <option name="nom_dept" value="Finance">Finance </option>
+
  </select>
 </div>
+
 
  
 {/* Etat */}

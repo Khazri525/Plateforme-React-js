@@ -218,20 +218,45 @@ const handleCheckbox = (e) => {
               if(res.data.status === 200){
                   localStorage.setItem('auth_token' , res.data.access_token);
                   localStorage.setItem('auth_name' , res.data.name);
-              }
+             //
                 
               if( res.data.password === res.data.password_confirmation){
+              ///***
+
+
+              ///***
                 Swal.fire("Succès" , res.data.message , "success");
                // navigate('/etudiant/acceuil');
                      navigate('/login-stagiaire');
                     
                   }
-                 
+
+    }
+
+
+
+
+        /*          
         else if(res.data.status === 422){
+          setError(res.data.validation_errors); 
           Swal.fire("Erreur" , res.data.message , "error");
                   setRegister({...registerInput  , error_list : res.data.validation_errors});
               }  
-  
+   */
+
+              else if(res.data.status === 422){
+                setError(res.data.validation_errors); 
+               
+               if(res.data.validation_errors.email){
+                  Swal.fire("Erreur dans les champs" , "Email erroné ou Email déjà existe!!", "error");
+                }
+               else  if(res.data.validation_errors.cinoupassport_stagiaire){
+                    Swal.fire("Erreur dans les champs" , " Num Cin ou Passeport erroné ou Num Cin ou Passeport déjà existe!!", "error");
+                }
+              else{
+                Swal.fire("Erreur dans les champs" , "Vérifier les champs!", "error");
+                 }
+              }
 
         
         //  else {
@@ -299,9 +324,10 @@ const handleCheckbox = (e) => {
     <span className="symbol-input100">
       <i className=" fas fa-address-card"  aria-hidden="true" />
     </span>
-    {error.cinoupassport_stagiaire? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Cin Déjà existe!</span> :""}  
-
+   
   </div>
+  {error.cinoupassport_stagiaire? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Cin Déjà existe!</span> :""}  
+
   {/* {stgErrcin ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> le numéro de cin doit contenir 8 chiffres </span> :""}   */}
   </>
   }
@@ -510,7 +536,9 @@ const handleCheckbox = (e) => {
 
       
         <div className="wrap-input100 validate-input" >
-          <input className="input100" type="number" min="0"  name="telephone" onChange={handleInput} value={registerInput.telephone} placeholder="Télephone" required/>
+          <input className="input100" type="number" min="0"  
+          name="telephone" onChange={handleInput} value={registerInput.telephone}
+           placeholder="Télephone" required/>
           <span className="focus-input100" />
           <span className="symbol-input100">
             <i className="  fas fa-phone-alt" aria-hidden="true" />

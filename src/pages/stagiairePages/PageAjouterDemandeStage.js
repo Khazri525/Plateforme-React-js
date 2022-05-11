@@ -4,7 +4,7 @@ import axios from 'axios';
 import swal from 'sweetalert';
 import Swal from 'sweetalert2';
 
-function DemandeStage() {
+function PageAjouterDemandeStage() {
 
   const Swal = require('sweetalert2');
     const navigate = useNavigate();
@@ -24,7 +24,7 @@ function DemandeStage() {
         niveauetude: '',
        typestage:'',
         nom_dept:'', 
-        cinoupassport_demande:'', 
+        //cinoupassport_demande:'', 
        // cv:[],
         error_list:[],
      
@@ -59,7 +59,7 @@ function DemandeStage() {
       
          const data = {
           //niveauetude:userInput.niveauetude,
-          cinoupassport_demande:userInput.cinoupassport_demande,
+         // cinoupassport_demande:userInput.cinoupassport_demande,
           typestage:userInput.typestage,
           nom_dept:userInput.nom_dept,
           cv:filedata.cv,
@@ -76,8 +76,8 @@ function DemandeStage() {
 
       
       
-       
-           axios.post('api/ajouter-demande-stage',data ).then(res =>{
+    const StId =   localStorage.getItem('id'); 
+           axios.post(`api/ajouter-demande-stage/${StId}`,data ).then(res =>{
                 if(res.data.status === 200){
                   Swal.fire("Succès" , res.data.message ,"success");
                   navigate('/pre-test');
@@ -114,14 +114,14 @@ function DemandeStage() {
 <div className="row">
 
 
-   <div className="wrap-input100   col-lg-12 mb-4  ">
+  {/*  <div className="wrap-input100   col-lg-12 mb-4  ">
           <input className="input100" type="number"  name="cinoupassport_demande"  onChange={handleInput} value={userInput.cinoupassport_demande}  placeholder="  Num CIN ou Passport" />
           <span className="focus-input111" />
           <span className="symbol-input111">
             <i className=" fas fa-address-card"  aria-hidden="true" />
           </span>
          
-        </div>
+        </div> */}
 
 {/* 
 <div className="wrap-input100   col-lg-12 mb-4  " >
@@ -180,18 +180,18 @@ function DemandeStage() {
  
 
        {/*Cv */}
-      <div className="wrap-input100   col-lg-12 mb-4  form-group " >
+      {/* <div className="wrap-input100   col-lg-12 mb-4  form-group " >
           <input className="input100 mt-4 " type="file"  name="cv"  onChange={handleFile}   />
           <span className="focus-input111" />
           <span className="symbol-input111">
            <i className=" fas fa-cloud-upload-alt "  aria-hidden="true" />
               
           </span>
-        </div>  
+        </div>   */}
 
 
 {/* cv */}
-{/* <div className="wrap-input100   col-lg-12 mb-4  form-group " >   
+ <div className="wrap-input100   col-lg-12 mb-4  form-group " >   
 <p className="text-center   text-secondary"> Déposer votre CV</p>
      
    <div className="frame">
@@ -199,13 +199,13 @@ function DemandeStage() {
        
           <div className="dropzone">
               <img src="http://100dayscss.com/codepen/upload.svg" className="upload-icon  " />
-              <input type="file" name="cv"  onChange={handleChange}  className="upload-input " />
+              <input type="file" name="cv"  onChange={handleFile}  className="upload-input " />
          </div>
      </div> 
 
 
   </div>
-</div> */}
+</div> 
        
       
     {/*    <label class="form-label" for="customFile">Default file input example</label>
@@ -384,4 +384,4 @@ function DemandeStage() {
   )
 }
 
-export default DemandeStage
+export default PageAjouterDemandeStage

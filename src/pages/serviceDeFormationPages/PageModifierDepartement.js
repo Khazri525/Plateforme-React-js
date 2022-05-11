@@ -102,7 +102,7 @@ function PageModifierDepartement() {
       }
        else if(res.data.status === 422){
              setError(res.data.validation_errors);
-             Swal.fire("Erreur dans les champs" , "Vérifier les champs!", "error");
+            //  Swal.fire("Erreur dans les champs" , "Vérifier les champs!", "error");
       }
       else if(res.data.status === 404){
         Swal.fire("Erreur" , res.data.message , "error");
@@ -184,7 +184,7 @@ function PageModifierDepartement() {
     <option name="nom_dept" value="Finance">Finance </option>
 
  </select>
- {error.nom_dept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Vous devez choisir une Département!</span> :""}  
+ {error.nom_dept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Vous devez choisir un Département!</span> :""}  
 
 </div>
 

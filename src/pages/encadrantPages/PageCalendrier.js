@@ -265,7 +265,7 @@ list.appendChild(listItem3);
       'success' 
     ) */
   } else  {
-       axios.delete(`api/event/${clickInfo.event.title}`).then(res =>{
+       axios.delete(`api/events/destroy/${clickInfo.event.title}`).then(res =>{
       if(res.data.status === 200){
          Swal.fire ("Succès" , res.data.message,"success"); 
          clickInfo.event.remove()

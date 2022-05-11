@@ -5,7 +5,7 @@ import _ from "lodash";
 import swal from 'sweetalert';
 import Swal from 'sweetalert2';
 
-function DeptCrudTable() {
+function PageConsulterDepartement() {
 
 
     
@@ -103,7 +103,17 @@ const deleteDept = (e ,id) => {
 var afficher_Dept_Table ="";
 
 if(loading){
- return <h5>Loading Départements...</h5>
+  return <div class="d-flex justify-content-center "
+ style={{marginTop: '.150' ,  position: 'absolute',
+ height: '100px',
+ width: '100px',
+ top:' 50%',
+ left: '50%',
+}}>
+ <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+ <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+ <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+</div>
 }
 else{
     //etat
@@ -249,4 +259,4 @@ else{
   )
 }
 
-export default DeptCrudTable
+export default PageConsulterDepartement

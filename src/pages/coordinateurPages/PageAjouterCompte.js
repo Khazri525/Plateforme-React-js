@@ -154,8 +154,17 @@ const compteSubmit = (e) => {
           }   }
         
           else if(res.data.status === 422){
-            setError(res.data.validation_errors);
-            Swal.fire("Erreur dans les champs" , " Vérifier les champs!", "error");
+            setError(res.data.validation_errors); 
+           
+           if(res.data.validation_errors.email){
+              Swal.fire("Erreur dans les champs" , "Email erroné ou Email déjà existe!!", "error");
+          }
+           else  if(res.data.validation_errors.matricule){
+                Swal.fire("Erreur dans les champs" , "Matricule erronée ou Matricule déjà existe!!", "error");
+            }
+          else{
+            Swal.fire("Erreur dans les champs" , "Vérifier les champs!", "error");
+          }
      }
    
 
@@ -315,7 +324,7 @@ const compteSubmit = (e) => {
         <option  name="role"  value="coordinateur">Coordinateur</option>
         <option  name="role"  value="encadrant">Encadrant</option>
         <option  name="role"  value="chef_dept">Chef département</option> 
-        <option  name="role"   value="service_formation"> Service formation</option>
+        <option  name="role"   value="service_formation"> Responsable de formation</option>
  </select>
 
         

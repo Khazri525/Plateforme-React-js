@@ -203,7 +203,17 @@ var AfficherQuestion_HTMLTABLE="";
 
 
 if(loading){
- return <h5>Loading Q/A ...</h5>
+  return <div class="d-flex justify-content-center "
+ style={{marginTop: '.150' ,  position: 'absolute',
+ height: '100px',
+ width: '100px',
+ top:' 50%',
+ left: '50%',
+}}>
+ <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+ <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+ <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+</div>
 }
 else{
     AfficherQuestion_HTMLTABLE =

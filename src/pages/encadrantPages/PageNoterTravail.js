@@ -1,108 +1,139 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink ,useNavigate} from 'react-router-dom';
 import _ from "lodash";
-
+import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 function PageNoterTravail() {
 
 
+  const Swal = require('sweetalert2');
+  const navigate=useNavigate();
 
-//Activer ou Désactiver
-const [etatcheckbox,setEtatcheckbox]= useState([]);
- 
-//Activer ou Désactiver
-const handleCheckbox = (e) => {
-  e.preventDefault();
-  
- 
-    //Désactiver
-    setEtatcheckbox({ ...etatcheckbox,[e.target.name]:e.target.checked});
-  
-    console.log("Vous étes", etatcheckbox.etat);
-  
- 
-}
+  const [noteInput,setNote] =useState({});
 
+    //Stagiaire
+    const[userlist,setUserlist] = useState([]);
+    useEffect(()=> {
+      axios.get('api/afficher-stagiaire').then(res=> {
+        if(res.status ===200){
+          setUserlist(res.data.stagiaire)
+        }
+        setLoading(false);
+      });
+  },[]);
+   
+  const handleInput = (e) => {
+    e.persist();
+    setNote({...noteInput,[e.target.name] : e.target.value})
 
+  }
+
+  const submitNote = (e) => {
+    e.preventDefault();
+    const data = {
+      note:noteInput.note,
+      message:noteInput.message,
+     
+    }
+    axios.post('/api/ajouter-note',data).then(res =>
+      {
+        if(res.data.status === 200) {
+          Swal.fire("Success",res.data.message,"success");
+          window.location.reload(false);
+         // navigate('/encadrant/aceuil');
+         // document.getElementById('Question_form').reset();
+        }
+      })
+  }
    
     const[loading,setLoading] = useState(true);
-    const[userlist,setUserlist] = useState([]);
+   
 
     //rechercher
     const[searchTerm,setSearchTerm] = useState("");
-
-    useEffect(()=> {
-        axios.get('api/comptes').then(res=> {
-          if(res.status ===200){
-            setUserlist(res.data.user)
-          }
-          setLoading(false);
-        });
-    },[]);
+   
 
 
-var afficher_User_Table ="";
 
 if(loading){
-  return <h5>Loading Notes...</h5>
+  return <div class="d-flex justify-content-center "
+  style={{marginTop: '.150' ,  position: 'absolute',
+  height: '100px',
+  width: '100px',
+  top:' 50%',
+  left: '50%',
+ }}>
+  <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+  <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+  <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+ </div>
 }
 else{
+  var afficher_User_Table ="";
    afficher_User_Table =
   userlist.filter(val =>{
     if(searchTerm === ""){
       return val;
-    }else if( val.nom.toLowerCase().includes(searchTerm.toLowerCase())) {
+    }else if( val.name.toLowerCase().includes(searchTerm.toLowerCase())) {
       return val;
     }
-  }).map( (item , index) => {
-    
+  }).map( (ntrv , index) => {
+    if(ntrv.Traveaux !==null  ){  
      return(
            
-           <tr key={item._id}>
+           <tr key={ntrv._id}>
 
               <td>{index+1}</td>
-              {/* <td>{item.prenom}</td> */}
+              <td>{ntrv.name}</td>
+              <td>{ntrv.prenom}</td>  
               <td>
+              <a href="#" className="btn" data-toggle="modal" data-target="#exampleModal"> <i className="fas fa-eye" style={{color: '#f4901e'}}></i></a>
+              </td>
+         
+         {/*      <td>
+              <a href="#" className="btn" data-toggle="modal" data-target="#trv"> <i className="fas fa-eye" style={{color: '#f4901e'}}></i></a>
+              </td>
+            
+             */}
+            {/*   <td>
               <a href="#" class="btn btn-primary btn-sm " data-toggle="modal" data-target="#exampleModal"><i class="fas fa-eye"></i></a>
               </td>
-              
+               */}
 
-
-                 
-      
-
-
-
-            <td>
-
-              <form>
+               <td>
+               <form onSubmit={submitNote}>
               <div className="row"> 
               {/* travail deposé */}
-              <div className="wrap-input100   col-lg-3   form-group" >
+         {/*      <div className="wrap-input100   col-lg-3   form-group" >
                     <input className="input100 mt-4" type="file"  name="tfile"     />
                    <span className="focus-input111" />
                  <span className="symbol-input111">
                    <i className=" fas fa-cloud-download-alt"  aria-hidden="true" />
                    </span> 
-              </div>
+              </div> */}
 
               {/* message deposé */}
-
-
+ {/* travail envoyé */}
+    <div className="wrap-input100   col-lg-2 form-group  ">
+                    <input className="input100 mt-4" type="text"  name="note"  onChange={handleInput} value={noteInput.note}    placeholder="Travail" />
+                    <span className="focus-input111" />
+                 
+              </div>
               {/* note envoyé */}
-              <div className="wrap-input100   col-lg-3  form-group  ">
-                    <input className="input100 mt-4" type="text"  name="note"    placeholder="Note" />
+              <div className="wrap-input100   col-lg-3 form-group  ">
+                    <input className="input100 mt-4" type="text"  name="note"  onChange={handleInput} value={noteInput.note}    placeholder="Note" />
                     <span className="focus-input111" />
                  
               </div>
                {/* message envoyé */}
                <div className="wrap-input100   col-lg-4   form-group" >
-                   <textarea className="input100" type="text"  name="description" placeholder="Description"  style={{height: '80px'}}/>
+                   <textarea className="input100" type="text"  name="message" placeholder="Message" onChange={handleInput} value={noteInput.message}     style={{height: '80px'}}/>
                    <span className="focus-input111" />
                </div>   
 
-               <div className="  col-lg-2 mt-4  ">
-               <button type="submit" className="login100-form-btn float form-group"> 
+               <div className="  col-lg-3 mt-10  ">
+               <button type="submit" className="login100-form-btn float form-group "> 
                    <Link to="#"  style={{color: 'white'}}>
                    Envoyer
                   </Link> 
@@ -111,10 +142,138 @@ else{
              
                </div>
                </form>
-              </td> 
+               </td>
+
+
+
+
+
+
+
+
+
+
+              
+{/* Afficher détails   */}
+<div>
+
+{/* Modal */}
+<div className="modal fade" id="exampleModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div className="modal-dialog">
+    <div className="modal-content">
+      <div className="modal-header">
+        <h5 className="modal-title" id="exampleModalLabel">Détails</h5>
+        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div className="modal-body">
+
+<div className="col-md-offset-3 col-md-12">
+     <strong> Nom   </strong>{ntrv.name} <br/>
+     <strong>Prénom   </strong>{ntrv.prénom}   <br/>
+    
+     <strong> Email   </strong>{ntrv.email}<br/> 
+   
+     <strong>Niveau étude  </strong> {ntrv.niveauetude}<br/>
+     <strong>Spécialite  </strong>{ntrv.specialite}<br/>
+     <strong>Filiére  </strong> {ntrv.filiere} <br/>
+  
+     {/* <strong>Type de stage{ntrv.typestage}</strong> <br/>
+     <strong>Nom département{ntrv.nom_dept}</strong> <br/> */}
+   
+{/* 
+     <form>
+             {/* utilisateur matricule 
+          <strong >Matricule Encadrant </strong> 
+        <div className="wrap-input100   col-lg-6 mb-4" >
+      <input className="input100" type="number" placeholder="Matricule" name="Matricule" />
+        <span className="focus-input111" />
+        <span className="symbol-input111">
+          
+        </span>
+        </div>
+     </form> */}
+
+</div>
+      </div>
+      <div className="modal-footer">
+        <button type="button" className="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        {/* <button type="button" className="btn btn-primary">Save changes</button> */}
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+{/* .Afficher détails   */}
+
+
+
+
+
+
+
+
+
+
+
+
+{/* Afficher détails   */}
+<div>
+
+  {/* Modal */}
+  <div className="modal fade" id="trv" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div className="modal-dialog">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h5 className="modal-title" id="exampleModalLabel">Noter</h5>
+          <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div className="modal-body">
+
+  <div className="col-md-offset-3 col-md-12">
+ 
+{/* ********
+       <form>
+               {/* utilisateur matricule 
+            <strong >Matricule Encadrant </strong> 
+          <div className="wrap-input100   col-lg-6 mb-4" >
+        <input className="input100" type="number" placeholder="Matricule" name="Matricule" />
+          <span className="focus-input111" />
+          <span className="symbol-input111">
+            
+          </span>
+          </div>
+       </form> */}
+  </div>
+        </div>
+        <div className="modal-footer">
+          <button type="button" className="btn btn-secondary" data-dismiss="modal">Fermer</button>
+          {/* <button type="button" className="btn btn-primary">Save changes</button> */}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{/* .Afficher détails   */}
          
            </tr> 
-     )
+
+
+
+
+
+
+
+
+
+
+
+     )}
   });
 }
 
@@ -132,7 +291,7 @@ else{
         <div className="row mb-2">
 
           <div className="col-sm-6">
-            <h3>Comptes</h3>
+            <h3>Noter Traveaux</h3>
     
 
           </div>
@@ -191,9 +350,13 @@ else{
          <table className="table table-striped projects ">
            <thead>
              <tr>
-               <th>Stagiaire</th>
-               <th>Détails</th>
-               <th>Travail</th>
+               <th>ID</th>
+               <th>Nom</th>
+               <th>Prénom</th>
+               <th>détails</th>
+               <th>Noter</th>
+        
+              
               
                
               
@@ -223,60 +386,33 @@ else{
 
 
 
-{/* Afficher détails   */}
-<div>
 
-  {/* Modal */}
-  <div className="modal fade" id="exampleModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div className="modal-dialog">
-      <div className="modal-content">
-        <div className="modal-header">
-          <h5 className="modal-title" id="exampleModalLabel">Détails</h5>
-          <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div className="modal-body">
 
-  <div className="col-md-offset-3 col-md-12">
-       <strong> Nom </strong> <br/>
-       <strong>Prénom</strong>   <br/>
-       <strong>Date de naissance</strong>  <br/>
-       <strong> Email</strong><br/> 
-       <strong>Cin ou Passport </strong><br/>
-       <strong>Niveau étude</strong> <br/>
-       <strong>Spécialite</strong><br/>
-       <strong>Filiére</strong>  <br/>
-       <strong>Adresse</strong><br/>
-       <strong>Télephone</strong><br/>
-       
-       <strong>Type de stage:</strong> <br/>
-       <strong>Nom département:</strong> <br/>
-       <strong>CV</strong>
-{/* 
-       <form>
-               {/* utilisateur matricule 
-            <strong >Matricule Encadrant </strong> 
-          <div className="wrap-input100   col-lg-6 mb-4" >
-        <input className="input100" type="number" placeholder="Matricule" name="Matricule" />
-          <span className="focus-input111" />
-          <span className="symbol-input111">
-            
-          </span>
-          </div>
-       </form> */}
-  </div>
-        </div>
-        <div className="modal-footer">
-          <button type="button" className="btn btn-secondary" data-dismiss="modal">Fermer</button>
-          {/* <button type="button" className="btn btn-primary">Save changes</button> */}
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
-{/* .Afficher détails   */}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </>
   )
 }

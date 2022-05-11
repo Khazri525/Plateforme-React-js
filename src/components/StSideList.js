@@ -11,22 +11,38 @@ function StSideList() {
    
           
 
-        <li className="nav-item">
+     {/*    <li className="nav-item">
                   <Link to="/stagiaire/acceuil">
                     <i class="nav-icon  fas fa-window-maximize"></i>
                     Acceuil
                   </Link>
-                </li><br/>
+                </li><br/> */}
+
+
+<li className="nav-item">
+                  <Link to="/stagiaire/acceuil" className="nav-link">
+                    <i class="nav-icon far fa-circle"></i>
+                    Acceuil
+                  </Link>
+                </li>
 
                 <li className="nav-item">
-                  <Link to="/stagiaire/profile">
-                    <i class="nav-icon   fas fa-user-cog"></i>
+                  <Link to="/stagiaire/profile" className="nav-link">
+                    <i class="nav-icon  fas fa-cog"></i>
                     Profil
                   </Link>
                 </li><br/>
 
                 <li className="nav-item">
-                  <Link to="/stagiaire/deposer-travail">
+                  <Link to="/stagiaire/deposer-dossier-stage" className="nav-link">
+                    <i class="nav-icon  fas fa-window-maximize"></i>
+                    Déposer Votre Dossier 
+                  </Link>
+                </li><br/>
+
+
+                <li className="nav-item">
+                  <Link to="/stagiaire/deposer-travail" className="nav-link">
                     <i class="nav-icon  fas fa-window-maximize"></i>
                     Déposer Votre Travail
                   </Link>
@@ -37,14 +53,14 @@ function StSideList() {
 
 
                 <li className="nav-item">
-                  <Link to="/stagiaire/deposer-rapport">
+                  <Link to="/stagiaire/deposer-rapport" className="nav-link">
                     <i class="nav-icon  fas fa-window-maximize"></i>
                     Déposer Le Rapport
                   </Link>
                 </li><br/>
                 
                 <li className="nav-item">
-                  <Link to="/stagiaire/deposer-bilan">
+                  <Link to="/stagiaire/deposer-bilan" className="nav-link">
                     <i class="nav-icon  fas fa-window-maximize"></i>
                     Déposer Le Bilan
                   </Link>

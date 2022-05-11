@@ -16,11 +16,10 @@ import SResetPassword from './pages/Authentification/SResetPassword';
 import Dashboard from './pages/Dashboard';
 import Acceuil from './components/Acceuil';
 import Profile from './components/Profile';
-import CrudTable from './components/CrudTable';
-import DeptCrudTable from './components/DeptCrudTable';
+//import CrudTable from './components/CrudTable';
+//import DeptCrudTable from './components/DeptCrudTable';
 import PageAjouterCompte from './pages/coordinateurPages/PageAjouterCompte';
 import PageModifierCompte from './pages/coordinateurPages/PageModifierCompte';
-
 
 
 import EDashboard from './pages/EDashboard';
@@ -40,7 +39,8 @@ import LoginStagiaire from './pages/Authentification/LoginStagiaire';
 import TForgotPassword from './pages/Authentification/TForgotPassword';
 
 import Landing from './components/Landing';
-import DemandeStage from './components/DemandeStage';
+import PageAjouterDemandeStage from './pages/stagiairePages/PageAjouterDemandeStage';
+import PageAjouterDemandeStageAvecSujet from './pages/stagiairePages/PageAjouterDemandeStageAvecSujet';
 import PageConsulterDemandeStage from './pages/serviceDeFormationPages/PageConsulterDemandeStage';
 import PageAjouterSujet from './pages/encadrantPages/PageAjouterSujet';
 import PageConsulterSujetStage from './pages/encadrantPages/PageConsulterSujet';
@@ -54,7 +54,7 @@ import PageNoterTravail from './pages/encadrantPages/PageNoterTravail';
 import SForgotPassword from './pages/Authentification/SForgotPassword';
 import AuthPrivateRoute from './components/privateRoute/AuthPrivateRoute';
 import StProtectedRoute from './components/privateRoute/StProtectedRoute';
-import DemandeStageAvecSujet from './components/DemandeStageAvecSujet';
+
 import PageDeposerRapport from './pages/stagiairePages/PageDeposerRapport';
 import PageDeposerBilan from './pages/stagiairePages/PageDeposerBilan';
 import EtuProtectedRoute from './components/privateRoute/EtuProtectedRoute';
@@ -71,14 +71,29 @@ import PageModifierQuestion from './pages/serviceDeFormationPages/PageModifierQu
 import PageModifierReponse from './pages/serviceDeFormationPages/PageModifierReponse';
 
 import PageParamsQuiz from './pages/serviceDeFormationPages/PageParamsQuiz';
+import PageConsulterCompte from './pages/coordinateurPages/PageConsulterCompte';
+import PageConsulterDepartement from './pages/serviceDeFormationPages/PageConsulterDepartement';
+import PageDeposerDossierStage from './pages/stagiairePages/PageDeposerDossierStage';
+import PageConsulterDossierStage from './pages/serviceDeFormationPages/PageConsulterDossierStage';
+import PageConsulterBilan from './pages/serviceDeFormationPages/PageConsulterBilan';
+import PageConsulterRapport from './pages/serviceDeFormationPages/PageConsulterRapport';
 
 
+
+/* axios.defaults.baseURL="http://localhost:8000/";
+axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+axios.defaults.headers.post['Content-type'] = 'application/json';
+axios.defaults.headers.post['Accept'] = 'application/json';
+axios.defaults.withCredentials = true;
+
+ */
 
 
 axios.defaults.baseURL="http://localhost:8000/";
 axios.defaults.headers.post['Content-type'] = 'application/json';
 axios.defaults.headers.post['Accept'] = 'application/json';
 axios.defaults.withCredentials = true;
+
 
 //logout  vérifier Barear Token
 axios.interceptors.request.use(function (config){
@@ -136,9 +151,9 @@ axios.interceptors.request.use(function (config){
 
         {/* <Route path="/" element={< EtuProtectedRoute/> }>  */}
          <Route path="/" exact element={ <Landing/>}>
-           <Route path="demande-stage" exact element={<DemandeStage/>} />
+           <Route path="demande-stage" exact element={<PageAjouterDemandeStage/>} />
            <Route path="liste-sujets" exact element={<ListeSujets/>} />
-           <Route path="demande-stage-avec-sujet" exact element={<DemandeStageAvecSujet/>} />
+           <Route path="demande-stage-avec-sujet" exact element={<PageAjouterDemandeStageAvecSujet/>} />
            <Route path="pre-test" exact element={<Pretest/>} />
           
          
@@ -171,7 +186,7 @@ axios.interceptors.request.use(function (config){
    {/* <Route path="/" element={< CoProtectedRoute   /> }>   */}
         <Route path="/coordinateur/" element={<Dashboard/>} > 
           <Route path="acceuil"  element={<Acceuil/>} />
-          <Route path="afficher-tous" element={<CrudTable/>} />
+          <Route path="afficher-tous" element={<PageConsulterCompte/>} />
           <Route path="ajouter-compte" element={<PageAjouterCompte/>} /> 
           <Route path="modifier-compte/:id" exact element={<PageModifierCompte/>} />
         
@@ -188,6 +203,7 @@ axios.interceptors.request.use(function (config){
           <Route path="/stagiaire/" element={<StDashboard/>} > 
             <Route path="acceuil"  element={<Acceuil/>} />
             <Route path="profile"  element={< TProfile />} />
+            <Route path="deposer-dossier-stage"  element={< PageDeposerDossierStage />} />
             <Route path="deposer-travail"  element={< PageDeposerTravail  />} />
             <Route path="deposer-rapport"  element={< PageDeposerRapport  />} />
             <Route path="deposer-bilan"  element={< PageDeposerBilan  />} />
@@ -222,8 +238,8 @@ axios.interceptors.request.use(function (config){
     </Route>    
 
 
-{/* 
- <Route path="/" element={< EProtectedRoute/>}>    */}
+
+ {/* <Route path="/" element={< EProtectedRoute/>}>    */}
         <Route path="encadrant/" element={<EDashboard/>} >  
              <Route path="acceuil"  element={<Acceuil/>} />
               <Route path="profile" exact  element={< TProfile  />} />
@@ -233,7 +249,7 @@ axios.interceptors.request.use(function (config){
               <Route path="noter-travail" exact  element={<PageNoterTravail/>} /> 
               <Route path="calendrier" exact  element={<PageCalendrier/>} /> 
         </Route> 
-{/* </Route>  */}
+ {/* </Route>   */}
 
 
 
@@ -246,7 +262,7 @@ axios.interceptors.request.use(function (config){
           <Route path="acceuil"  element={<Acceuil/>} />
           <Route path="profile"  element={< TProfile />} />
           <Route path="ajouter-departement" element={<PageAjouterDepartement/>} /> 
-          <Route path="afficher-departements" element={<DeptCrudTable/>} /> 
+          <Route path="afficher-departements" element={<PageConsulterDepartement/>} /> 
           <Route path="modifier-departement/:id" exact  element={<PageModifierDepartement/>} /> 
           <Route path="afficher-demandes-stages"  element={< PageConsulterDemandeStage  />} />
          
@@ -260,6 +276,11 @@ axios.interceptors.request.use(function (config){
            <Route path="modifier-reponse/:id" exact  element={< PageModifierReponse  />} /> 
            <Route path="paramQuiz" element={< PageParamsQuiz />} />
           {/* <Route path="paramQuiz" element={< ParamQuiz />} /> */}
+
+
+          <Route path="afficher-dossies-stage" element={< PageConsulterDossierStage/>} />
+          <Route path="afficherBilans" element={< PageConsulterBilan/>} />
+          <Route path="afficherRapports" element={< PageConsulterRapport/>} />
    
 
      </Route>

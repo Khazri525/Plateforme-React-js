@@ -4,7 +4,7 @@ import axios from 'axios';
 import swal from 'sweetalert';
 import Swal from 'sweetalert2';
 
-function DemandeStageAvecSujet() {
+function PageAjouterDemandeStageAvecSujet() {
 
   const Swal = require('sweetalert2');
 
@@ -18,7 +18,7 @@ function DemandeStageAvecSujet() {
       //  niveauetude: '',
         typestage:'',
         nom_dept:'', 
-        cinoupassport_demande:'', 
+        //cinoupassport_demande:'', 
         error_list:[],
      
       
@@ -55,7 +55,7 @@ function DemandeStageAvecSujet() {
           //niveauetude:userInput.niveauetude,
           typestage:userInput.typestage,
           nom_dept:userInput.nom_dept,
-          cinoupassport_demande:userInput.cinoupassport_demande,
+         // cinoupassport_demande:userInput.cinoupassport_demande,
           cv:filedata.cv,
           
           }
@@ -99,14 +99,14 @@ function DemandeStageAvecSujet() {
 <div className="row">
 
 
-   <div className="wrap-input100   col-lg-12 mb-4  ">
+ {/*   <div className="wrap-input100   col-lg-12 mb-4  ">
           <input className="input100" type="number"  name="cinoupassport_demande"  onChange={handleInput} value={userInput.cinoupassport_demande}  placeholder="  Num CIN ou Passport" />
           <span className="focus-input111" />
           <span className="symbol-input111">
             <i className=" fas fa-address-card"  aria-hidden="true" />
           </span>
          
-        </div>
+        </div> */}
 
 {/* 
 <div className="wrap-input100   col-lg-12 mb-4  " >
@@ -130,7 +130,11 @@ function DemandeStageAvecSujet() {
 <div className="wrap-input100   col-lg-12 mb-4  " >
 <select  name="typestage"  onChange={handleInput} value={userInput.typestage} className="input100 border-0 " type="text" >
 <option  selected hidden>--Type de stage--</option>
-    <option name="typestage" value="PFE">PFE</option> 
+
+
+    <option name="typestage" value="PFE Licence">PFE Licence</option> 
+    <option name="typestage" value="PFE Master">PFE Master</option> 
+    <option name="typestage" value="PFE Cycle d'ingénieur">PFE Cycle d'ingénieur</option> 
     <option name="typestage" value="Pérfectionnement">Pérfectionnement</option>
     {/* <option name="typestage" value="Observation">Observation</option> */}
  </select>
@@ -354,4 +358,4 @@ function DemandeStageAvecSujet() {
   )
 }
 
-export default DemandeStageAvecSujet
+export default PageAjouterDemandeStageAvecSujet

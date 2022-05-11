@@ -11,15 +11,15 @@ class UForgotPassword extends Component{
  
 
  
-  state= {
+  state= {  }
   //validation erreurs
 
-   utiErremail:false,
-   error:[],
+  // utiErremail:false,
+  // error:[],
  
-  }
 
 
+/* 
   handleInput = (e) => {
     e.persist();
 
@@ -38,7 +38,7 @@ class UForgotPassword extends Component{
        }
 
  }
-
+ */
 
   handleSubmit = (e) => {
     const Swal = require('sweetalert2');
@@ -77,14 +77,14 @@ class UForgotPassword extends Component{
      
       
         <div className="wrap-input100 ">
-          <input className="input100" type="text" name="email" placeholder="Email" onChange={(e) =>this.email = e.target.value} required/>
+          <input className="input100" type="text" name="email" placeholder="Email" onChange={ (e) =>this.email = e.target.value} />
           <span className="focus-input100" />
           <span className="symbol-input100">
             <i className="fa fa-envelope" aria-hidden="true" />
           </span>
        
         </div>
-   {this.state.utiErremail ? <span className='text-warning txt00 '><i className="far fa-times-circle" aria-hidden="true" /> email doit contenir symbol @ </span> :" "}  
+   {/* {this.state.utiErremail ? <span className='text-warning txt00 '><i className="far fa-times-circle" aria-hidden="true" /> email doit contenir symbol @ </span> :" "}   */}
 
 
 

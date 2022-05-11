@@ -127,7 +127,8 @@ function PageAjouterSujet() {
 
        }
 
-        axios.post('api/ajouter-sujet-stage', data).then(res =>{
+       const StId = localStorage.getItem('id'); 
+        axios.post( `api/ajouter-sujet-stage/${StId}`, data).then(res =>{
              if(res.data.status === 200){
               Swal.fire("Succès" , res.data.message , "success");
               navigate('/encadrant/afficher-sujets-stages');
@@ -233,7 +234,9 @@ function PageAjouterSujet() {
 <select  name="typestage"  onChange={handleInput} value={sujetInput.typestage}  className="input100 border-0 " type="text" >
 <option  selected hidden >--Type du stage--</option>
       
-<option name="typestage" value="Observation">PFE</option>
+<option name="typestage" value="PFE Licence">PFE Licence</option> 
+    <option name="typestage" value="PFE Master">PFE Master</option> 
+    <option name="typestage" value="PFE Cycle d'ingénieur">PFE Cycle d'ingénieur</option> 
   
 
 
@@ -284,15 +287,15 @@ function PageAjouterSujet() {
 </div>
 
 {/* Date*/}
-<div className="wrap-input100   col-lg-6 mb-4  " >
+
+            {/* <i className="fas fa-calendar"  aria-hidden="true" /> */}
+          <p style={{marginLeft: '40px'}}>Début Début   </p>
+     
+<div className="wrap-input100   col-lg-12 mb-4  " >
+
 
           <input className="input100" type="date"  name="datedebut"  onChange={handleInput} value={sujetInput.datedebut}  required/>
 
-          <span className="focus-input111" />
-          <span className="symbol-input111">
-            {/* <i className="fas fa-calendar"  aria-hidden="true" /> */}
-          <span>Début</span>
-          </span>
         </div>
 
 
@@ -314,17 +317,12 @@ function PageAjouterSujet() {
 
 
   {/* matricule */}
-  <div className="wrap-input100   col-lg-6 mb-4 " >
+{/*   <div className="wrap-input100   col-lg-6 mb-4 " >
           <input className="input100" type="number" min="0"  name="matricule_sj"  onChange={handleInput} value={sujetInput.matricule_sj}  placeholder="Matricule" />
           <span className="focus-input111" />
-          {/* <span className="symbol-input111">
-            <i className=" fas fa-copy"  aria-hidden="true" />
-          </span> */}
-        {/*    {utiErrstrsujet ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> sujet est chaine de caractéres!</span> :""}  
-          {utiErrsujet ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> sujet max 50 caractéres!</span> :""}  
-          */}
+     
         </div>
-
+ */}
 
 
 

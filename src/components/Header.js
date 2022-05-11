@@ -45,13 +45,62 @@ function Header() {
            }
     });
   }
+  
+  var msg= "";
+  if(localStorage.getItem('dossiervalideSt') == 'oui'){
+    msg=<p className="dropdown-item-title"> 
+    <span className="float-right text-sm  text-success  "><i className="fas fa-check" /></span>
+    Votre Dossier est Complet 
+    {/* <span className="float-right text-sm text-muted"><i className="fas fa-star" /></span> */}
+  </p>
+  }
+  else if(localStorage.getItem('dossiervalideSt') == 'non'){
+    msg=<p className="dropdown-item mt-100">
+       <span className="float-right text-sm  text-danger "><i className="fas fa-ban " /></span>
+    Votre Dossier est Incomplet
+    {/* <span className="float-right text-sm text-muted"><i className="fas fa-star" /></span> */}
+  </p>
+  }
 
 
 
+
+
+
+  var ntf = "" ;
+  if(localStorage.getItem('dossiervalideSt') == 'oui'  || localStorage.getItem('dossiervalideSt') == 'non' ){
+    ntf =  <span className="badge bg-danger rounded-pill  ">1</span>
+  }
+    
+ var notification = "" ;
+if(localStorage.getItem('role')== 'stagiaire'){
+ 
+  notification =  <li className="nav-item dropdown">
+    <a className="nav-link" data-toggle="dropdown" href="#">
+      <i className="far fa-comments" />
+      {ntf}
+    </a>
+    <div className="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+  
+      <div className="dropdown-divider" />
+      <a href="#" className="dropdown-item">
+        <div className="media">
+         
+          <div className="media-body">
+           {msg}
+            {/* <p className="text-sm">I got your message bro</p> */}
+         {/* <p className="text-sm text-muted"><i className="far fa-clock mr-1" /> 4 Hours Ago</p> */}
+          </div>
+        </div>
+      </a></div></li>
+  
+}
 
   
   return (
     <>
+
+
      {/* Left navbar links */}
      <nav className="main-header navbar navbar-expand navbar-white navbar-light">
         <li className="nav-item d-none d-sm-inline-block">
@@ -62,6 +111,34 @@ function Header() {
           <a className="nav-link" data-widget="pushmenu" href="#" role="button"><i className="fas fa-bars" /></a>
         </li> */}
        
+
+
+{/* ////////////////////// */}
+
+{notification}
+
+
+{/* //////////////////////// */}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <li className="nav-item">
  <button  onClick ={logoutSubmit}   className=" btn btn-secondary ">
                     <i className="fa-solid fa-cloud-exclamation"> </i>

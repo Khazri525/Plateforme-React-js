@@ -186,7 +186,7 @@ function PageModifierSujet() {
           <input className="input100" type="text"  name="sujet"  onChange={handleInput} value={sujetInput.sujet}  placeholder="Sujet" />
           <span className="focus-input111" />
           <span className="symbol-input111">
-            <i className=" fas fa-copy"  aria-hidden="true" />
+            {/* <i className=" fas fa-copy"  aria-hidden="true" /> */}
           </span>
            {utiErrstrsujet ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> sujet est chaine de caractéres!</span> :""}  
           {utiErrsujet ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> sujet max 50 caractéres!</span> :""}  
@@ -197,7 +197,7 @@ function PageModifierSujet() {
           <input className="input100" type="text"  name="technologies"  onChange={handleInput} value={sujetInput.technologies}  placeholder="Technologies" />
           <span className="focus-input111" />
           <span className="symbol-input111">
-            <i className=" fas fa-code"  aria-hidden="true" />
+            {/* <i className=" fas fa-code"  aria-hidden="true" /> */}
           </span>
           {utiErrstrtechnologies ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> Technologies est chaine de caractéres!</span> :""}  
           {utiErrtechnologies ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> Technologies max 30 caractéres!</span> :""}  
@@ -208,32 +208,33 @@ function PageModifierSujet() {
 
 
 
+
  {/*Type de stage */}
  <div className="wrap-input100    col-lg-6 mb-4" >
 <select  name="typestage"  onChange={handleInput} value={sujetInput.typestage}  className="input100 border-0 " type="text" >
 <option  selected hidden >--Type du stage--</option>
       
-<option name="typestage" value="Observation">PFE</option>
+<option name="typestage" value="PFE Licence">PFE Licence</option> 
+    <option name="typestage" value="PFE Master">PFE Master</option> 
+    <option name="typestage" value="PFE Cycle d'ingénieur">PFE Cycle d'ingénieur</option> 
   
 
 
 <option name="typestage" value="Pérfectionnement">Pérfectionnement</option>
- 
+
  </select>
+
+        
           <span className="focus-input111" />
-  </div>
-   {error.typestage ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Vous devez choisir un Type de Stage!</span> :""}  
-{/*  Département*/}
-{/* <div className="wrap-input100   col-lg-6 mb-4  " >
-          <input className="input100" type="text"  name=" nom_dept"  onChange={handleInput} value={sujetInput.nom_dept}  placeholder="Nom Département" required/>
-          <span className="focus-input111" />
-          
-       {utiErrstrnom_dept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Nom Département est chaine de caractéres!</span> :""}  
-          {utiErrnom_dept? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Nom Département max 30 caractéres!</span> :""}  
+          {/* <span className="symbol-input111">
+            <i className="fas fa-user-tie" aria-hidden="true" />
+          </span> */}
+           {error.typestage ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Vous devez choisir un Type de Stage!</span> :""}  
+
         </div>
- */}
+       
 <div className="wrap-input100   col-lg-6 mb-4  " >
-<select name="nom_dept" onChange={handleInput} value={sujetInput.nom_dept} className="input100 border-0 " type="text" required>
+<select name="nom_dept" onChange={handleInput} value={sujetInput.nom_dept} className="input100 border-0 " type="text" >
 <option   selected hidden>--Nom Département--</option>
     <option name="nom_dept" value="IT">IT</option>
     <option name="nom_dept" value="Marketing">Marketing</option>
@@ -241,19 +242,26 @@ function PageModifierSujet() {
     <option name="nom_dept" value="Développement">Développement </option>
     <option name="nom_dept" value="DSI">DSI </option>
     <option name="nom_dept" value="Finance">Finance </option>
+
+    {/* <option name="nom_dept" value="Projets et Innovation">Projets et Innovation </option>
+    <option name="nom_dept" value="Commerciale">Commerciale </option>
+    <option name="nom_dept" value="Production">Production</option>
+    <option name="nom_dept" value="Technique ">Technique</option> */}
+
  </select>
 <span className="focus-input111" />
 <span className="symbol-input111">
 {/* <i className=" fas fa-building"  aria-hidden="true" /> */}
 </span>
+{error.nom_dept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Vous devez choisir une Département!</span> :""}  
+
 </div>
+
 {/* Date*/}
-<div className="wrap-input100   col-lg-6 mb-4  " >
+<p style={{marginLeft: '40px'}}>Début Début   </p>
+<div className="wrap-input100   col-lg-12 mb-4  " >
           <input className="input100" type="date"  name="datedebut"  onChange={handleInput} value={sujetInput.datedebut}  required/> 
-          <span className="focus-input111" />
-          <span className="symbol-input111">
-            {/* <i className="fas fa-calendar"  aria-hidden="true" /> */}
-          </span>
+        
         </div>
   {/* Période de stage */}
   <div className="wrap-input100   col-lg-6 mb-4  validate-input" >
@@ -288,17 +296,6 @@ function PageModifierSujet() {
 
 
 
-{/* Etat */}
-<div className="wrap-input100   col-lg-6 mb-4 " >
-<select  name="etatsujet"  onChange={handleInput} value={sujetInput.etatsujet}  className="input100 border-0 " type="text" >
-{/* <option  selected hidden>--Etat--</option> */}
-  
-        <option selected  name="etatsujet"  value="Publié">Publier</option>
-        <option  name="etatsujet"  value="Dépublié">Dépublier</option> 
- </select>
-
-
-</div>
 
 {/* Stutus */}
 {/* <div className="wrap-input100   col-lg-6 mb-4 " >
@@ -318,19 +315,17 @@ function PageModifierSujet() {
  */}
 
 
+ {/* Etat */}
+<div className="wrap-input100   col-lg-6 mb-4 " >
+<select  name="etatsujet"  onChange={handleInput} value={sujetInput.etatsujet}  className="input100 border-0 " type="text" >
+{/* <option  selected hidden>--Etat--</option> */}
+  
+        <option selected  name="etatsujet"  value="Publié">Publier</option>
+        <option  name="etatsujet"  value="Dépublié">Dépublier</option> 
+ </select>
 
-{/* matricule sj*/}
-<div className="wrap-input100   col-lg-6 mb-4  validate-input" >
-          <input className="input100" type="number" min="0"  name="matricule_sj"  onChange={handleInput} value={sujetInput.matricule_sj}  placeholder="Matricule" />
-          <span className="focus-input111" />
-          {/* <span className="symbol-input111">
-            <i className=" fas fa-copy"  aria-hidden="true" />
-          </span> */}
-        {/*    {utiErrstrsujet ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> sujet est chaine de caractéres!</span> :""}  
-          {utiErrsujet ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> sujet max 50 caractéres!</span> :""}  
-          */}
-        </div>
 
+</div>
 
  {/*Description */}
  <div className="wrap-input100   col-lg-12 mb-4  form-group" >
@@ -343,6 +338,9 @@ function PageModifierSujet() {
         </div>
 
  
+
+
+
     {/* Cancel Button */}
     
     <div className="form-group col-lg-2 ">

@@ -161,7 +161,7 @@ return(
      name='titre'
      type="text"
      placeholder='titre du test'
-     onChange={handleInput} value={questionInput.titre }
+     onChange={handleInput} value={questionInput.titre}
 
      required  />
               <span className="focus-input111" />

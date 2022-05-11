@@ -86,26 +86,32 @@ function Login() {
                localStorage.setItem('auth_lastname' , res.data.lastname);
            
                localStorage.setItem('role' , res.data.role);
+               localStorage.setItem('premlog' , res.data.premlog);
               
                Swal.fire ("Succès" , res.data.message , "success");
             
 
               
-              if(res.data.role === 'encadrant'){
+              if(res.data.premlog == 'oui'){
+                navigate('/U-forgot');
+              }
+              else if(res.data.role === 'encadrant' && res.data.premlog == 'non'){
                 navigate('/encadrant/acceuil');
               }
-              else if(res.data.role === 'chef_dept'){
+              else if(res.data.role === 'chef_dept' && res.data.premlog == 'non'){
                 navigate('/chef-departement/acceuil');
               }
-              else if(res.data.role === 'service_formation'){
-                navigate('/service-de-formation/acceuil');
+              else if(res.data.role === 'service_formation' && res.data.premlog == 'non'){
+                navigate('/service-de-formation/acceuil' );
               }
              /*  else{
                 navigate('/');
               } */
-              else if(res.data.role === 'coordinateur'){
+              else if(res.data.role === 'coordinateur'&& res.data.premlog == 'non'){
                 navigate('/coordinateur/acceuil');
               }
+
+
 
 
             
@@ -149,7 +155,7 @@ function Login() {
         <div className="wrap-login102">
       <form onSubmit={loginSubmit}>
         
-        <div className="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+        <div className="wrap-input100 ">
           <input className="input100" type="text"  name="email"  onChange={handleInput} value=  {loginInput.email}  placeholder="Email" />
          
           <span className="focus-input100" />

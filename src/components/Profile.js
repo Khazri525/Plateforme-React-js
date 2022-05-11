@@ -370,7 +370,7 @@ const updateUser = (e) => {
            <div className="form-group row">
              <label htmlFor="inputName" className="col-sm-2 col-form-label text-dark">Nom</label>
              <div className="col-sm-10">
-               <input  type="text" className=" form-control bg-light" id="inputName" placeholder="Nom" name="nom"   onChange={handleInput} value={userInput.nom} />
+               <input  type="text" className=" form-control bg-light" id="inputName" placeholder="Nom" name="nom"   onChange={handleInput} value={userInput.nom} style={{disabled: true}}/>
              </div>
            </div>
            <div className="form-group row">
@@ -395,7 +395,7 @@ const updateUser = (e) => {
            <div className="form-group row">
              <label htmlFor="inputSkills" className="col-sm-2 col-form-label text-dark">Date naissance</label>
              <div className="col-sm-10"> 
-               <input type="date" className="form-control  bg-light" id="inputSkills" placeholder="Date naissance"  name="datenaissance" onChange={handleInput} value={userInput.datenaissance} />
+               <input type="date" className="form-control  bg-light" id="inputSkills" placeholder="Date naissance"  name="datenaissance" onChange={handleInput} value={userInput.datenaissance}  style={{disabled: true}}/>
              </div>
            </div>
 

@@ -64,19 +64,20 @@ const accepter = (e) => {
       const prenom = Swal.getPopup().querySelector('#prenom').value
       const email = Swal.getPopup().querySelector('#email').value  
       const data = {
+           
            name: name,
            prenom:prenom,
-           email:email
-    
+           email:email,
+          etatSt:'stagiaire_accepte_p',
         }
  
+
 
       axios.post('api/accepter-demande',data).then(res=>{
         if(res.data.status === 200){
  
           Swal.fire("Succès","Email Acceptation du stagiaire envoyé avec succès" ,"success")//res.data.message
-       
-    
+          
         }
           else if(res.data.status === 500){
             Swal.fire("Erreur","Email Acceptation stagiaire non envoyé réessayer!"  ,"error");//res.data.message
@@ -91,7 +92,7 @@ const accepter = (e) => {
         title: `${result.value.login}'s avatar`,
         
       }) */
-
+    
 
      // Swal.fire("Success", 'Email Acceptation Envoyé',"success")
 
@@ -186,7 +187,17 @@ const refuser = (e , id) => {
 
 
 if(loading){
- return <h5>Loading Demandes de Stages...</h5>
+  return <div class="d-flex justify-content-center "
+  style={{marginTop: '.150' ,  position: 'absolute',
+  height: '100px',
+  width: '100px',
+  top:' 50%',
+  left: '50%',
+ }}>
+  <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+  <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+  <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+ </div>
 }
 
 
@@ -208,7 +219,7 @@ if(loading){
  var afficher_Demande_Cards ="";
   afficher_Demande_Cards =
   userlist.filter(val =>{
-    if(val.demandeStages){
+    if(val.DemandeStage){
 
   
     if(searchTerm === ""){
@@ -217,7 +228,7 @@ if(loading){
     }
     
     
-    else if(  val.demandeStages[0][0].toLowerCase().includes(searchTerm.toLowerCase()) || val.demandeStages[0][1].toLowerCase().includes(searchTerm.toLowerCase())  ) {
+    else if(  val.demandeStages.typestage.toLowerCase().includes(searchTerm.toLowerCase()) || val.demandeStages.nom_dept.toLowerCase().includes(searchTerm.toLowerCase())  ) {
       return val;
     }
       }//////
@@ -229,7 +240,7 @@ if(loading){
 
 
 
-if(dm.demandeStages ){
+if(dm.DemandeStage !==null  ){
 
 
 
@@ -256,24 +267,24 @@ if(dm.demandeStages ){
       <strong>Email:</strong>
       <p>{dm.email} </p>
 
-   <strong>Cin ou Passport</strong>
+ {/*   <strong>Cin ou Passport</strong>
       <p>{dm.cinoupassport_stagiaire}</p>
-  
+   */}
     {/* <strong><i className="fas fa-book mr-1" />Niveau d'étude:</strong>
       <p>{dm.niveauetude}</p> */}
   
  
     <strong>Type de stage</strong>  <br/>
-      <p>{dm.demandeStages[0][0]}</p>
+      <p>{dm.DemandeStage.typestage}</p>
 
 
       <strong>Nom Département</strong>  <br/>
      
-      <p>{dm.demandeStages[0][1]}</p>
+      <p>{dm.DemandeStage.nom_dept}</p>
   
  
     <strong>CV</strong>
-    <p>{dm.demandeStages[0][2]}</p>
+    <p>{dm.DemandeStage.cv}</p>
      
 
      
@@ -321,9 +332,9 @@ if(dm.demandeStages ){
        <strong>Adresse</strong>{dm.adresse} <br/>
        <strong>Télephone</strong>{dm. telephone} <br/>
        
-       <strong>Type de stage:</strong> {dm.demandeStages[0][0]}<br/>
+      {/*  <strong>Type de stage:</strong> {dm.demandeStages[0][0]}<br/>
        <strong>Nom département:</strong>  {dm.demandeStages[0][1]}<br/>
-       <strong>CV</strong> {dm.demandeStages[0][2]}
+       <strong>CV</strong> {dm.demandeStages[0][2]} */}
 {/* 
        <form>
                {/* utilisateur matricule 
