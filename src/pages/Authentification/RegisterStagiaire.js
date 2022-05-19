@@ -488,16 +488,32 @@ const handleCheckbox = (e) => {
 
 </div> <div className="col-lg-6">
 <br/> <br/><br/>
-     <div className="wrap-input100 validate-input" >
+
+
+ {/*     <div className="wrap-input100 validate-input" >
           <input className="input100" type="text" name="niveauetude" onChange={handleInput} value={registerInput.niveauetude} placeholder="Niveau d'étude" required />
           <span className="focus-input100" />
           <span className="symbol-input100">
             <i className="fas fa-user-graduate" aria-hidden="true" />
           </span>
-        </div>
-        {/* {registerInput.error_list.niveauetude ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />{registerInput.error_list.niveauetude}  </span> :""}  */}
+        </div> */}
+       
 
 
+       <div className="wrap-input100   " >
+                        <select name="niveauetude"     onChange={handleInput} value={registerInput.niveauetude}  className="input100 border-0 "  required>
+                          <option selected hidden>--Niveau d'étude--</option>
+                          <option name="niveauetude" value="bac">Bac</option>
+                          <option name="niveauetude" value="bts">BTS</option>
+                          <option name="niveauetude" value="licence">Licence</option>
+                          <option name="niveauetude" value="master">Master</option>
+                          <option name="niveauetude" value="ingénieur">cycle ingénieur</option>
+                        </select>
+                        <span className="focus-input100" />
+          <span className="symbol-input100">
+            <i className="fas fa-user-graduate" aria-hidden="true" />
+          </span>
+                      </div>
 
         
         <div className="wrap-input100 validate-input" >

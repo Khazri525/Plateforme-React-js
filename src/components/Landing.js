@@ -50,7 +50,7 @@ function Landing() {
         </Link>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
         <Link to="/coordinateur/acceuil" className="dropdown-item txt2 text-decoration-none" >Coordinateur</Link> 
-        <Link to="/service-de-formation/acceuil" className="dropdown-item txt2 text-decoration-none" >Service de formation</Link> 
+        <Link to="/service-de-formation/acceuil" className="dropdown-item txt2 text-decoration-none" >Responsable formation</Link> 
         <Link to="/chef-departement/acceuil" className="dropdown-item txt2 text-decoration-none" >Chef de département</Link> 
         <Link to="/encadrant/acceuil" className="dropdown-item txt2 text-decoration-none" >Encadrant</Link> 
         <Link to="/stagiaire/acceuil" className="dropdown-item txt2 text-decoration-none" >Stagiaire</Link> 

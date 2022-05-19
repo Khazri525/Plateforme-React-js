@@ -78,14 +78,20 @@ function LoginStagiaire() {
                 localStorage.setItem('auth_token' , res.data.access_token);
                 localStorage.setItem('auth_name' , res.data.username);  
                 localStorage.setItem('role' , 'stagiaire');
-                localStorage.setItem('etatSt' , ' etudiant');
+                localStorage.setItem('etatSt' , res.data.etatSt );  
+                localStorage.setItem('niveauetude' , res.data.niveauetude ); 
                 localStorage.setItem('dossiervalideSt' , res.data.dossiervalideSt);
                 Swal.fire("Succès" , res.data.message , "success");
-                window.location.href="/"
+             { /*  window.location.href="/"  */} 
               
-                //  navigate('/stagiaire/acceuil' );
-                navigate('/');
-
+                if(localStorage.getItem('etatSt' ) == 'etudiant'){
+                 window.location.href="/" 
+                  navigate('/');
+                }
+             
+                if(localStorage.getItem('etatSt' ) == 'stagiaire_accepte_p'){
+                  navigate('/stagiaire/acceuil');
+                }
               
  
  
@@ -152,11 +158,11 @@ function LoginStagiaire() {
         </div>
         <br/>
 
-        <br/>
+    
 
-<div className="text-center p-t-136">
+{/* <div className="text-center p-t-136">
 <Link to="/S-forgot " className="text-decoration-none" > Oublier le mot de passe ?</Link>  
-</div>
+</div> */}
 
 <div className="text-center p-t-136">
 <Link to="/register-stagiaire" className="text-decoration-none"> S'inscrire</Link>  

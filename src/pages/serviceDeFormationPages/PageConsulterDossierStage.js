@@ -35,7 +35,7 @@ function PageConsulterDossierStage() {
   const valideDoss = (e, id) => {
       e.preventDefault();
 
-   const thisClicked = e.currentTarget ;
+  // const thisClicked = e.currentTarget ;
   /*   thisClicked.innerText = "Effacé"; */
 
  
@@ -44,7 +44,8 @@ function PageConsulterDossierStage() {
   axios.put(`api/valide-dossier/${id}`).then(res =>{
        if(res.data.status === 200){
         swal("Sucess" , res.data.message , "success"); 
-        thisClicked.closest("tr").remove();
+        window.location.href="/service-de-formation/afficher-demandes-stages" 
+       // thisClicked.closest("tr").remove();
         //<i className=" fas fa-trash-alt  text-danger"></i>
        }
        else{
@@ -71,6 +72,7 @@ function PageConsulterDossierStage() {
 axios.put(`api/invalide-dossier/${id}`).then(res =>{
    if(res.data.status === 200){
     swal("Sucess" , res.data.message , "success"); 
+    window.location.href="/service-de-formation/afficher-demandes-stages" 
     //thisClicked.closest("tr").remove();
     //<i className=" fas fa-trash-alt  text-danger"></i>
    }
@@ -183,7 +185,7 @@ else{
    }
  }).map( (doss, index) => {
      
-      if(doss.DossierStage !==null  ){    
+      if(doss.DossierStage !==null && doss.dossiervalideSt !== 'oui' && doss.dossiervalideSt !== 'non'  ){    
     return(
    <>
           <tr key={doss._id}>
@@ -210,6 +212,68 @@ else{
              </td>
           </tr>
    </> )}
+
+   else if(doss.DossierStage !==null && doss.dossiervalideSt == 'oui' ){
+   
+      return(
+     <>
+            <tr key={doss._id}>
+               <td>{index+1}</td>
+               <td>{doss.name}</td>
+               <td>{doss.prenom}</td>
+               <td>{doss.DossierStage.cinfile}</td>
+               <td>{doss.DossierStage.convfile}</td>
+               <td>{doss.DossierStage.cvfile}</td>
+               <td>{doss.DossierStage.lettfile}</td>
+               
+               {/* <td>
+                  <Link to={`/service-de-formation/modifier-departement/${item._id}`}>
+                    <i className="fas fa-pencil-alt  text-success"></i></Link>
+               </td> 
+              <td>  
+                    <i onClick={ (e) => deleteDept(e , item._id)}  className=" fas fa-trash  text-danger"></i>
+               </td>
+  
+               <td>{DeptEtat}</td>*/}
+               <td>
+               <button type="button" className="btn btn-success btn-sm  mt-2 rounded-pill "  ><i className="fas fa-check "></i>Dossier est Valide</button>
+               {/* <button type="button" className="btn btn-danger btn-sm  mt-2  ml-2 rounded-pill" onClick={ (e) => invalideDoss(e , doss._id)}  ><i className="fas  fas fa-ban "></i>Invalide</button>  */}
+               </td>
+            </tr>
+     </> )
+   }
+
+
+
+   else if(doss.DossierStage !==null && doss.dossiervalideSt == 'non' ){
+   
+    return(
+   <>
+          <tr key={doss._id}>
+             <td>{index+1}</td>
+             <td>{doss.name}</td>
+             <td>{doss.prenom}</td>
+             <td>{doss.DossierStage.cinfile}</td>
+             <td>{doss.DossierStage.convfile}</td>
+             <td>{doss.DossierStage.cvfile}</td>
+             <td>{doss.DossierStage.lettfile}</td>
+             
+             {/* <td>
+                <Link to={`/service-de-formation/modifier-departement/${item._id}`}>
+                  <i className="fas fa-pencil-alt  text-success"></i></Link>
+             </td> 
+            <td>  
+                  <i onClick={ (e) => deleteDept(e , item._id)}  className=" fas fa-trash  text-danger"></i>
+             </td>
+
+             <td>{DeptEtat}</td>*/}
+             <td>
+             <button type="button" className="btn btn-danger btn-sm  mt-2 rounded-pill "  ><i className="fas fa-check "></i>Dossier est Invalide</button>
+             {/* <button type="button" className="btn btn-danger btn-sm  mt-2  ml-2 rounded-pill" onClick={ (e) => invalideDoss(e , doss._id)}  ><i className="fas  fas fa-ban "></i>Invalide</button>  */}
+             </td>
+          </tr>
+   </> )
+ }
  });
 }
 

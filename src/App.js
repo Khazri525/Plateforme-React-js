@@ -63,6 +63,16 @@ import MonProfile from './components/MonProfile';
 import TProfile from './components/TProfile';
 import PageCalendrier from './pages/encadrantPages/PageCalendrier';
 
+
+/* import Pretest from './components/TestPsycho/PreTest';
+import Quiz from './components/TestPsycho/Quiz';
+import PageConsulterQuestionReponse from './pages/serviceDeFormationPages/PageConsulterQuestionReponse';
+import PageModifierQuestion from './pages/serviceDeFormationPages/PageModifierQuestion';
+import PageModifierReponse from './pages/serviceDeFormationPages/PageModifierReponse';
+import PageParamsQuiz from './pages/serviceDeFormationPages/PageParamsQuiz';
+
+ */
+
 import ParamQuiz from './pages/serviceDeFormationPages/ParamQuiz';
 import Pretest from './components/TestPsycho/PreTest';
 import Quiz from './components/TestPsycho/Quiz';
@@ -71,8 +81,15 @@ import PageModifierQuestion from './pages/serviceDeFormationPages/PageModifierQu
 import PageModifierReponse from './pages/serviceDeFormationPages/PageModifierReponse';
 
 import PageParamsQuiz from './pages/serviceDeFormationPages/PageParamsQuiz';
+import PageParamsQuestions from './pages/serviceDeFormationPages/PageParamsQuestions';
+import PageParamsReponses from './pages/serviceDeFormationPages/PageParamsReponses';
+import CrudTableDept from './pages/serviceDeFormationPages/CrudTableDept';
+
+
+
+
 import PageConsulterCompte from './pages/coordinateurPages/PageConsulterCompte';
-import PageConsulterDepartement from './pages/serviceDeFormationPages/PageConsulterDepartement';
+
 import PageDeposerDossierStage from './pages/stagiairePages/PageDeposerDossierStage';
 import PageConsulterDossierStage from './pages/serviceDeFormationPages/PageConsulterDossierStage';
 import PageConsulterBilan from './pages/serviceDeFormationPages/PageConsulterBilan';
@@ -239,7 +256,7 @@ axios.interceptors.request.use(function (config){
 
 
 
- {/* <Route path="/" element={< EProtectedRoute/>}>    */}
+ {/* <Route path="/" element={< EProtectedRoute/>}>   */}
         <Route path="encadrant/" element={<EDashboard/>} >  
              <Route path="acceuil"  element={<Acceuil/>} />
               <Route path="profile" exact  element={< TProfile  />} />
@@ -262,7 +279,7 @@ axios.interceptors.request.use(function (config){
           <Route path="acceuil"  element={<Acceuil/>} />
           <Route path="profile"  element={< TProfile />} />
           <Route path="ajouter-departement" element={<PageAjouterDepartement/>} /> 
-          <Route path="afficher-departements" element={<PageConsulterDepartement/>} /> 
+          <Route path="afficher-departements" element={<CrudTableDept/>} /> 
           <Route path="modifier-departement/:id" exact  element={<PageModifierDepartement/>} /> 
           <Route path="afficher-demandes-stages"  element={< PageConsulterDemandeStage  />} />
          
@@ -271,11 +288,19 @@ axios.interceptors.request.use(function (config){
           <Route path="ajouterReponse" element={<PageAjouterReponse/>} />
           <Route path="afficherReponse" element={< PageConsulterReponse  />} /> */}
 
+         {/*   <Route path="afficherQuestionReponse" element={< PageConsulterQuestionReponse />} />
+           <Route path="modifier-question/:id" exact  element={< PageModifierQuestion  />} /> 
+           <Route path="modifier-reponse/:id" exact  element={< PageModifierReponse  />} /> 
+           <Route path="paramQuiz" element={< PageParamsQuiz />} /> */}
+   
+
            <Route path="afficherQuestionReponse" element={< PageConsulterQuestionReponse />} />
            <Route path="modifier-question/:id" exact  element={< PageModifierQuestion  />} /> 
            <Route path="modifier-reponse/:id" exact  element={< PageModifierReponse  />} /> 
            <Route path="paramQuiz" element={< PageParamsQuiz />} />
-          {/* <Route path="paramQuiz" element={< ParamQuiz />} /> */}
+           <Route path="paramQuiz/:id" element={< PageParamsQuestions />} />
+           <Route path="paramQuiz/:id/paramQuestion/:id" element={< PageParamsReponses />} />
+           
 
 
           <Route path="afficher-dossies-stage" element={< PageConsulterDossierStage/>} />

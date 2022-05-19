@@ -80,7 +80,7 @@ function PageAjouterDemandeStage() {
            axios.post(`api/ajouter-demande-stage/${StId}`,data ).then(res =>{
                 if(res.data.status === 200){
                   Swal.fire("Succès" , res.data.message ,"success");
-                  navigate('/pre-test');
+                  navigate('/quiz/test');
                   setError([]);
                   
                  }

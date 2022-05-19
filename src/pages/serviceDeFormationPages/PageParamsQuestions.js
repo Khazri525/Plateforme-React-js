@@ -1,14 +1,14 @@
 import { React, useState, useEffect } from 'react';
-import { useNavigate, NavLink, Link } from 'react-router-dom';
+import { useNavigate, useParams, NavLink, Link } from 'react-router-dom';
 import axios from 'axios';
 import { AiOutlineBars } from "react-icons/ai";
 
 import swal from 'sweetalert';
 import Swal from 'sweetalert2';
 
-function PageParamsQuiz() {
+function PageParamsQuestions() {
   const Swal = require('sweetalert2');
-
+  const testId = useParams().id;
   const [errorlist, setError] = useState([]);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -65,9 +65,7 @@ function PageParamsQuiz() {
   //Ajouter Test
   const [testInput, setTest] = useState({
     titre: '',
-    departement: '',
     niveaustagiaire: '',
-    niveautest: '',
     duree: '',
     note: '',
 
@@ -79,7 +77,7 @@ function PageParamsQuiz() {
     setTest({ ...testInput, [e.target.name]: e.target.value })
 
   }
-  const submitTest = (e) => {
+  const submitQuestion = (e) => {
     e.preventDefault();
     /*  const formData = new FormData();
      formData.append('titre',testInput.titre);
@@ -91,23 +89,21 @@ function PageParamsQuiz() {
     */
 
     const data = {
-      titre: testInput.titre,
-      departement: testInput.departement,
-      niveaustagiaire: testInput.niveaustagiaire,
-      niveautest: testInput.niveautest,
+      question: testInput.titre,
+      niveau: testInput.niveaustagiaire,
       duree: testInput.duree,
-      note: testInput.note
+      points: testInput.note,
+      idTest: testId
     }
-    axios.post('/api/test', data).then(res => {
+
+    axios.post('/api/question', data).then(res => {
 
       if (res.data.status === 200) {
         Swal.fire("Success", res.data.message, "success");
         setTest({
           ...testInput,
           titre: '',
-          departement: '',
           niveaustagiaire: '',
-          niveautest: '',
           duree: '',
           note: '',
         });
@@ -139,7 +135,7 @@ function PageParamsQuiz() {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    axios.get('/api/allquestion').then(res => {
+    axios.get(`/api/questionTest/${testId}`).then(res => {
       if (res.status === 200) {
         setQuestionlist(res.data.questions)
       }
@@ -224,6 +220,7 @@ function PageParamsQuiz() {
             <td>{item.niveau}</td>
             <td>{item.duree}</td>
             <td>{item.points}</td>
+            {/* <td>{questionId}</td> */}
             {/* <td>
 <a href="#"  key={item._id} data-toggle="modal" data-target="#exampleModalmodifier" ><i className="fas fa-pencil-alt  text-success"></i></a>  
         
@@ -232,7 +229,12 @@ function PageParamsQuiz() {
  */}
             <td>
               <Link to={`/service-de-formation/modifier-question/${item._id}`}>
-                <i className="fas fa-pencil-alt  text-success"></i></Link>
+                <i size={25} className="fas fa-pencil-alt  text-success"></i></Link>
+            </td>
+            <td>
+              <Link to={`paramQuestion/${item._id}`}>
+                <AiOutlineBars size={25} color={'green'} />
+              </Link>
             </td>
           </tr>
         )
@@ -269,7 +271,7 @@ function PageParamsQuiz() {
             <td>{item.niveautest}</td>
             <td>{item.note}</td>
             <td>{item.duree}</td>
-            <td><a href={`paramQuiz/${item._id}`}><AiOutlineBars size={25} color={'green'} /></a></td>
+            <td><a href=''><AiOutlineBars size={25} color={'green'} /></a></td>
           </tr>
         )
       });
@@ -281,7 +283,7 @@ function PageParamsQuiz() {
         <div className="container-fluid">
           <div className="row mb-2">
             <div className="col-sm-6">
-              <h3>Paramètres du test</h3>
+              <h3>Paramètres des questions</h3>
             </div>
 
 
@@ -299,94 +301,8 @@ function PageParamsQuiz() {
       </section>
 
 
-
-      {/* Paramétres Test */}
-
-
-
-
-
-
       <div className="container ">
         <div className="card mt-4">
-
-
-          <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4  col-md-5 " style={{ marginLeft: "1cm", marginRight: "1cm", marginTop: "1cm" }}>
-            <div class="input-group">
-              <input type="search" placeholder="Que cherchez-vous?" aria-describedby="button-addon1" class="form-control border-0 bg-light"
-                onChange={(e) => {
-                  setSearchTerm(e.target.value);
-                }}
-
-              />
-              <div class="input-group-append">
-                <button id="button-addon1" type="submit" class="btn btn-link text-primary"><i class="fa fa-search"></i></button>
-              </div>
-            </div>
-          </div>
-
-
-          <div className="card-tools">
-            <div className="form-inline float-right">
-
-              <a href="#" className="btn btn-success btn-sm " data-toggle="modal" data-target="#z" style={{ marginRight: "1cm" }}> + Ajouter un Test</a>
-
-            </div>
-
-          </div>
-
-          <br />
-
-
-
-
-          <div className="card card-success" style={{ marginLeft: "1cm", marginRight: "1cm" }}>
-
-
-            <div className="card-header">
-
-
-              <h3 className="card-title">Tests</h3>
-              <div className="card-tools">
-                <button type="button" className="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                  <i className="fas fa-minus" />
-                </button>
-              </div>
-            </div>
-
-            <div className="card-body p-0">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Titre</th>
-                    <th>Département</th>
-                    <th>Niveau Stagiaire</th>
-                    <th>Niveau Test</th>
-                    <th>Note</th>
-                    <th>Durée</th>
-                    <th>Questions</th>
-                  </tr>
-                </thead>
-                <tbody>
-
-
-                  {AfficherTest_HTMLTABLE}
-
-
-
-                </tbody>
-              </table>
-
-
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* <div className="container ">
-        <div className="card mt-4">
-
 
           <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4 col-md-5  " style={{ marginLeft: "1cm", marginRight: "1cm", marginTop: "1cm" }}>
             <div class="input-group">
@@ -404,23 +320,16 @@ function PageParamsQuiz() {
 
 
           <div className="card-tools">
-            <div className="form-inline float-right"> */}
+            <div className="form-inline float-right">
 
-      {/* <a href="#" className="btn btn-primary btn-sm " data-toggle="modal" data-target="#x" style={{marginRight:"1cm"}} > +créer question</a>  
-<a href="#" className="btn btn-success btn-sm " data-toggle="modal" data-target="#y" style={{marginRight:"1cm"}}> +créer reponse</a>  
-   */}
+              <a href="#" className="btn btn-primary btn-sm " data-toggle="modal" data-target="#z" style={{ marginRight: "1cm" }} > + Ajouter une question</a>
+              {/* <a href="#" className="btn btn-success btn-sm " data-toggle="modal" data-target="#y" style={{ marginRight: "1cm" }}> +créer reponse</a> */}
 
-      {/* </div>
+            </div>
 
           </div>
 
           <br />
-
-
-
-
-
-
 
           <div className="card card-primary" style={{ marginLeft: "1cm", marginRight: "1cm" }}>
 
@@ -428,7 +337,7 @@ function PageParamsQuiz() {
             <div className="card-header">
 
 
-              <h3 className="card-title">Les questions</h3>
+              <h3 className="card-title">Questions</h3>
               <div className="card-tools">
                 <button type="button" className="btn btn-tool" data-card-widget="collapse" title="Collapse">
                   <i className="fas fa-minus" />
@@ -440,13 +349,13 @@ function PageParamsQuiz() {
               <table className="table">
                 <thead>
                   <tr>
-                    <th>id question</th>
-                    <th>question</th>
-                    <th>niveau du difficulté</th>
-                    <th>durée (s) </th>
-                    <th>points</th>
-
-                    <th />
+                    <th>ID</th>
+                    <th>Question</th>
+                    <th>Niveau du difficulté</th>
+                    <th>Durée (sec) </th>
+                    <th>Points</th>
+                    <th>Modifier</th>
+                    <th>Réponses</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -465,7 +374,7 @@ function PageParamsQuiz() {
 
 
         </div>
-      </div> */}
+      </div>
 
 
 
@@ -486,7 +395,7 @@ function PageParamsQuiz() {
           <div className="modal-dialog  ">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title" id="#exampleModalLabel">Ajouter Test</h5>
+                <h5 className="modal-title" id="#exampleModalLabel">Ajouter une question</h5>
                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">×</span>
                 </button>
@@ -496,16 +405,16 @@ function PageParamsQuiz() {
                 {/* body */}
 
                 <div className="col-md-offset-3 col-md-12">
-                  <form onSubmit={submitTest}>
+                  <form onSubmit={submitQuestion}>
                     <div className="row">
 
 
 
-                      {/* Titre */}
+                      {/* Question */}
                       <div className="wrap-input100   col-lg-12 mb-4 " >
 
 
-                        <input className="input100" type="text" name="titre" placeholder="Titre du test" onChange={handleInput} value={testInput.titre} />
+                        <input className="input100" type="text" name="titre" placeholder="Question" onChange={handleInput} value={testInput.titre} />
                         <span className="focus-input111" />
                         <span className="symbol-input111">
 
@@ -514,49 +423,22 @@ function PageParamsQuiz() {
 
                       </div>
 
-
-
-                      <div className="wrap-input100   col-lg-12 mb-4 " >
-                        <select name="departement" id="inputDépartement" onChange={handleInput} value={testInput.departement} className="input100 border-0 " type="text" >
-
-                          <option selected hidden>--Département--</option>
-
-                          <option name="departement" >Marketing</option>
-                          <option name="departement" >DSI</option>
-                          <option name="departement" >commerciale</option>
-                          <option name="departement" >projets et innovation</option>
-                          <option name="departement" >finance</option>
-
-                        </select>
-                      </div>
-
                       <div className="wrap-input100   col-lg-12 mb-4 " >
                         <select name='niveaustagiaire' onChange={handleInput} value={testInput.niveaustagiaire} className="input100 border-0 ">
-                          <option selected hidden>--Niveau d'étude--</option>
-                          <option name="niveaustagiaire" value="bac">Bac</option>
-                          <option name="niveaustagiaire" value="bts">BTS</option>
-                          <option name="niveaustagiaire" value="licence">Licence</option>
-                          <option name="niveaustagiaire" value="master">Master</option>
-                          <option name="niveaustagiaire" value="ingénieur">cycle ingénieur</option>
-                        </select>
-
-                      </div>
-                      <div className="wrap-input100   col-lg-12 mb-4 " >
-                        <select name="niveautest" className="input100 border-0 " onChange={handleInput} value={testInput.niveautest} >
                           <option selected hidden>--Niveau--</option>
-                          <option name="niveautest">facile</option>
-                          <option name="niveautest">moyen</option>
-                          <option name="niveautest">difficile</option>
-
+                          <option name="niveaustagiaire" value="facile">Facile</option>
+                          <option name="niveaustagiaire" value="moyen">Moyen</option>
+                          <option name="niveaustagiaire" value="difficile">Difficile</option>
                         </select>
+
                       </div>
 
                       <div className="wrap-input100   col-lg-12 mb-4 " >
-                        <input name="duree" className="input100 border-0 " type="text" placeholder="Durée du Test en secondes" onChange={handleInput} value={testInput.duree} />
+                        <input name="duree" className="input100 border-0 " type="text" placeholder="Durée du Question en secondes" onChange={handleInput} value={testInput.duree} />
                       </div>
 
                       <div className="wrap-input100   col-lg-12 mb-4 " >
-                        <input name="note" className="input100 border-0 " type="text" placeholder="Note" onChange={handleInput} value={testInput.note} />
+                        <input name="note" className="input100 border-0 " type="text" placeholder="Points" onChange={handleInput} value={testInput.note} />
                       </div>
 
                       {/* Cancel Button */}
@@ -587,4 +469,4 @@ function PageParamsQuiz() {
   )
 }
 
-export default PageParamsQuiz
+export default PageParamsQuestions

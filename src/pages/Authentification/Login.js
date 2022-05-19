@@ -96,19 +96,23 @@ function Login() {
                 navigate('/U-forgot');
               }
               else if(res.data.role === 'encadrant' && res.data.premlog == 'non'){
-                navigate('/encadrant/acceuil');
+               // navigate('/encadrant/acceuil');
+                navigate('/');
               }
               else if(res.data.role === 'chef_dept' && res.data.premlog == 'non'){
-                navigate('/chef-departement/acceuil');
+                //navigate('/chef-departement/acceuil');
+                navigate('/');
               }
               else if(res.data.role === 'service_formation' && res.data.premlog == 'non'){
-                navigate('/service-de-formation/acceuil' );
+                //navigate('/service-de-formation/acceuil' );
+                navigate('/');
               }
              /*  else{
                 navigate('/');
               } */
               else if(res.data.role === 'coordinateur'&& res.data.premlog == 'non'){
-                navigate('/coordinateur/acceuil');
+                //navigate('/coordinateur/acceuil');
+                navigate('/');
               }
 
 
