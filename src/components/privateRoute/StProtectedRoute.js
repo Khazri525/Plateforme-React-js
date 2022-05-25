@@ -5,7 +5,7 @@ import swal from 'sweetalert';
 import Swal from 'sweetalert2';
 
 
-
+//Protéger les routes de stagiaire
     function StProtectedRoute () {
         const Swal = require('sweetalert2');
 	const navigate = useNavigate();
@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
         const [loading , setloading] = useState(true);
 
         useEffect(()=> {
+             //appeler l'api du backend pour vérifier  la connexion à la plateforme
             axios.get( `/api/checkingAuthenticated`).then(res => {
                 if(res.status ===  200)
                 {
@@ -31,7 +32,7 @@ import Swal from 'sweetalert2';
         axios.interceptors.response.use(undefined, function axiosRetryInterceptor(err) {
             if(err.response.status ===  401 )
             {
-                Swal.fire("Non autorisé!" , "vous n'êtes pas autorisé" ,"warning");//err.response.data.message
+                Swal.fire("Non autorisé!" , "vous n'êtes pas autorisé" ,"warning");
                 navigate('/login');
             }
             return Promise.reject(err);
@@ -42,17 +43,29 @@ import Swal from 'sweetalert2';
        
 
 
+//chargement des données
+if(loading){
 
-        if(loading){
-            return <h2>Loading...</h2>
-        }
-    
+    return <div class="d-flex justify-content-center "
+    style={{marginTop: '.150' ,  position: 'absolute',
+    height: '100px',
+    width: '100px',
+    top:' 50%',
+    left: '50%',
+   }}>
+    <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+    <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+    <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+   </div>
+   
+       
+   }
    
 
       if(Authentificated && localStorage.getItem('role')=='stagiaire'){
             return <Outlet/>  
       }else if(Authentificated && (localStorage.getItem('role')=='chef_dept' ||localStorage.getItem('role')=='encadrant'||localStorage.getItem('role')=='service_formation' || localStorage.getItem('role')=='coordinateur' )){
-        Swal.fire("Interdit!" ,"vous n'êtes pas stagiaire" ,"warning"); //error.response.data.message
+        Swal.fire("Interdit!" ,"!!!" ,"warning"); 
         return <Navigate to ="/Page403"/>
       }else{
         Swal.fire("Non autorisé!" , "vous n'êtes pas autorisé","warning");

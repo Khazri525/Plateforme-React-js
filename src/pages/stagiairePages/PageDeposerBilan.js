@@ -8,13 +8,9 @@ function PageDeposerBilan() {
   const Swal = require('sweetalert2');
 
   const navigate = useNavigate();
-  const [ travailInput , setTravail] =useState ({
-    description: '',
-  });
  
- 
-      
   
+   //le fichier bilan
  const [ filedata , setFiledata] = useState([]);
 
   const handleFile  = (e) =>{
@@ -23,6 +19,8 @@ function PageDeposerBilan() {
 
 
   
+   
+   //En cliquant sur le bouton Ajouter un bilan, les données seront envoyées à la base de données
    const bilanSubmit = (e) => {
     e.preventDefault();
     
@@ -31,7 +29,9 @@ function PageDeposerBilan() {
       
 
       } 
+        //appeler l'id du stagiaire connecté 
       const StId = localStorage.getItem('id'); 
+      //appeler l'api du backend pour effectuer le dépot d'un bilan 
     axios.post( `api/deposer-bilan/${StId}`, data).then(res =>{
                   if(res.data.status === 200){
                     Swal.fire ("Succès" , res.data.message ,"success");
@@ -49,11 +49,6 @@ function PageDeposerBilan() {
 
 
    }
-
-
-
-
-
 
   return (
     <>
@@ -86,7 +81,8 @@ function PageDeposerBilan() {
     <form onSubmit={bilanSubmit}>
  
 
-        
+
+  {/* Le bilan  */}     
  <div className="wrap-input100   col-lg-12 mb-4  form-group " >   
  <p className="text-center   text-secondary"> Déposer votre Bilan</p>
   <div className="frame">
@@ -97,12 +93,13 @@ function PageDeposerBilan() {
         </div>
     </div> 
 
+
+   {/* Le bouton déposer bilan */}
     <div className="d-flex justify-content-center">
     <div className="form-group col-lg-2  "> 
 
          <button type="submit" className="login100-form-btn   ">
          
-
            <Link to="#"  style={{color: 'white'}}>
            Déposer
            </Link> 

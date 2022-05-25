@@ -8,17 +8,18 @@ import Swal from 'sweetalert2';
 function PageConsulterRapport() {
 
 
-    
+  const Swal = require('sweetalert2');
   
    const[loading,setLoading] = useState(true);
 
 
    //rechercher
-   const[searchTerm,setSearchTerm] = useState("");
+  // const[searchTerm,setSearchTerm] = useState("");
 
-      //Stagiaire
+    
       const[userlist,setUserlist] = useState([]);
       useEffect(()=> {
+                //appeler l'api du backend pour consulter la liste des rapports déposés par les stagiaires
         axios.get('api/afficher-stagiaire').then(res=> {
           if(res.status ===200){
             setUserlist(res.data.stagiaire)
@@ -26,85 +27,9 @@ function PageConsulterRapport() {
           setLoading(false);
         });
     },[]);
-     
+  
 
-
-
-
-
-
-   //
-  /* const deleteDept = (e, id) => {
-      e.preventDefault();
-
-   const thisClicked = e.currentTarget;
-   thisClicked.innerText = "Effacé";
-
- 
-
-
-  axios.delete(`api/supprimer-departement/${id}`).then(res =>{
-       if(res.data.status === 200){
-        swal("Sucess" , res.data.message , "success"); 
-        thisClicked.closest("tr").remove();
-        <i className=" fas fa-trash-alt  text-danger"></i>
-       }
-       else{
-        swal("Error" , res.data.message , "Error");
-        // thisClicked.innerText ="Delete"
-        <i className=" fas fa-trash  text-danger"></i>
-       }
-  });
-
- } */
-//
-
-//////////////////////////////////confirmation
-const Swal = require('sweetalert2');
-const deleteDept = (e ,id) => {
-  const thisClicked = e.currentTarget;
-  e.preventDefault();
-
-  Swal.fire({
-    title: 'Confirmer?',
-    text: "Vous étes sur vous voulez supprimer département!",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Oui,Supprimer!',
-    cancelButtonText: 'Annuler',
-
-  }).then((result) =>  {
-    if (result.isConfirmed) {
-      
-      axios.delete(`api/supprimer-departement/${id}`).then(res =>{
-        if(res.data.status === 200){
-          Swal.fire("Succès" , res.data.message , "success"); 
-         thisClicked.closest("tr").remove();
-         //<i className=" fas fa-trash-alt  text-danger"></i>
-        }
-        else{
-          Swal.fire("Erreur" , res.data.message , "error");
-         // thisClicked.innerText ="Delete"
-         //<i className=" fas fa-trash  text-danger"></i>
-        }
-   });
-     
-      // Swal.fire(
-      //   'Deleted!',
-      //   'Your file has been deleted.',
-      //   'success'
-      // )
-    }
-  })
-}
-
-///////////////////////.confirmation
-
-
-
-
+//chargement des données
 if(loading){
   return <div class="d-flex justify-content-center "
  style={{marginTop: '.150' ,  position: 'absolute',
@@ -119,14 +44,16 @@ if(loading){
 </div>
 }
 else{
+      //afficher la liste des rapports déposés par des stagiaires  
     var afficher_Rapport_Table ="";
   afficher_Rapport_Table =
+    //rechercher rapport par mot clé
  userlist.filter(val =>{
-   if(searchTerm === ""){
+ /*   if(searchTerm === ""){
      return val;
    }else if( val.nom_dept.toLowerCase().includes(searchTerm.toLowerCase()) ||   val.nom_chef_dept.toLowerCase().includes(searchTerm.toLowerCase())) {
      return val;
-   }
+   } */
  }).map( (item , index) => {
      
     if(item.Rapport !==null  ){  
@@ -140,21 +67,11 @@ else{
               </td>
              <td>{item.Rapport.rfife}</td>
              
-              {/*  <td>
-                <Link to={`/service-de-formation/modifier-departement/${item._id}`}>
-                  <i className="fas fa-pencil-alt  text-success"></i></Link>
-             </td>
-           <td>  
-                  <i onClick={ (e) => deleteDept(e , item._id)}  className=" fas fa-trash  text-danger"></i>
-             </td>
-          */}
-
-
-
+         
 
           
 
-{/* Afficher détails   */}
+       {/* Afficher les détails du stagiaire qui a déposé un rapport de stage*/}
 <div>
 
 
@@ -182,33 +99,17 @@ else{
        <strong>Adresse   </strong>{item.adresse} <br/>
        <strong>Télephone  </strong>{item.telephone} <br/>
        
-      {/*  <strong>Type de stage:</strong> {dm.demandeStages[0][0]}<br/>
-       <strong>Nom département:</strong>  {dm.demandeStages[0][1]}<br/>
-       <strong>CV</strong> {dm.demandeStages[0][2]} */}
-{/* 
-       <form>
-               {/* utilisateur matricule 
-            <strong >Matricule Encadrant </strong> 
-          <div className="wrap-input100   col-lg-6 mb-4" >
-        <input className="input100" type="number" placeholder="Matricule" name="Matricule" />
-          <span className="focus-input111" />
-          <span className="symbol-input111">
-            
-          </span>
-          </div>
-       </form> */}
   </div>
         </div>
         <div className="modal-footer">
           <button type="button" className="btn btn-secondary" data-dismiss="modal">Fermer</button>
-          {/* <button type="button" className="btn btn-primary">Save changes</button> */}
         </div>
       </div>
     </div>
   </div>
 </div>
 
-{/* .Afficher détails   */}
+       {/* .Afficher les détails du stagiaire qui a déposé un rapport de stage*/}
             
           </tr>
     )}
@@ -259,7 +160,7 @@ else{
    <div className="card mt-4">
      <div className="card-header">
         
-     <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
+    {/*  <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
             <div class="input-group">
               <input type="search" placeholder="Que cherchez-vous?" aria-describedby="button-addon1" class="form-control border-0 bg-light"
                onChange={(e)=> {
@@ -271,13 +172,7 @@ else{
                 <button id="button-addon1" type="submit" class="btn btn-link text-primary"><i class="fa fa-search"></i></button>
               </div>
             </div>
-          </div>
-
-     
-        {/*   <Link to="/service-de-formation/ajouter-departement" className="btn btn-primary btn-sm float-right">
-           <i className="fas fa-plus"> </i>Ajouter Département</Link> 
-    */}
-
+          </div> */}
      <div className="card-body mt-4"> 
          <br/>
          <table className="table table-striped projects ">

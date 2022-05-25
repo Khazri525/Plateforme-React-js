@@ -4,14 +4,14 @@ function ChSideList() {
   return (
     <>
        
-   
-    {/* Sidebar Menu */}
+
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
 
 
         <li className="nav-item">
+            {/*   le lien d'accueil */}
                   <Link to="/chef-departement/acceuil">
                     <i class="nav-icon  fas fa-window-maximize"></i>
                     Acceuil
@@ -20,6 +20,7 @@ function ChSideList() {
 
 
                 <li className="nav-item">
+                  {/*   le lien de profil */}
                   <Link to="/chef-departement/profile">
                     <i class="nav-icon   fas fa-user-cog"></i>
                     Profil
@@ -27,7 +28,6 @@ function ChSideList() {
                 </li><br/>
       </ul>
     </nav>
-    {/* /.sidebar-menu */}
     </>
   )
 }

@@ -1,6 +1,5 @@
 import {React,useState,useEffect} from 'react'
 import { useNavigate,useParams ,Link, NavLink} from 'react-router-dom';
-//import ErrorMessage from "../../src/ErrorMessage/ErrorMessage"
 import {Button, Form, FormGroup} from 'react-bootstrap'
 
 import axios from 'axios';
@@ -14,6 +13,11 @@ function PageModifierReponse() {
   const navigate = useNavigate();
   const [image ,setRepimage] = useState([]);
 
+
+  const [repType, setRepType] = useState(null);
+
+  
+
   const params=useParams();
   
   
@@ -26,7 +30,7 @@ function PageModifierReponse() {
   useEffect(() => {
      
     const reponseId = params.id;
-     
+         //appeler l'api du backend qui effectue la recherche d'une réponse par son id
     axios.get(`api/reponse/${reponseId}`).then(res =>{
        if(res.data.status === 200 ){
         setReponse(res.data.reponse);
@@ -49,22 +53,28 @@ function PageModifierReponse() {
    setReponse({ ...reponseInput , [e.target.name]: e.target.value})
  }
  
- 
+ //En cliquant sur le bouton modifier, les données seront modifiées dans la base de données
  const updateReponse = (e) => {
     e.preventDefault();
  
     const reponseId = params.id;
-    const data = reponseInput;
-    
+   // const data = reponseInput;
+   const data = {
+    id_question: reponseId,
+    repcorrecte: reponseInput.niveaustagiaire,
+    reptext: reponseInput.duree,
+  } 
  
  
  
+ //appeler l'api du backend qui effectue la modification d'une réponse à travers son id
     axios.put(`api/reponse/${reponseId}` , data).then( res => {
       if(res.data.status === 200){
         Swal.fire("Sucess" , res.data.message , "success");
-        navigate('/service-de-formation/afficherQuestionReponse');
-        
+         navigate("/service-de-formation/paramQuiz")
+    
         setError([]);
+      
  
       }
       else if(res.data.status === 422){
@@ -103,92 +113,63 @@ return(
             </ol>
           </div>
         </div>
-      </div>{/* /.container-fluid */}
+      </div>
     </section>
 
 
     <br/>
       <div className="col-md-offset-3 col-md-10 mx-auto">
         <div className="form-container">
-    {/* onSubmit={compteSubmit}       */}
 <form onSubmit={updateReponse}>
   <div className="row">
-
-   {/*Reponse image*/}         
-   <div className="wrap-input100   col-lg-12 mb-4  form-group " >   
- <p className="text-secondary">Réponse image</p>
-  <div className="frame">
-     <div className="d-flex justify-content-center ">
-         <div className="dropzone">
-             <img src="http://100dayscss.com/codepen/upload.svg" className="upload-icon  " />
-             <input  name='reptext'
-              type="file" onChange={handleImage} required className="upload-input " />
-        </div>
-    </div> 
-  </div>
-  </div>
-
-       {/*Reponse Text*/}
-       <div className="wrap-input100   col-lg-12 mb-4" >
-              <input className="input100"  name='reptext'
-      type="text"
-      placeholder='Réponse text'
-      onChange={handleInput} value={reponseInput.reptext}
-
-      required/>
-              <span className="focus-input111" />
-              <span className="symbol-input111">
-            
-              </span>
-            
-            </div>
-            
+   {/* Réponse */}
 
 
-         {/*Reponse image*/}
- {/*         <p style={{marginLeft:"0.5cm"}}  className="text-secondary">Réponse image</p>
-         <div className="wrap-input100   col-lg-12 mb-4" >
-              <input className="input100"  
-      type="file" 
-      name="image"
-      onChange={handleImage}
-      required/>
-              <span className="focus-input111" />
-              <span className="symbol-input111">
-            
-              </span>
-            
-            </div> */}
+   <div className="wrap-input100   col-lg-12 mb-4 " >
+                        <select name='niveaustagiaire' onChange={handleInput} value={reponseInput.niveaustagiaire} className="input100 border-0 ">
+                          <option selected hidden>--Correcte?--</option>
+                          <option name="niveaustagiaire" value={true}>Oui</option>
+                          <option name="niveaustagiaire" value={false}>Non</option>
+                        </select>
 
+                      </div>
 
-             {/*Reponse correcte*/}
-         <div className="wrap-input100   col-lg-12 mb-4" >
-              <input className="input100"   name="repcorrecte"
-      type="text"
-        placeholder='Réponse correcte'
-      onChange={handleInput} value={reponseInput.repcorrecte}
-      required/>
-              <span className="focus-input111" />
-              <span className="symbol-input111">
-            
-              </span>
-            
-            </div>
+                      <div className='wrap-input100   col-lg-12 mb-4'>
+                        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                            <input type='radio' id='repText' name='rep' onClick={() => setRepType(0)} />
+                            <p style={{ marginLeft: 5 }}>Réponse </p>
+                          </div>
+                        {/*   <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                            <input type='radio' id='repImage' name='rep' onClick={() => setRepType(1)} />
+                            <p style={{ marginLeft: 5 }}>Réponse Image</p>
+                          </div> */}
+                        </div>
+                      </div>
 
-   
+                      {
+                        repType === 0 ?
+                        // Réponse Texte
+                          <div className="wrap-input100 col-lg-12 mb-4 ">
+                            <input name="duree" className="input100 border-0 " type="text" placeholder="Réponse" onChange={handleInput} value={reponseInput.duree}  required />
+                          </div>
+                          : repType === 1 ?
+                         // Réponse Image
+                          <div className="wrap-input100 col-lg-12 mb-4">
+                            <input name="note" className="input100 border-0 " type="file" onChange={handleInput} value={reponseInput.note} />
+                          </div>
+                          : null
+                      }
 
 
 
-
-
- 
-    {/* Cancel Button */}
+{/* Le bouton annuler */}
     <br/>
     <div className="form-group col-lg-2 ">
    
           <button className="persb-btn">
 
-           <Link to="/service-de-formation/afficherQuestionReponse"  style={{color: 'white'}}>
+           <Link to="/service-de-formation/paramQuiz"  style={{color: 'white'}}>
           Annuler
             </Link> 
 
@@ -196,6 +177,8 @@ return(
        
         </div>
 
+
+    {/* Le bouton modifier réponse */}
     
         <div className="form-group col-lg-3 ">
           <button type="submit" className="login100-form-btn"  style={{color: 'white'}}>

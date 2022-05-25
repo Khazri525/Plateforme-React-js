@@ -1,47 +1,28 @@
-/* import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import swal from 'sweetalert';
- */
-
 import React from 'react'
+
+//la page d'accueil de tous les espaces, qui contient les informations de topnet
 function Acceuil() {
 
- /*  const navigate = useNavigate();
-  const logoutSubmit = (e) =>{
-    e.preventDefault();
-
-    axios.post('/api/logout').then(res =>{
-           if(res.data.status === 200){
-            localStorage.removeItem('auth_token');
-            localStorage.removeItem('auth_name');
-           swal ("Success" , res.data.message);
-           navigate('/etudiant/acceuil');
-           }
-    });
-  } */
   return (
-    <>
-  {/*    <button  onClick ={logoutSubmit}   className="btn btn-secondary float-left">
-                    <i className="fa-solid fa-cloud-exclamation"> </i>
-                    Deconnexion
-      </button> */}
-             
+    <> 
+
+            
     <br/><br/><br/>
        <div className="col-12 col-sm-12 col-md-12 d-flex align-items-stretch flex-column">
   <div className="card bg-light d-flex flex-fill">
-    <div className="card-header text-muted border-bottom-0">
-      Digital Strategist
-    </div>
+
     <div className="card-body pt-0">
       <div className="row">
         <div className="col-7">
         <br/><br/><br/>
-          <h2 className="lead"><b>Nicole Pearson</b></h2>
-          <p className="text-muted text-sm"><b>About: </b> Web Designer / UX / Graphic Artist / Coffee Lover </p>
-          <ul className="ml-4 mb-0 fa-ul text-muted">
-            <li className="small"><span className="fa-li"><i className="fas fa-lg fa-building" /></span> Address: Demo Street 123, Demo City 04312, NJ</li>
-            <li className="small"><span className="fa-li"><i className="fas fa-lg fa-phone" /></span> Phone #: + 800 - 12 12 23 52</li>
-          </ul>
+         <b  className="text-muted text-sm">TOPNET: </b>
+          <p className="text-muted text-sm"> est une entreprise tunisienne qui a démarré ses activités le 02 mai 2001, elle est le leader, aujourd’hui, des Fournisseurs d'accès Internet en Tunisie.<br/><br/>
+
+          devient une filiale de groupe Tunisie Télécom, en Juin 2010, cette acquisition est considérée par Tunisie Télécom comme étant une opération stratégique permettant le renforcement de son leadership à travers un acteur qui, en quelques années, a réussi à se hisser en leader sur le marché des fournisseurs de services Internet (FSI).
+
+ </p>
+
+ <br/><br/>
         </div>
         <div className="col-3 text-center">
           <img src="../../dist/img/topnetStage.png" alt="user-avatar" className="img-circle img-fluid" />
@@ -58,7 +39,6 @@ function Acceuil() {
 <br/><br/>
          
  
-    
     </>
   )
 }

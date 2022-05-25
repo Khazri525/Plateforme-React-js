@@ -5,11 +5,12 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ESideBar from '../components/ESideBar';
 
+//Espace encadrant
 function EDashboard() {
   return (
     <>
         <Header/>
-        {/* Content  */}
+        {/* Contenu  */}
        <main className="content-wrapper">
             <Outlet />
       </main>

@@ -8,7 +8,7 @@ function PageAjouterSujet() {
   const Swal = require('sweetalert2');
     const navigate = useNavigate();
 
-    //validation erreurs
+    //validation des données
     const [utiErrsujet,setUtiErrsujet]=useState(false);
     const [utiErrtechnologies,setUtiErrtechnologies]=useState(false);
     const [utiErrnom_dept,setUtiErrnom_dept]=useState(false);
@@ -33,17 +33,10 @@ function PageAjouterSujet() {
 
       
     
-     // error_list:[],
+    
 
     });
    
-    const[userlist,setUserlist] = useState([]);
-
-    
-
-
-
-
    
    const handleInput = (e) => {
       e.persist();
@@ -79,7 +72,7 @@ function PageAjouterSujet() {
            }
         
        
-        //erreur étre string  sujet
+         //le sujet doit etre string 
        if( !(sujetInput.sujet.match('[a-z-A-Z]')) ) {  
         setUtiErrstrsujet(true)
        }
@@ -87,7 +80,7 @@ function PageAjouterSujet() {
         setUtiErrstrsujet(false)
        }
 
-        //erreur étre string  technologies
+       
         if( !(sujetInput.technologies.match('[a-z-A-Z]')) ) {  
           setUtiErrstrtechnologies(true)
          }
@@ -95,7 +88,7 @@ function PageAjouterSujet() {
           setUtiErrstrtechnologies(false)
          }
 
-          //erreur étre string  nom_dept
+         
        if( !(sujetInput.nom_dept.match('[a-z-A-Z]')) ) {  
         setUtiErrstrnom_dept(true)
        }
@@ -107,7 +100,8 @@ function PageAjouterSujet() {
       
    }
    
-   
+   //En cliquant sur le bouton Ajouter sujet, les données seront envoyées à la base de données
+
    const sujetSubmit = (e) => {
      e.preventDefault();
    
@@ -121,13 +115,13 @@ function PageAjouterSujet() {
        datedebut:sujetInput.datedebut,
        periode:sujetInput.periode,
        typestage:sujetInput.typestage,
-       //Relation
-       matricule_sj:sujetInput.matricule_sj,
+  
       
 
        }
-
-       const StId = localStorage.getItem('id'); 
+      //apporter l'id du backend à travers localStorage
+       const StId = localStorage.getItem('id');
+       //appeler l'api du backend pour effectuer l'ajout d'un sujet
         axios.post( `api/ajouter-sujet-stage/${StId}`, data).then(res =>{
              if(res.data.status === 200){
               Swal.fire("Succès" , res.data.message , "success");
@@ -137,31 +131,14 @@ function PageAjouterSujet() {
              }
 
           else if(res.data.status === 400){
-            setError(res.data.validation_errors);
-          
-          // setSujet({...sujetInput  , error_list : res.data.validation_errors});
-           
+            setError(res.data.validation_errors);           
         }
       
    
      });
    } 
    
-   
-   /* var display_errors = [];
-   if(sujetInput.error_list)
-   {
-       display_errors = [
-           sujetInput.error_list.sujet,
-           sujetInput.error_list.technologies,
-           sujetInput.error_list.description,
-
-       ]
-
-   }
- */
-   
-
+ 
   return (
     <>
       
@@ -170,15 +147,6 @@ function PageAjouterSujet() {
         <div className="row mb-2">
           <div className="col-sm-6">
             <h3>Ajouter Sujet</h3>
-
-         {/*    {
-               display_errors.map((item) => {
-                  return(<p className='mb-1'>{item}</p>)
-               })
-
-            } */}
-
-
 
           </div>
 
@@ -193,14 +161,14 @@ function PageAjouterSujet() {
             </ol>
           </div>
         </div>
-      </div>{/* /.container-fluid */}
+      </div>
     </section>
-
-
     <br/>
+
+    {/* Le formulaire de l'ajout d'un sujet */}
       <div className="col-md-offset-3 col-md-12">
         <div className="form-container">
-    {/* onSubmit={compteSubmit}       */}
+   
 <form onSubmit={sujetSubmit} >
   <div className="row">
 
@@ -210,9 +178,6 @@ function PageAjouterSujet() {
    <div className="wrap-input100   col-lg-6 mb-4  validate-input" >
           <input className="input100" type="text"  name="sujet"  onChange={handleInput} value={sujetInput.sujet}  placeholder="Sujet" />
           <span className="focus-input111" />
-          {/* <span className="symbol-input111">
-            <i className=" fas fa-copy"  aria-hidden="true" />
-          </span> */}
            {utiErrstrsujet ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> Sujet est chaine de caractéres!</span> :""}  
           {utiErrsujet ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> Sujet max 30 caractéres!</span> :""}  
          
@@ -221,9 +186,6 @@ function PageAjouterSujet() {
         <div className="wrap-input100   col-lg-6 mb-4  validate-input" >
           <input className="input100" type="text"  name="technologies"  onChange={handleInput} value={sujetInput.technologies}  placeholder="Technologies" />
           <span className="focus-input111" />
-         {/*  <span className="symbol-input111">
-            <i className=" fas fa-code"  aria-hidden="true" />
-          </span> */}
            {utiErrstrtechnologies ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> Technologies est chaine de caractéres!</span> :""}  
           {utiErrtechnologies ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> Technologies max 30 caractéres!</span> :""}  
          
@@ -246,22 +208,11 @@ function PageAjouterSujet() {
 
         
           <span className="focus-input111" />
-          {/* <span className="symbol-input111">
-            <i className="fas fa-user-tie" aria-hidden="true" />
-          </span> */}
            {error.typestage ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Vous devez choisir un Type de Stage!</span> :""}  
 
         </div>
-       
-{/* Département*/}
-{/* <div className="wrap-input100   col-lg-6 mb-4  " >
-          <input className="input100" type="text"  name="nom_dept"  onChange={handleInput} value={sujetInput.nom_dept}  placeholder="Nom Département" required/>
-          <span className="focus-input111" />
-        
-       {utiErrstrnom_dept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Nom Département chaine de caractéres!</span> :""}  
-          {utiErrnom_dept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Nom Département max 30 caractéres!</span> :""}  
-        </div> */}
-
+  
+{/* nom département*/}
 <div className="wrap-input100   col-lg-6 mb-4  " >
 <select name="nom_dept" onChange={handleInput} value={sujetInput.nom_dept} className="input100 border-0 " type="text" required >
 <option   selected hidden>--Nom Département--</option>
@@ -272,23 +223,17 @@ function PageAjouterSujet() {
     <option name="nom_dept" value="DSI">DSI </option>
     <option name="nom_dept" value="Finance">Finance </option>
 
-    {/* <option name="nom_dept" value="Projets et Innovation">Projets et Innovation </option>
-    <option name="nom_dept" value="Commerciale">Commerciale </option>
-    <option name="nom_dept" value="Production">Production</option>
-    <option name="nom_dept" value="Technique ">Technique</option> */}
-
  </select>
 <span className="focus-input111" />
 <span className="symbol-input111">
-{/* <i className=" fas fa-building"  aria-hidden="true" /> */}
 </span>
 {error.nom_dept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Vous devez choisir une Département!</span> :""}  
 
 </div>
 
-{/* Date*/}
+{/* Date de début de stage*/}
 
-            {/* <i className="fas fa-calendar"  aria-hidden="true" /> */}
+            
           <p style={{marginLeft: '40px'}}>Début Début   </p>
      
 <div className="wrap-input100   col-lg-12 mb-4  " >
@@ -306,44 +251,13 @@ function PageAjouterSujet() {
   <div className="wrap-input100   col-lg-6 mb-4  " >
           <input className="input100" type="number" min="1" max="12"  name="periode"  onChange={handleInput} value={sujetInput.periode}  placeholder="Période de stage par mois" />
           <span className="focus-input111" />
-          {/* <span className="symbol-input111">
-            <i className=" fas fa-copy"  aria-hidden="true" />
-          </span> */}
-        {/*    {utiErrstrsujet ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> sujet est chaine de caractéres!</span> :""}  
-          {utiErrsujet ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> sujet max 50 caractéres!</span> :""}  
-          */}
         </div>
 
 
-
-  {/* matricule */}
-{/*   <div className="wrap-input100   col-lg-6 mb-4 " >
-          <input className="input100" type="number" min="0"  name="matricule_sj"  onChange={handleInput} value={sujetInput.matricule_sj}  placeholder="Matricule" />
-          <span className="focus-input111" />
-     
-        </div>
- */}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- {/*Description */}
+ {/*Description du sujet */}
  <div className="wrap-input100   col-lg-6 mb-4  form-group" >
           <textarea className="input100" type="text"  name="description"  onChange={handleInput}  value={sujetInput.description} placeholder="Description"  style={{height: '80px'}}/>
           <span className="focus-input111" />
-         {/*  <span className="symbol-input111">
-            <i className=" fas fa-file-alt"  aria-hidden="true" /> 
-          </span> */}
        
         </div>
 
@@ -352,7 +266,7 @@ function PageAjouterSujet() {
 
 
  
-    {/* Cancel Button */}
+    {/* Le bouton annuler */}
     
     <div className="form-group col-lg-2 ">
    
@@ -366,7 +280,7 @@ function PageAjouterSujet() {
        
         </div>
 
-    
+    {/* Le bouton ajouter compte */}
         <div className="form-group col-lg-3  i">
           <button type="submit" className="login100-form-btn"  style={{color: 'white'}}>
             

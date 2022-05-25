@@ -4,11 +4,12 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import StSideBar from '../components/StSideBar';
 
+//Espace stagiaire
 function StDashboard() {
   return (
     <>
          <Header/>
-        {/* Content  */}
+        {/* contenu  */}
        <main className="content-wrapper">
             <Outlet />
       </main>

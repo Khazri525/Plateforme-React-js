@@ -12,10 +12,9 @@ function PageAjouterDepartement() {
 
     const navigate = useNavigate();
 
-    //validation erreurs
-    const [utiErrnomdept,setUtiErrnomdept]=useState(false);
+    //validation des données
+
     const [utiErrnomchefdept,setUtiErrnomchefdept]=useState(false);
-    const [utiErrstrdept,setUtiErrstrdept]=useState(false);
     const [utiErrstrchefdept,setUtiErrstrchefdept]=useState(false);
 
     const [ error , setError] =useState ([]);
@@ -24,7 +23,7 @@ function PageAjouterDepartement() {
       nom_dept: '',
       nom_chef_dept: '',
      
-     // error_list:[],
+    
 
     });
    
@@ -36,16 +35,9 @@ function PageAjouterDepartement() {
      
       setDept({ ...deptInput , [e.target.name]: e.target.value})
 
-       //erreur nom dept
-  
-       if(deptInput.nom_dept.length < 2 || deptInput.nom_dept.length >20){
-        setUtiErrnomdept(true)
-       }
-       else{
-        setUtiErrnomdept(false)
-       }
+     
        
-        //erreur nom chef dept
+        //erreur nom chef de département
   
         if(deptInput.nom_chef_dept.length < 2 || deptInput.nom_chef_dept.length >20){
           setUtiErrnomchefdept(true)
@@ -53,16 +45,7 @@ function PageAjouterDepartement() {
          else{
           setUtiErrnomchefdept(false)
          }
-       
-        //erreur étre string  dept
-       if( !(deptInput.nom_dept.match('[a-z-A-Z]')) ) {  
-        setUtiErrstrdept(true)
-       }
-       else{
-        setUtiErrstrdept(false)
-       }
-
-          //erreur étre string dept
+        //le nom chef de département doit etre string 
           if( !(deptInput.nom_chef_dept.match('[a-z-A-Z]')) ) {  
             setUtiErrstrchefdept(true)
            }
@@ -72,7 +55,7 @@ function PageAjouterDepartement() {
       
    }
    
-   
+   //En cliquant sur le bouton Ajouter un département, les données seront envoyées à la base de données
    const deptSubmit = (e) => {
      e.preventDefault();
    
@@ -84,45 +67,24 @@ function PageAjouterDepartement() {
        }
 
 
-
-
-
-
-
    
 
-  
+      //appeler l'api du backend pour effectuer l'ajout d'un département
         axios.post('api/ajouter-departement', data).then(res =>{
              if(res.data.status === 200){
               Swal.fire ("Succès" , res.data.message ,"success");
               navigate('/service-de-formation/afficher-departements');
              
              }
-
           else if(res.data.status === 400){
-            // Swal.fire("Erreur dans les champs" , "Vérifier les champs!", "error");
-          
-           //setDept({...deptInput  , error_list : res.data.validation_errors});
-           setError(res.data.validation_errors);
            
+           setError(res.data.validation_errors );
         }
       
    
      });
    } 
    
-   
-   var display_errors = [];
-   if(deptInput.error_list)
-   {
-       display_errors = [
-           deptInput.error_list.nom_dept,
-           deptInput.error_list.nom_chef_dept,
-
-       ]
-
-   }
-
    
 
   return (
@@ -133,17 +95,7 @@ function PageAjouterDepartement() {
         <div className="row mb-2">
           <div className="col-sm-6">
             <h3>Ajouter Département</h3>
-
-            {
-               display_errors.map((item) => {
-                  return(<p className='mb-1'>{item}</p>)
-               })
-
-            }
-
-
-
-          </div>
+         </div>
 
           
           <div className="col-sm-6">
@@ -156,32 +108,22 @@ function PageAjouterDepartement() {
             </ol>
           </div>
         </div>
-      </div>{/* /.container-fluid */}
+      </div>
     </section>
 
 
     <br/>
+
+    {/* Le formulaire de l'ajout d'un département */}
       <div className="col-md-offset-3 col-md-12">
         <div className="form-container">
-    {/* onSubmit={compteSubmit}       */}
+  
 <form onSubmit={deptSubmit} >
   <div className="row">
 
 
 
-   {/* Nom département */}
- {/*   <div className="wrap-input100   col-lg-6 mb-4  validate-input" data-validate="Valid email is required: ex@abc.xyz">
-          <input className="input100" type="text"  name="nom_dept"  onChange={handleInput} value={deptInput.nom_dept}  placeholder="Nom déparatement" />
-          <span className="focus-input111" />
-          <span className="symbol-input111">
-            <i className=" fas fa-building"  aria-hidden="true" />
-          </span>
-           {utiErrstrdept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> nom dept est chaine de caractéres!</span> :""}  
-          {utiErrnomdept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> nom dept max20 caractéres!</span> :""}  
-         
-        </div>
-         */}
-       
+{/* Le nom du département*/}
 <div className="wrap-input100   col-lg-6 mb-4 " >
 <select  name="nom_dept" onChange={handleInput} value={deptInput.nom_dept}  className="input100 border-0 " type="text" required >
   
@@ -198,26 +140,20 @@ function PageAjouterDepartement() {
 
 </div>
    
-     {/* Nom Chef département */}
+     {/*Le nom chef de département */}
      <div className="wrap-input100   col-lg-6 mb-4" >
           <input className="input100" type="text"  name="nom_chef_dept"  onChange={handleInput} value={deptInput.nom_chef_dept}  placeholder="Nom Chef déparatement"  required/>
           <span className="focus-input111" />
           <span className="symbol-input111">
-            {/* <i className=" fas fa-user-tie"  aria-hidden="true" /> */}
           </span>
           {utiErrstrchefdept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> nom chef est chaine de caractéres! </span> :""}  
           {utiErrnomchefdept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> nom chef max 20 caractéres!</span> :""}  
          
         </div>
        
- 
-
-
-
-
 
  
-    {/* Cancel Button */}
+    {/* Le bouton annuler */}
     
     <div className="form-group col-lg-2 ">
    
@@ -231,7 +167,7 @@ function PageAjouterDepartement() {
        
         </div>
 
-    
+       {/* Le bouton ajouter département */}
         <div className="form-group col-lg-3  i">
           <button type="submit" className="login100-form-btn"  style={{color: 'white'}}>
             

@@ -18,43 +18,6 @@ function PageParamsReponses() {
 
 
 
-  //Ajouter Question
-
-  /* const [questionInput,setQuestion] =useState({
-      question:'',
-      niveau:'',
-      duree:'',
-      titre:'',
-      points:''
-      
-    });
-    const handleInput = (e) => {
-      e.persist();
-      setQuestion({...questionInput,[e.target.name] : e.target.value})
-  
-    }
-    const submitQuestion = (e) => {
-      e.preventDefault();
-      const data = {
-        question:questionInput.question,
-        niveau:questionInput.niveau,
-        duree:questionInput.duree,
-        titre:questionInput.titre,
-        points:questionInput.points
-      }
-      axios.post('/api/question',data).then(res =>
-        {
-          if(res.data.status === 200) {
-            swal("Success",res.data.message,"success");
-            navigate('/service-de-formation/afficherQuestionReponse');
-        
-          }
-        })
-    } */
-
-  //.Ajouter Question
-
-  //Ajouter Test
   const [testInput, setTest] = useState({
     titre: '',
     niveaustagiaire: '',
@@ -69,23 +32,24 @@ function PageParamsReponses() {
     setTest({ ...testInput, [e.target.name]: e.target.value })
 
   }
+   //En cliquant sur le bouton Ajouter une réponse, les données seront envoyées à la base de données
   const submitReponses = (e) => {
     e.preventDefault();
-    /*  const formData = new FormData();
-     formData.append('titre',testInput.titre);
-     formData.append('departement',testInput.departement);
-     formData.append('niveaustagiaire',testInput.niveaustagiaire);
-     formData.append('niveautest',testInput.niveautest);
-     formData.append('duree',testInput.duree);
-     formData.append('note',testInput.note);
-    */
-
+   /*  const formData = new FormData();
+    formData.append('titre',testInput.titre);
+    
+    formData.append('nid_question', questionId);
+    formData.append(' repcorrecte',testInput.niveaustagiaire);
+    formData.append('reptext',testInput.duree);
+    formData.append('note',testInput.note); */
     const data = {
       id_question: questionId,
       repcorrecte: testInput.niveaustagiaire,
       reptext: testInput.duree,
-      // repimage: testInput.note
-    }
+    } 
+
+    
+    //appeler l'api du backend pour effectuer l'ajout d'une réponse
     axios.post('/api/reponse', data).then(res => {
 
       if (res.data.status === 200) {
@@ -97,7 +61,7 @@ function PageParamsReponses() {
           duree: '',
           note: '',
         });
-        //navigate('/service-de-formation/afficherQuestionReponse');
+        window.location.href="/service-de-formation/paramQuiz" 
         return loading;
         setError([]);
       }
@@ -108,24 +72,15 @@ function PageParamsReponses() {
     });
 
   }
-  //.Ajouter Test
 
 
 
-
-
-
-
-  //rechercher
-
-
-
-
-  //Afficher Question 
+  //Afficher Réponses
   const [searchTerm, setSearchTerm] = useState("");
   const [repType, setRepType] = useState(null);
 
   useEffect(() => {
+    //appeler l'api du backend qui affiche les réponses à travers l'id de question
     axios.get(`/api/reponse-question/${questionId}`).then(res => {
       if (res.status === 200) {
         setQuestionlist(res.data.reponses)
@@ -136,6 +91,7 @@ function PageParamsReponses() {
 
   //Afficher Test
   useEffect(() => {
+     //appeler l'api du backend pour consulter la liste des tests
     axios.get('/api/test').then(res => {
       if (res.status === 200) {
         setTestlist(res.data.test)
@@ -144,62 +100,29 @@ function PageParamsReponses() {
   }, []);
 
 
-  //////////////////////////////////confirmation
-
-  const deleteDept = (e, id) => {
-    const thisClicked = e.currentTarget;
-    e.preventDefault();
-
-    Swal.fire({
-      title: 'Confirmer?',
-      text: "Vous étes sur vous voulez supprimer département!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Oui,Supprimer!',
-      cancelButtonText: 'Annuler',
-
-    }).then((result) => {
-      if (result.isConfirmed) {
-
-        axios.delete(`api/supprimer-departement/${id}`).then(res => {
-          if (res.data.status === 200) {
-            Swal.fire("Succès", res.data.message, "success");
-            thisClicked.closest("tr").remove();
-            //<i className=" fas fa-trash-alt  text-danger"></i>
-          }
-          else {
-            Swal.fire("Erreur", res.data.message, "error");
-            // thisClicked.innerText ="Delete"
-            //<i className=" fas fa-trash  text-danger"></i>
-          }
-        });
-
-        // Swal.fire(
-        //   'Deleted!',
-        //   'Your file has been deleted.',
-        //   'success'
-        // )
-      }
-    })
-  }
-
-  ///////////////////////.confirmation
-
-  //Question
+  //Réponse
   var AfficherQuestion_HTMLTABLE = "";
-
-
+  //chargement des données
   if (loading) {
-    return <h5>Loading Q/A ...</h5>
+    return <div class="d-flex justify-content-center "
+    style={{marginTop: '.150' ,  position: 'absolute',
+    height: '100px',
+    width: '100px',
+    top:' 50%',
+    left: '50%',
+   }}>
+    <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+    <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+    <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+   </div>
   }
   else {
+    //afficher la liste des réponses
     AfficherQuestion_HTMLTABLE =
       Questionlist.filter(val => {
         if (searchTerm === "") {
           return val;
-        } else if (val.repimage.toLowerCase().includes(searchTerm.toLowerCase()) || val.reptext.toLowerCase().includes(searchTerm.toLowerCase())) {
+        } else if (val.repcorrecte.toLowerCase().includes(searchTerm.toLowerCase())) {
           return val;
         }
       }).map((item, index) => {
@@ -207,18 +130,12 @@ function PageParamsReponses() {
         return (
           <tr key={item._id}>
             <td>{item._id}</td>
-            <td>{item.repimage}</td>
+            {/* <td>{item.repimage}</td> */}
             <td>{item.reptext}</td>
             <td>{item.repcorrecte}</td>
-            {/* <td>{questionId}</td> */}
-            {/* <td>
-<a href="#"  key={item._id} data-toggle="modal" data-target="#exampleModalmodifier" ><i className="fas fa-pencil-alt  text-success"></i></a>  
-        
-         
-</td>
- */}
             <td>
-              <Link to={`/service-de-formation/modifier-question/${item._id}`}>
+              {/* lien : pour modifier une réponse*/}
+              <Link to={`/service-de-formation/modifier-reponse/${item._id}`}>
                 <i size={25} className="fas fa-pencil-alt  text-success"></i></Link>
             </td>
           </tr>
@@ -230,13 +147,21 @@ function PageParamsReponses() {
 
 
   //Test
-
-
-
+  //chargement des données
   if (loading) {
-    return <h5>Loading Q/A ...</h5>
+    return <div class="d-flex justify-content-center "
+    style={{marginTop: '.150' ,  position: 'absolute',
+    height: '100px',
+    width: '100px',
+    top:' 50%',
+    left: '50%',
+   }}>
+    <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+    <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+    <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+   </div>
   }
-  else {
+  /* else {
     var AfficherTest_HTMLTABLE = ""
     AfficherTest_HTMLTABLE =
       Testlist.filter(val => {
@@ -261,14 +186,14 @@ function PageParamsReponses() {
         )
       });
   }
-
+ */
   return (
     <>
       <section className="content-header">
         <div className="container-fluid">
           <div className="row mb-2">
             <div className="col-sm-6">
-              <h3>Paramètres des réponses</h3>
+              <h3>Paramètres des Réponses</h3>
             </div>
 
 
@@ -277,12 +202,12 @@ function PageParamsReponses() {
 
 
                 <NavLink className={(ndata) => ndata.isActive && "active"} to='/service-de-formation/acceuil'>Acceuil</NavLink>  <span> / </span>
-                <NavLink className={(ndata) => ndata.isActive && "active"} to='/service-de-formation/paramQuiz'>Paramètres du test</NavLink>
+                <NavLink className={(ndata) => ndata.isActive && "active"} to='/service-de-formation/paramQuiz'>Paramètres des Réponses</NavLink>
 
               </ol>
             </div>
           </div>
-        </div>{/* /.container-fluid */}
+        </div>
       </section>
 
 
@@ -291,7 +216,7 @@ function PageParamsReponses() {
 
           <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4 col-md-5  " style={{ marginLeft: "1cm", marginRight: "1cm", marginTop: "1cm" }}>
             <div class="input-group">
-              <input type="search" placeholder="Que cherchez-vous?" aria-describedby="button-addon1" class="form-control border-0 bg-light "
+              <input type="search" placeholder="Vous pouvez cherchez selon la réponse correcte ?" aria-describedby="button-addon1" class="form-control border-0 bg-light "
                 onChange={(e) => {
                   setSearchTerm(e.target.value);
                 }}
@@ -306,10 +231,9 @@ function PageParamsReponses() {
 
           <div className="card-tools">
             <div className="form-inline float-right">
-
-              <a href="#" className="btn btn-primary btn-sm " data-toggle="modal" data-target="#z" style={{ marginRight: "1cm" }} > + Ajouter une réponse</a>
-              {/* <a href="#" className="btn btn-success btn-sm " data-toggle="modal" data-target="#y" style={{ marginRight: "1cm" }}> +créer reponse</a> */}
-
+              {/* bouton : pour ajouter une réponse  */}
+             <a href="#" className="btn btn-primary btn-sm " data-toggle="modal" data-target="#z" style={{ marginRight: "1cm" }} > + Ajouter une réponse</a>
+            
             </div>
 
           </div>
@@ -335,8 +259,8 @@ function PageParamsReponses() {
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Réponse Image</th>
-                    <th>Réponse Texte</th>
+                    {/* <th>Réponse Image</th> */}
+                    <th>Réponse </th>
                     <th>Réponse Correcte?</th>
                     <th>Modifier</th>
                   </tr>
@@ -368,8 +292,7 @@ function PageParamsReponses() {
 
 
 
-      {/* Créer Test----------------------------------------------------- */}
-      {/* Afficher détails   */}
+         {/* Ajouter réponse */}
       <div>
 
 
@@ -384,8 +307,6 @@ function PageParamsReponses() {
                 </button>
               </div>
               <div className="modal-body">
-
-                {/* body */}
 
                 <div className="col-md-offset-3 col-md-12">
                   <form onSubmit={submitReponses}>
@@ -409,21 +330,23 @@ function PageParamsReponses() {
                         <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                             <input type='radio' id='repText' name='rep' onClick={() => setRepType(0)} />
-                            <p style={{ marginLeft: 5 }}>Réponse Texte</p>
+                            <p style={{ marginLeft: 5 }}>Réponse </p>
                           </div>
-                          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                        {/*   <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                             <input type='radio' id='repImage' name='rep' onClick={() => setRepType(1)} />
                             <p style={{ marginLeft: 5 }}>Réponse Image</p>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
 
                       {
                         repType === 0 ?
+                        // Réponse Texte
                           <div className="wrap-input100 col-lg-12 mb-4 ">
-                            <input name="duree" className="input100 border-0 " type="text" placeholder="Réponse" onChange={handleInput} value={testInput.duree} />
+                            <input name="duree" className="input100 border-0 " type="text" placeholder="Réponse" onChange={handleInput} value={testInput.duree}  required/>
                           </div>
                           : repType === 1 ?
+                         // Réponse Image
                           <div className="wrap-input100 col-lg-12 mb-4">
                             <input name="note" className="input100 border-0 " type="file" onChange={handleInput} value={testInput.note} />
                           </div>
@@ -434,7 +357,7 @@ function PageParamsReponses() {
 
 
 
-                      {/* Cancel Button */}
+                     {/* Le bouton ajouter réponse */}
                       <div className="form-group col-lg-6">
                         <button type="submit" className="login100-form-btn" style={{ color: 'white' }}>
 
@@ -446,6 +369,7 @@ function PageParamsReponses() {
                   </form>
                 </div>
               </div>
+              {/* Le bouton annuler */}
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Fermer</button>
               </div>
@@ -453,11 +377,7 @@ function PageParamsReponses() {
           </div>
         </div>
       </div>
-
-      {/* .Afficher détails   */}
-
-      {/* Créer Test----------------------------------------------------- */}
-
+ {/* . Ajouter réponse */}
     </>
   )
 }

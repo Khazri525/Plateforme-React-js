@@ -1,28 +1,23 @@
 import React , { useState} from 'react'
 import { useNavigate ,Link} from 'react-router-dom';
 import axios from 'axios';
-import swal from 'sweetalert';
-import Swal from 'sweetalert2';
+
 function LoginStagiaire() {
 
   const Swal = require('sweetalert2');
 
 
     const navigate = useNavigate();
-     //validation erreurs
+
+
+    //validation des données
     const [stgErremail,setStgErremail]=useState(false);
     const [stgErrmtpasse,setStgErrmtpasse]=useState(false);
 
     
-   //fois
-   const [count, setCount] = useState(0);
-
-   const incrementCount = () => {
-    setCount(count + 1);
-    console.log(count)
-  };
-    //Login
  
+    //Connexion
+
     const [ loginInput , setLogin] =useState ({
      
      email: '',
@@ -33,7 +28,6 @@ function LoginStagiaire() {
    });
    const handleInput = (e) => {
      e.persist();
-     //Login
      setLogin({ ... loginInput , [e.target.name]: e.target.value})
 
 
@@ -58,7 +52,7 @@ function LoginStagiaire() {
      
   }
  
- 
+ //En cliquant sur le bouton connecter, les données seront envoyées à la base de données
   const loginSubmit = (e) => {
     e.preventDefault();
  
@@ -70,10 +64,12 @@ function LoginStagiaire() {
       
     }
  
- 
+    //token == sécurité
     axios.get('/sanctum/csrf-cookie').then(response => {
-       axios.post( 'api/login-stagiaire', data).then(res =>{
+      //appeler l'api du backend pour effectuer la connexion à la plateforme
+       axios.post( 'api/login-stagiaire', data).then(res =>{   
             if(res.data.status === 200){
+             //mettre les informations d'un stagiaire connecté dans localStorage
                 localStorage.setItem('id' , res.data.id);
                 localStorage.setItem('auth_token' , res.data.access_token);
                 localStorage.setItem('auth_name' , res.data.username);  
@@ -82,13 +78,14 @@ function LoginStagiaire() {
                 localStorage.setItem('niveauetude' , res.data.niveauetude ); 
                 localStorage.setItem('dossiervalideSt' , res.data.dossiervalideSt);
                 Swal.fire("Succès" , res.data.message , "success");
-             { /*  window.location.href="/"  */} 
               
+                /* si l'état de stagiaire "etudiant", le système redirige le stagiaire vers le landing page
+                pour pouvoir consulter la liste des sujets et passer une demande de stage */
                 if(localStorage.getItem('etatSt' ) == 'etudiant'){
                  window.location.href="/" 
                   navigate('/');
                 }
-             
+             // si l'état de stagiaire "stagiaire_accepte_p", le système redirige le stagiaire vers son espace
                 if(localStorage.getItem('etatSt' ) == 'stagiaire_accepte_p'){
                   navigate('/stagiaire/acceuil');
                 }
@@ -96,20 +93,13 @@ function LoginStagiaire() {
  
  
             }
+           
             else if(res.data.status === 401){
               Swal.fire(" " , res.data.message , "warning");
-              if( count>3){
-                Swal.fire ("" , "réinitialiser votre mot de passe", "warning");
-                 navigate('/S-forgot');
-            }
-            } 
-               
-           /*  else{
             
-               swal("Error",res.data.message);
-               setLogin({...loginInput  , error_list :res.data.validation_errors});
-             
-            } */
+            } 
+          
+       
  
     });
   });
@@ -117,16 +107,13 @@ function LoginStagiaire() {
    }
 
 
+
   return (
     <>
-      
-  {/*     <div className="container-login100">
-
-<div className="row"> */}
 
         <div className="wrap-login102">
       <form onSubmit={loginSubmit}>
-        
+        {/* L'email */}
         <div className="wrap-input100 " >
           <input className="input100" type="text"  name="email"  onChange={handleInput} value={loginInput.email}  placeholder="Email" />
          
@@ -138,7 +125,7 @@ function LoginStagiaire() {
         {stgErremail ? <span className='text-warning txt00 '><i className="far fa-times-circle" aria-hidden="true" /> email doit contenir symbol @ </span> :""}  
 
         
-
+         {/* Le mot de passe */}
         <div className="wrap-input100 " >
           <input className="input100" type="password" name="password"  onChange={handleInput} value={loginInput.password}  placeholder="Password" />
           <span className="focus-input100" />
@@ -148,9 +135,9 @@ function LoginStagiaire() {
         </div>
         {stgErrmtpasse ? <span className='text-warning txt00 '><i className="far fa-times-circle" aria-hidden="true" />le mot de passe doit contenir au minimum  5 caractères </span> :""}  
 
-
+        {/* Le bouton  connecter*/}
         <div className="container-login100-form-btn ">
-          <button type="submit" className="login100-form-btn" onClick={incrementCount} >
+          <button type="submit" className="login100-form-btn"   >
             
           Connecter
          
@@ -158,29 +145,15 @@ function LoginStagiaire() {
         </div>
         <br/>
 
-    
-
-{/* <div className="text-center p-t-136">
-<Link to="/S-forgot " className="text-decoration-none" > Oublier le mot de passe ?</Link>  
-</div> */}
 
 <div className="text-center p-t-136">
+   {/* Le lien s'inscrire */}
 <Link to="/register-stagiaire" className="text-decoration-none"> S'inscrire</Link>  
 </div>
 
-
-
-
-
       </form>
     </div>
-     
-{/*     </div>
 
-
-</div> */}
-
-      
     </>
   )
 }

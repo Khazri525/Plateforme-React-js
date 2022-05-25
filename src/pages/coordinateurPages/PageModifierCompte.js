@@ -12,7 +12,7 @@ const Swal = require('sweetalert2');
 const navigate = useNavigate();
 
 
- //validation erreurs
+ //validation des données
  const [utiErrnom,setUtiErrnom]=useState(false);
  const [utiErrprenom,setUtiErrprenom]=useState(false);
  const [utiErremail,setUtiErremail]=useState(false);
@@ -29,11 +29,9 @@ const handleInput = (e) => {
  
   setUser({ ... userInput , [e.target.name]: e.target.value})
 
-  //Désactiver
- // setCheckbox({ ...checkbox,[e.target.name]:e.target.checked});
 
 
-   //erreur étre string  ... 
+   //le nom doit etre string 
    if( !userInput.nom.match('[a-zA-Z]') ) {  
     setUtiErrstrn(true)
    }
@@ -41,7 +39,7 @@ const handleInput = (e) => {
     setUtiErrstrn(false)
    }
 
-    //erreur étre string  ... 
+   
     if( !userInput.prenom.match('[a-zA-Z]')) {  
       setUtiErrstrp(true)
      }
@@ -103,9 +101,6 @@ const handleInput = (e) => {
 
  
 
-//Activer ou Désactiver
-const [checkbox,setCheckbox]= useState([]);
-
 
  const params=useParams();
  
@@ -118,7 +113,7 @@ const [checkbox,setCheckbox]= useState([]);
  useEffect(() => {
     
    const userId = params.id;
-    
+    //appeler l'api du backend qui effectue la recherche d'un utilisateur par son id
    axios.get(`api/comptes/${userId}`).then(res =>{
       if(res.data.status === 200 ){
        setUser(res.data.user);
@@ -134,33 +129,13 @@ const [checkbox,setCheckbox]= useState([]);
 
  
 
- 
-
-//Activer ou Désactiver
-/* const handleCheckbox = (e) => {
-  e.persist();
-  setCheckbox({ ...checkbox,[e.target.name]:e.target.checked});
-}
- */
-
-
-
-
-
-
-
-
+//En cliquant sur le bouton modifier, les données seront modifiées dans la base de données
 const updateUser = (e) => {
    e.preventDefault();
 
    const userId = params.id;
    const data = userInput;
-   
-   //Activer ou Désactiver
-   /* FormData.append('etat',checkbox.etat ? 'inactive': 'active'); //activer ou désactiver un utilisateur
- */
-
-
+//appeler l'api du backend qui effectue la modification d'un utilisateur à travers son id
    axios.put(`api/comptes/${userId}` , data).then( res => {
      if(res.data.status === 200){
        Swal.fire("Succès" ,res.data.message , "success");
@@ -183,15 +158,19 @@ const updateUser = (e) => {
 
 }
 
-
-
-
-
-
-
-
+//chargement des données
 if(loading){
-  return <h5>Loading Modifier Compte...</h5>
+  return <div class="d-flex justify-content-center "
+ style={{marginTop: '.150' ,  position: 'absolute',
+ height: '100px',
+ width: '100px',
+ top:' 50%',
+ left: '50%',
+}}>
+ <div  class="spinner-grow spinner-grow-sm " role="status"> </div>
+ <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+ <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+</div>
 }
 
   return (
@@ -235,12 +214,11 @@ if(loading){
 
 
 
-{/* First Name */}
+{/* Le nom */}
  <div className="wrap-input100   col-lg-6 mb-4  " >
       <input className="input100" type="text"  name="nom"  onChange={handleInput} value={userInput.nom}  placeholder="Nom" required />
       <span className="focus-input111" />
       <span className="symbol-input111">
-        {/* <i className="fas fa-user"  aria-hidden="true" /> */}
       </span>
       {utiErrstrn? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> nom est chaine de caractéres! </span> :""}  
       {utiErrnom ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> nom entre 3 et 20 caractéres!</span> :""}  
@@ -250,20 +228,11 @@ if(loading){
 
 
 
-
-
-
-
-
-
-
-
-{/* Last Name */}
+{/*Le prénom */}
 <div className="wrap-input100   col-lg-6 mb-4  " >
       <input className="input100" type="text"  name="prenom"  onChange={handleInput} value={userInput.prenom}  placeholder="Prénom" required/>
       <span className="focus-input111" />
       <span className="symbol-input111">
-        {/* <i className="fas fa-user"  aria-hidden="true" /> */}
       </span>
        
      {utiErrstrp ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> prénom est chaine de caractéres!  </span> :""}  
@@ -272,12 +241,11 @@ if(loading){
     </div>
   
 
- {/* Email Address */}
+ {/* L'adresse email */}
  <div className="wrap-input100   col-lg-6 mb-4  " >
       <input className="input100" type="text"  name="email"  onChange={handleInput} value={userInput.email}  placeholder="Email" required />
       <span className="focus-input111" />
       <span className="symbol-input111">
-        {/* <i className="fas fa-envelope"  aria-hidden="true" /> */}
       </span>
       {utiErremail ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> email doit contenir symbol @ </span> :""}  
 
@@ -288,13 +256,12 @@ if(loading){
 
 
 
-{/* Phone Number */}
+{/* Le numéro de téléphone */}
 
 <div className="wrap-input100   col-lg-6 mb-4  ">
       <input className="input100" type="tel"  name="numTel"  onChange={handleInput} value={userInput.numTel}  placeholder="Num Telephone" required />
       <span className="focus-input111" />
       <span className="symbol-input111">
-        {/* <i className="fas fa-phone-alt"  aria-hidden="true" /> */}
       </span>
 
       {utiErrtelephone ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />le numéro de télephone doit contenir 8 chiffres </span> :""}  
@@ -306,18 +273,14 @@ if(loading){
 
 
   
-{/* Date*/}
+{/* Date de naissance*/}
 <div className="wrap-input100   col-lg-6 mb-4 ">
       <input className="input100" type="date"  name="datenaissance"  onChange={handleInput} value={userInput.datenaissance}  placeholder="Date naissance" required />
       <span className="focus-input111" />
       <span className="symbol-input111">
-        {/* <i className="fas fa-calendar"  aria-hidden="true" /> */}
       </span>
     </div>
  
-
-
-  
 
 
 {/* Matricule */}
@@ -326,7 +289,6 @@ if(loading){
       <input className="input100" type="text"  name="matricule"  onChange={handleInput} value={userInput.matricule}  placeholder="Matricule" required />
       <span className="focus-input111" />
       <span className="symbol-input111">
-        {/* <i className=" fas fa-clone" aria-hidden="true" /> */}
       </span>
     </div>
  
@@ -351,7 +313,6 @@ if(loading){
         
           <span className="focus-input111" />
           <span className="symbol-input111">
-            {/* <i className="fas fa-user-tie" aria-hidden="true" /> */}
           </span>
         </div>
 
@@ -373,26 +334,21 @@ if(loading){
 
 
  
-{/* Etat */}
+{/* L'état de l'utilisateur*/}
 <div className="wrap-input100   col-lg-12 mb-4 " >
 <select  name="etat"  onChange={handleInput} value={userInput.etat}  className="input100 border-0 " type="text" >
-{/* <option  selected hidden>--Etat--</option> */}
-  
         <option selected  name="etat"  value="Active">Activer</option>
         <option  name="etat"  value="Désactive">Désactiver</option> 
  </select>
-
-        
           <span className="focus-input111" />
           <span className="symbol-input111">
-            {/* <i className="fas fa-user-tie" aria-hidden="true" /> */}
           </span>
         </div>
 
 
 
-{/* Password */}
-<div className="wrap-input100   col-lg-6 mb-4  " >
+{/* mot de passe */}
+{/* <div className="wrap-input100   col-lg-6 mb-4  " >
       <input className="input100" type="text"  name="password"  onChange={handleInput} value={userInput.password}  placeholder="Mot de passe" required/>
       <span className="focus-input111" />
       <span className="symbol-input111">
@@ -401,7 +357,7 @@ if(loading){
 
      {utiErrmtpasse? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />le mot de passe doit contenir au minimum  5 caractères </span> :""}   
      
-    </div>
+    </div> */}
   
 
 
@@ -409,45 +365,22 @@ if(loading){
 
 
 
-{/* Password Confirmation */}
- <div className="wrap-input100   col-lg-6 mb-4  " >
+{/* La confirmation du mot de passe */}
+{/*  <div className="wrap-input100   col-lg-6 mb-4  " >
       <input className="input100" type="text"  name="password_confirmation"  onChange={handleInput} value={userInput.password_confirmation}  placeholder="Confirmer Mot de passe" required/>
       <span className="focus-input111" />
       <span className="symbol-input111">
-        {/* <i className=" fas fa-lock"  aria-hidden="true" /> */}
       </span>
 
     
       {error.password? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> vous devez Confirmer le mot de passe</span> :""}  
 
-    </div> 
+    </div>  */}
 
 
  
 
-  {/* Activer ou Désactiver checkbox etat "désactiver ou activer utilisateur" à cocher  */}
-{/*   <div className='col-md-6 mt-4'>
-                <div className='form-check'>
-                  <input name='etat' onChange={handleCheckbox} defaultChecked={checkbox.etat === 'inactive' ? true : false } className="form-check-input" id='flexCheckChecked' type='checkbox' />
-                 <label className='text-danger form-check-label '> désactiver cet utilisateur</label> 
-                  <p  className='text-secondary form-check-label ' >désactiver cet utilisateur</p>
-                </div>
-              </div> */}
-
-
-
-
-
-              {/* <div className='col-md-6 mt-4'>
-                <div className='form-check'>
-                  <input name='etat' onChange={handleInput} defaultChecked={userInput.etat === 'inactive' ? true : false }  className="form-check-input" id='flexCheckChecked' type='checkbox' />
-                   <label className='text-danger form-check-label '> désactiver cet utilisateur</label>
-                  <p  className='text-secondary form-check-label ' >désactiver cet utilisateur</p>
-                </div>
-              </div> */}
-
-
-{/* Cancel Button */}
+{/* Le bouton annuler */}
 
 <div className="form-group col-lg-2">
 
@@ -464,6 +397,7 @@ if(loading){
 
 
 
+{/* Le bouton modifier compte */}
 
 <div className="form-group col-lg-3 ">
       <button type="submit" className="login100-form-btn">
@@ -477,11 +411,6 @@ if(loading){
 
 </div>
 </form>
-
-
-
-
-
 
 
          

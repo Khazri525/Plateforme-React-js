@@ -9,60 +9,17 @@ import Swal from 'sweetalert2';
 function PageParamsQuestions() {
   const Swal = require('sweetalert2');
   const testId = useParams().id;
-  const [errorlist, setError] = useState([]);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [Questionlist, setQuestionlist] = useState([]);
 
-  const [Testlist, setTestlist] = useState([]);
+ const [Testlist, setTestlist] = useState([]);
 
 
-
-  //Ajouter Question
-
-  /* const [questionInput,setQuestion] =useState({
-      question:'',
-      niveau:'',
-      duree:'',
-      titre:'',
-      points:''
-      
-    });
-    const handleInput = (e) => {
-      e.persist();
-      setQuestion({...questionInput,[e.target.name] : e.target.value})
-  
-    }
-    const submitQuestion = (e) => {
-      e.preventDefault();
-      const data = {
-        question:questionInput.question,
-        niveau:questionInput.niveau,
-        duree:questionInput.duree,
-        titre:questionInput.titre,
-        points:questionInput.points
-      }
-      axios.post('/api/question',data).then(res =>
-        {
-          if(res.data.status === 200) {
-            swal("Success",res.data.message,"success");
-            navigate('/service-de-formation/afficherQuestionReponse');
-        
-          }
-        })
-    } */
-
-  //.Ajouter Question
+ //validation des données
+ const [error, setError] = useState([]);
 
 
-
-
-
-
-
-
-
-  //Ajouter Test
   const [testInput, setTest] = useState({
     titre: '',
     niveaustagiaire: '',
@@ -76,17 +33,14 @@ function PageParamsQuestions() {
     e.persist();
     setTest({ ...testInput, [e.target.name]: e.target.value })
 
+    
+        
+
   }
+
+  //En cliquant sur le bouton Ajouter une question, les données seront envoyées à la base de données
   const submitQuestion = (e) => {
     e.preventDefault();
-    /*  const formData = new FormData();
-     formData.append('titre',testInput.titre);
-     formData.append('departement',testInput.departement);
-     formData.append('niveaustagiaire',testInput.niveaustagiaire);
-     formData.append('niveautest',testInput.niveautest);
-     formData.append('duree',testInput.duree);
-     formData.append('note',testInput.note);
-    */
 
     const data = {
       question: testInput.titre,
@@ -95,7 +49,7 @@ function PageParamsQuestions() {
       points: testInput.note,
       idTest: testId
     }
-
+ //appeler l'api du backend pour effectuer l'ajout d'une question
     axios.post('/api/question', data).then(res => {
 
       if (res.data.status === 200) {
@@ -107,34 +61,27 @@ function PageParamsQuestions() {
           duree: '',
           note: '',
         });
-        //navigate('/service-de-formation/afficherQuestionReponse');
+        window.location.href="/service-de-formation/paramQuiz" 
         return loading;
         setError([]);
       }
-      else if (res.data.status === 422) {
+      else if (res.data.status === 400) {
         Swal.fire("tous les champs sont requis", "", "error");
         setError(res.data.errors);
       }
     });
 
   }
-  //.Ajouter Test
 
 
 
 
-
-
-
-  //rechercher
-
-
-
+const [searchTerm, setSearchTerm] = useState("");
 
   //Afficher Question 
-  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
+    //appeler l'api du backend qui affiche les questions à travers l'id de test 
     axios.get(`/api/questionTest/${testId}`).then(res => {
       if (res.status === 200) {
         setQuestionlist(res.data.questions)
@@ -145,6 +92,7 @@ function PageParamsQuestions() {
 
   //Afficher Test
   useEffect(() => {
+     //appeler l'api du backend pour consulter la liste des tests
     axios.get('/api/test').then(res => {
       if (res.status === 200) {
         setTestlist(res.data.test)
@@ -153,85 +101,67 @@ function PageParamsQuestions() {
   }, []);
 
 
-  //////////////////////////////////confirmation
+  
 
-  const deleteDept = (e, id) => {
-    const thisClicked = e.currentTarget;
-    e.preventDefault();
-
-    Swal.fire({
-      title: 'Confirmer?',
-      text: "Vous étes sur vous voulez supprimer département!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Oui,Supprimer!',
-      cancelButtonText: 'Annuler',
-
-    }).then((result) => {
-      if (result.isConfirmed) {
-
-        axios.delete(`api/supprimer-departement/${id}`).then(res => {
-          if (res.data.status === 200) {
-            Swal.fire("Succès", res.data.message, "success");
-            thisClicked.closest("tr").remove();
-            //<i className=" fas fa-trash-alt  text-danger"></i>
-          }
-          else {
-            Swal.fire("Erreur", res.data.message, "error");
-            // thisClicked.innerText ="Delete"
-            //<i className=" fas fa-trash  text-danger"></i>
-          }
-        });
-
-        // Swal.fire(
-        //   'Deleted!',
-        //   'Your file has been deleted.',
-        //   'success'
-        // )
-      }
-    })
-  }
-
-  ///////////////////////.confirmation
 
   //Question
+  
   var AfficherQuestion_HTMLTABLE = "";
-
-
+  //L'etat d'une question
+  var qetat ="";
+  //chargement des données
   if (loading) {
-    return <h5>Loading Q/A ...</h5>
+    return <div class="d-flex justify-content-center "
+    style={{marginTop: '.150' ,  position: 'absolute',
+    height: '100px',
+    width: '100px',
+    top:' 50%',
+    left: '50%',
+   }}>
+    <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+    <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+    <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+   </div>
   }
   else {
+      //afficher la liste des questions
     AfficherQuestion_HTMLTABLE =
       Questionlist.filter(val => {
         if (searchTerm === "") {
           return val;
-        } else if (val.question.toLowerCase().includes(searchTerm.toLowerCase()) || val.niveau.toLowerCase().includes(searchTerm.toLowerCase())) {
+        } else if (val.question.toLowerCase().includes(searchTerm.toLowerCase())) {
           return val;
         }
       }).map((item, index) => {
+   
 
+     //etat d'une question activé ou désactivé
+    if(item.etat == 'active'){
+   
+      qetat =  <button type="button" className="btn btn-success btn-sm  rounded-pill " ><i className="fas fa-check "></i></button> 
+    
+      }
+      else if(item.etat == 'désactive'){
+   
+        qetat =  <button type="button" className="btn btn-danger btn-sm rounded-pill" ><i className="fas  fas fa-ban "></i></button> 
+      
+      }
         return (
+       
           <tr key={item._id}>
+            <td>{ qetat }</td>
             <td>{item._id}</td>
             <td>{item.question}</td>
             <td>{item.niveau}</td>
             <td>{item.duree}</td>
             <td>{item.points}</td>
-            {/* <td>{questionId}</td> */}
-            {/* <td>
-<a href="#"  key={item._id} data-toggle="modal" data-target="#exampleModalmodifier" ><i className="fas fa-pencil-alt  text-success"></i></a>  
-        
-         
-</td>
- */}
             <td>
+              {/* lien : pour modifier une question */}
               <Link to={`/service-de-formation/modifier-question/${item._id}`}>
                 <i size={25} className="fas fa-pencil-alt  text-success"></i></Link>
             </td>
             <td>
+              {/* lien : pour consulter la liste des réponses à travers l'id d'une question */}
               <Link to={`paramQuestion/${item._id}`}>
                 <AiOutlineBars size={25} color={'green'} />
               </Link>
@@ -245,14 +175,24 @@ function PageParamsQuestions() {
 
 
   //Test
-
-
-
+  //chargement des données
   if (loading) {
-    return <h5>Loading Q/A ...</h5>
+    return <div class="d-flex justify-content-center "
+    style={{marginTop: '.150' ,  position: 'absolute',
+    height: '100px',
+    width: '100px',
+    top:' 50%',
+    left: '50%',
+   }}>
+    <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+    <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+    <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+   </div>
   }
-  else {
+/*   else {
+
     var AfficherTest_HTMLTABLE = ""
+      //afficher la liste des tests
     AfficherTest_HTMLTABLE =
       Testlist.filter(val => {
         if (searchTerm === "") {
@@ -262,20 +202,29 @@ function PageParamsQuestions() {
         }
       }).map((item, index) => {
 
+
+ 
         return (
           <tr key={item._id}>
+       <td>{ qetat }</td>
             <td>{item._id}</td>
+           
             <td>{item.titre}</td>
-            <td>{item.departement}</td>
+           
             <td>{item.niveaustagiaire}</td>
             <td>{item.niveautest}</td>
             <td>{item.note}</td>
             <td>{item.duree}</td>
-            <td><a href=''><AiOutlineBars size={25} color={'green'} /></a></td>
+            <td>
+              <Link to =''><AiOutlineBars size={25} color={'green'} /></Link>
+              </td>
           </tr>
         )
       });
   }
+
+
+ */
 
   return (
     <>
@@ -283,7 +232,7 @@ function PageParamsQuestions() {
         <div className="container-fluid">
           <div className="row mb-2">
             <div className="col-sm-6">
-              <h3>Paramètres des questions</h3>
+              <h3>Paramètres des Questions</h3>
             </div>
 
 
@@ -292,21 +241,21 @@ function PageParamsQuestions() {
 
 
                 <NavLink className={(ndata) => ndata.isActive && "active"} to='/service-de-formation/acceuil'>Acceuil</NavLink>  <span> / </span>
-                <NavLink className={(ndata) => ndata.isActive && "active"} to='/service-de-formation/paramQuiz'>Paramètres du test</NavLink>
+                <NavLink className={(ndata) => ndata.isActive && "active"} to='/service-de-formation/paramQuiz'>Paramètres des Questions</NavLink>
 
               </ol>
             </div>
           </div>
-        </div>{/* /.container-fluid */}
+        </div>
       </section>
 
 
       <div className="container ">
         <div className="card mt-4">
 
-          <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4 col-md-5  " style={{ marginLeft: "1cm", marginRight: "1cm", marginTop: "1cm" }}>
+          <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4 col-md-9  " style={{ marginLeft: "1cm", marginRight: "1cm", marginTop: "1cm" }}>
             <div class="input-group">
-              <input type="search" placeholder="Que cherchez-vous?" aria-describedby="button-addon1" class="form-control border-0 bg-light "
+              <input type="search" placeholder="Vous pouvez cherchez question ?" aria-describedby="button-addon1" class="form-control border-0 bg-light "
                 onChange={(e) => {
                   setSearchTerm(e.target.value);
                 }}
@@ -322,9 +271,8 @@ function PageParamsQuestions() {
           <div className="card-tools">
             <div className="form-inline float-right">
 
+              {/* bouton : pour ajouter une question */}
               <a href="#" className="btn btn-primary btn-sm " data-toggle="modal" data-target="#z" style={{ marginRight: "1cm" }} > + Ajouter une question</a>
-              {/* <a href="#" className="btn btn-success btn-sm " data-toggle="modal" data-target="#y" style={{ marginRight: "1cm" }}> +créer reponse</a> */}
-
             </div>
 
           </div>
@@ -348,9 +296,10 @@ function PageParamsQuestions() {
             <div className="card-body p-0">
               <table className="table">
                 <thead>
-                  <tr>
+                  <tr>  
+                     <th>Etat</th> 
                     <th>ID</th>
-                    <th>Question</th>
+                   <th>Question</th>
                     <th>Niveau du difficulté</th>
                     <th>Durée (sec) </th>
                     <th>Points</th>
@@ -385,8 +334,8 @@ function PageParamsQuestions() {
 
 
 
-      {/* Créer Test----------------------------------------------------- */}
-      {/* Afficher détails   */}
+  
+      {/* Ajouter question  */}
       <div>
 
 
@@ -402,7 +351,6 @@ function PageParamsQuestions() {
               </div>
               <div className="modal-body">
 
-                {/* body */}
 
                 <div className="col-md-offset-3 col-md-12">
                   <form onSubmit={submitQuestion}>
@@ -410,19 +358,17 @@ function PageParamsQuestions() {
 
 
 
-                      {/* Question */}
+                      {/* La question */}
                       <div className="wrap-input100   col-lg-12 mb-4 " >
 
 
-                        <input className="input100" type="text" name="titre" placeholder="Question" onChange={handleInput} value={testInput.titre} />
+                        <input className="input100" type="text" name="titre" placeholder="Question" onChange={handleInput} value={testInput.titre} required  />
                         <span className="focus-input111" />
-                        <span className="symbol-input111">
-
-                        </span>
+                   
 
 
                       </div>
-
+                       {/* Le niveau de difficulté de la question */}
                       <div className="wrap-input100   col-lg-12 mb-4 " >
                         <select name='niveaustagiaire' onChange={handleInput} value={testInput.niveaustagiaire} className="input100 border-0 ">
                           <option selected hidden>--Niveau--</option>
@@ -430,18 +376,20 @@ function PageParamsQuestions() {
                           <option name="niveaustagiaire" value="moyen">Moyen</option>
                           <option name="niveaustagiaire" value="difficile">Difficile</option>
                         </select>
+                        {error.niveau? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Vous devez choisir Le niveau de difficulté de la question !</span> :""}  
+
 
                       </div>
-
+                       {/* La durée de la question*/}
                       <div className="wrap-input100   col-lg-12 mb-4 " >
-                        <input name="duree" className="input100 border-0 " type="text" placeholder="Durée du Question en secondes" onChange={handleInput} value={testInput.duree} />
+                        <input name="duree" className="input100 border-0 " type="number" min="1"  placeholder="Durée du Question en secondes" onChange={handleInput} value={testInput.duree} />
                       </div>
-
+                       {/* Les points de la question*/}
                       <div className="wrap-input100   col-lg-12 mb-4 " >
-                        <input name="note" className="input100 border-0 " type="text" placeholder="Points" onChange={handleInput} value={testInput.note} />
+                        <input name="note" className="input100 border-0 " type="number" min="1"  placeholder="Points" onChange={handleInput} value={testInput.note} />
                       </div>
 
-                      {/* Cancel Button */}
+                    {/* Le bouton ajouter question */}
                       <div className="form-group col-lg-6">
                         <button type="submit" className="login100-form-btn" style={{ color: 'white' }}>
 
@@ -453,6 +401,7 @@ function PageParamsQuestions() {
                   </form>
                 </div>
               </div>
+              {/* Le bouton annuler */}
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Fermer</button>
               </div>
@@ -461,9 +410,7 @@ function PageParamsQuestions() {
         </div>
       </div>
 
-      {/* .Afficher détails   */}
-
-      {/* Créer Test----------------------------------------------------- */}
+    {/*. Ajouter question  */}
 
     </>
   )

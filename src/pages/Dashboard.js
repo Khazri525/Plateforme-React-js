@@ -6,33 +6,19 @@ import Footer from '../components/Footer';
 import SideBar from '../components/SideBar';
 
 
-
+//Espace coordinateur
 function Dashboard() {
   
 
   return (
     <>
        <Header/>
-        {/* Content  */}
+        {/* Contenu  */}
        <main className="content-wrapper">
             <Outlet />
       </main>
       <SideBar/>
       <Footer/> 
-
-
-
-{/* 
-
-      <Header/>
-      <div className="content-wrapper">
-       {/* Content 
-            
-             {pageId}
-
-       </div>
-      <SideBar/>
-      <Footer/> */}
     </>
   )
 }

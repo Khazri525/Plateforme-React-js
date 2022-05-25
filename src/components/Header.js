@@ -7,34 +7,14 @@ import Swal from 'sweetalert2';
 function Header() {
   const Swal = require('sweetalert2');
     const navigate = useNavigate();
-//profile
-
-//const [ userInput , setUser] =useState ([]);
-
-
-/* useEffect(()=> {
-  axios.get('api/profile').then(res=> {
-    if(res.status ===200){
-      setUser(res.user)
-      // console.log(userInput._id)
-     
-      
-    }
-   
-  });
-},[]);
- */
-
 
 
 
 //deconnexion
-
-
+ //En cliquant sur le bouton  Deconnexion
   const logoutSubmit = (e) =>{
     e.preventDefault();
-  
-
+    //appeler l'api du backend pour effectuer la déconnexion
     axios.post(`api/logout`).then(res =>{
            if(res.data.status === 200){
             localStorage.removeItem('auth_token');
@@ -46,19 +26,22 @@ function Header() {
     });
   }
   
+
+  // envoyer une notification qui indique que le dossier est complet ou incomplet selon l'état du dossier
   var msg= "";
   if(localStorage.getItem('dossiervalideSt') == 'oui'){
     msg=<p className="dropdown-item-title"> 
     <span className="float-right text-sm  text-success  "><i className="fas fa-check" /></span>
-    Votre Dossier est Complet 
-    {/* <span className="float-right text-sm text-muted"><i className="fas fa-star" /></span> */}
+    Votre dossier est Complet 
+
   </p>
   }
+
   else if(localStorage.getItem('dossiervalideSt') == 'non'){
     msg=<p className="dropdown-item mt-100">
        <span className="float-right text-sm  text-danger "><i className="fas fa-ban " /></span>
-    Votre Dossier est Incomplet
-    {/* <span className="float-right text-sm text-muted"><i className="fas fa-star" /></span> */}
+    Votre dossier est Incomplet
+ 
   </p>
   }
 
@@ -66,12 +49,14 @@ function Header() {
 
 
 
-
+//indique que la notification est envoyé à un stagiaire 
   var ntf = "" ;
   if(localStorage.getItem('dossiervalideSt') == 'oui'  || localStorage.getItem('dossiervalideSt') == 'non' ){
     ntf =  <span className="badge bg-danger rounded-pill  ">1</span>
   }
-    
+  
+  
+ //la notification est affiché dans l'espace stagiaire 
  var notification = "" ;
 if(localStorage.getItem('role')== 'stagiaire'){
  
@@ -88,8 +73,7 @@ if(localStorage.getItem('role')== 'stagiaire'){
          
           <div className="media-body">
            {msg}
-            {/* <p className="text-sm">I got your message bro</p> */}
-         {/* <p className="text-sm text-muted"><i className="far fa-clock mr-1" /> 4 Hours Ago</p> */}
+           
           </div>
         </div>
       </a></div></li>
@@ -101,45 +85,19 @@ if(localStorage.getItem('role')== 'stagiaire'){
     <>
 
 
-     {/* Left navbar links */}
+  
      <nav className="main-header navbar navbar-expand navbar-white navbar-light">
         <li className="nav-item d-none d-sm-inline-block">
         <Link to="/" className="nav-link">Home </Link> 
         </li>
          <ul className="navbar-nav ml-auto ">
-       {/*  <li className="nav-item">
-          <a className="nav-link" data-widget="pushmenu" href="#" role="button"><i className="fas fa-bars" /></a>
-        </li> */}
-       
-
-
-{/* ////////////////////// */}
+     
 
 {notification}
 
+  <li className="nav-item">
 
-{/* //////////////////////// */}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <li className="nav-item">
+  {/* Le bouton deconnexion */}
  <button  onClick ={logoutSubmit}   className=" btn btn-secondary ">
                     <i className="fa-solid fa-cloud-exclamation"> </i>
                     Deconnexion
@@ -157,25 +115,6 @@ if(localStorage.getItem('role')== 'stagiaire'){
       <br/>
 
            
- 
- 
-     
-        
-      {/*   <ul className="navbar-nav ml-auto">
-  
-
-  {userInput.nom ? <span>{userInput.nom}</span> : localStorage.getItem('auth_name')}  */}
-       
-    {/*         <div class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{userInput.nom ? <span>{userInput.nom}</span> : localStorage.getItem('auth_name')} </a>
-    <div class="dropdown-menu">
-      <a class="dropdown-item" href="#">Mon Profile</a>
-      <div class="dropdown-divider"></div>
-      <a class="dropdown-item"  onClick ={logoutSubmit} >Deconnexion</a>
-    </div>
-  </div>
-      </ul> */}
-
   
     </nav>
     

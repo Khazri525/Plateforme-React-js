@@ -5,11 +5,14 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ChSideBar from '../components/ChSideBar';
 
+
+
+//Espace chef de département
 function ChDashboard() {
   return (
     <>
         <Header/>
-        {/* Content  */}
+        {/* Contenu*/}
        <main className="content-wrapper">
             <Outlet />
       </main>

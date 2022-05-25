@@ -6,25 +6,6 @@ import _ from "lodash";
 function PageConsulterCompte() {
 
 
-
-//Activer ou Désactiver
-//const [etatcheckbox,setEtatcheckbox]= useState([]);
- 
-//Activer ou Désactiver
-/* const handleCheckbox = (e) => {
-  e.preventDefault();
-  
- 
-    //Désactiver
-    setEtatcheckbox({ ...etatcheckbox,[e.target.name]:e.target.checked});
-  
-    console.log("Vous étes", etatcheckbox.etat);
-  
- 
-} */
-
-
-   
     const[loading,setLoading] = useState(true);
     const[userlist,setUserlist] = useState([]);
 
@@ -32,6 +13,7 @@ function PageConsulterCompte() {
     const[searchTerm,setSearchTerm] = useState("");
 
     useEffect(()=> {
+      //appeler l'api du backend pour consulter la liste des comptes utilisateurs
         axios.get('api/comptes').then(res=> {
           if(res.status ===200){
             setUserlist(res.data.user)
@@ -42,10 +24,9 @@ function PageConsulterCompte() {
 
 
 var afficher_User_Table ="";
-
+//chargement des données
 if(loading){
-  //return <h5>Loading Comptes...</h5> d-flex justify-content-center
- // return <div className=" spinner-grow spinner-grow-sm text-center">
+
  return <div class="d-flex justify-content-center "
  style={{marginTop: '.150' ,  position: 'absolute',
  height: '100px',
@@ -58,13 +39,14 @@ if(loading){
  <div class="spinner-grow spinner-grow-sm " role="status"> </div>
 </div>
 
-     {/* <h2 >Loading...</h2> */}
-//</div>
+    
 }
 else{
-  //etat
+  //etat d'un utilisateur
   var UtiEtat = '';
+  //afficher la liste des utilisateurs
    afficher_User_Table =
+  //rechercher utilisateur par mot clé
   userlist.filter(val =>{
     if(searchTerm === ""){
       return val;
@@ -73,16 +55,16 @@ else{
     }
   }).map( (item , index) => {
     
-    //etat
+    //etat d'un utilisateur activé ou désactivé
     if(item.etat == 'Active'){
     UtiEtat = <i className=" fas fa-user-check  text-success"></i>
    
-    //UtiEtat = 'vous Active';
+    
     }
     else if(item.etat == 'Désactive'){
      UtiEtat =<i className=" fas fa-user-alt-slash  text-danger"> </i>
    
-      //UtiEtat = 'vous Désactive';
+      
     }
      return(
            
@@ -99,52 +81,15 @@ else{
               <td  className="btn btn-primary btn-sm p-0 rounded-pill mt-2">{item.role}</td> 
                <td>{UtiEtat}</td>
 
-              
-             
-                {/* <td>{item.password}</td>  */}
-               {/* <td>{item.etat == '1'? "you active" :  "you inactive" }</td>  */}
-               
-               {/* <td>{item.etat == true ?<i className=" fas fa-user-alt-slash  text-danger"></i>:  <i className=" fas fa-user-check  text-success"></i> }</td> 
-                */}
               <td>
+                  {/* lien : pour modifier un compte */}
                  <Link to={`/coordinateur/modifier-compte/${item._id}`}>
                    <i className="fas fa-pencil-alt  text-success"></i></Link>
               </td>
-
-          
-
-
-                {/*  <td>  
-                   
-                <i className=" fas fa-user-alt-slash  text-danger"></i>
-                   <i className=" fas fa-user-check  text-primary"></i>
- */}
-               
-
-
-             {/* <form onSubmit={handleCheckbox}>
-                   Activer ou Désactiver checkbox etat "désactiver ou activer utilisateur" à cocher  
-             <div className='col-md-6 mt-4'>
-                <div className='form-check'>
-               <input type="checkbox"  name="etat" onChange={ handleCheckbox} defaultChecked={etatcheckbox.etat === "inactive" ? true : false }  className="form-check-input"/>
-                  <p  className='text-secondary form-check-label ' ><i className=" fas fa-user-alt-slash  text-danger"></i></p>
-                </div>
-              </div> 
-            defaultChecked={etatcheckbox === 'inactive' ? true : false } 
-               <button type="submit" className="btn btn-danger btn-sm float-right">Désactiver</button> 
-           </form>
-         
-
-              </td>   */}
            </tr> 
      )
   });
 }
-
-
-
-
-
 
 
   return (
@@ -163,18 +108,11 @@ else{
 
           <div className="col-sm-6">
             <ol className="breadcrumb float-sm-right">
-             {/*  <li className="breadcrumb-item">Acceuil</li>
-              <li className="breadcrumb-item active">Comptes</li> */}
-
-              
-
-
+  
 <NavLink className={(ndata) => ndata.isActive && "active" }  to='/coordinateur/acceuil'>Acceuil </NavLink> <span> / </span>
 <NavLink className={(ndata) => ndata.isActive && "active" }  to='/coordinateur/afficher-tous'>Comptes</NavLink>
 
-
-            
-            
+     
             </ol>
           </div>
 
@@ -184,15 +122,13 @@ else{
     </section> 
 
 
-    
-
   <div className="container ">
    <div className="card mt-4">
      <div className="card-header">
         
      <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
             <div class="input-group">
-              <input type="search" placeholder="Que cherchez-vous?" aria-describedby="button-addon1" class="form-control border-0 bg-light"
+              <input type="search" placeholder="Vous pouvez cherchez selon nom et prénom utilisateur ?" aria-describedby="button-addon1" class="form-control border-0 bg-light"
                onChange={(e)=> {
                   setSearchTerm(e.target.value);
                }}
@@ -204,13 +140,11 @@ else{
             </div>
           </div>
 
-     
-    {/*     <Link to="/coordinateur/ajouter-compte" className="btn btn-primary btn-sm float-right">
-           <i className="fas fa-plus"> </i>Ajouter Compte</Link> 
- */}
+  
 
      <div className="card-body mt-4"> 
          <br/>
+         
          <table className="table table-striped projects ">
            <thead>
              <tr>
@@ -219,16 +153,10 @@ else{
                <th>Prénom</th>
                <th>Email</th>
                <th>NumTél</th>
-               {/* <th>Date naissance</th> */}
-              
                <th>Matricule</th> 
                <th>Département</th>
                <th>Rôle</th> 
                <th>Etat</th>
-              
-                {/* <th>Mot de passe </th> */}
-               {/* <th>Etat</th>  */}
-              
              </tr>
            </thead>
 

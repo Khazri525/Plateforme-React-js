@@ -43,6 +43,7 @@ function UResetPassword (){
   
 
   
+  //En cliquant sur le bouton réinitialiser mot de passe , les données seront envoyées à la base de données
  const resetPass = (e) => {
   e.preventDefault();
 
@@ -55,20 +56,17 @@ function UResetPassword (){
     password_confirmation:passInput.password_confirmation
   };
 
-  //const token= params.id;
-
+  //appeler l'api du backend pour effectuer la réinitialisation de mot de passe
   axios.post(`api/u-reset-password`,data).then( res => {
     if(res.data.status === 200){
       Swal.fire ("Succès" , res.data.message , "success");
-     // navigate('/service-de-formation/afficher-departements');
      localStorage.setItem('premlog' , res.data.premlog);
       setError([]);
 
     }
     else if(res.data.status === 422){
       Swal.fire ("Attention" , res.data.message , "warning");
-     // navigate('/service-de-formation/afficher-departements');
-      //setError([]);
+  
        setError(res.data.validation_errors);
 
     }
@@ -86,7 +84,7 @@ function UResetPassword (){
 
 <div className="wrap-login102">
 <form onSubmit={resetPass} className="login100-form validate-form" >
-
+{/* L'email utilisateur */}
 <div className="wrap-input100 validate-input" >
   <input className="input100" type="type" name="email" onChange={handleInput} value={passInput.email}  placeholder="votre email" />
   <span className="focus-input100" />
@@ -97,7 +95,7 @@ function UResetPassword (){
 
 {utiErremail ? <span className='text-warning txt00 '><i className="far fa-times-circle" aria-hidden="true" /> email doit contenir symbol @ </span> :""}  
 
-        
+{/* Mot de passe utilisateur */}     
 <div className="wrap-input100 validate-input" >
   <input className="input100" type="password" name="password" onChange={handleInput} value={passInput.password}  placeholder="nouveau mot de passe" />
   <span className="focus-input100" />
@@ -108,6 +106,8 @@ function UResetPassword (){
 {utiErrmtpasse ? <span className='text-warning txt00 '><i className="far fa-times-circle" aria-hidden="true" />le mot de passe doit contenir au minimum  5 caractères </span> :""}  
 
 
+
+{/* Confirmation de mot de passe utilisateur */} 
 <div className="wrap-input100 validate-input" >
   <input className="input100" type="password"  name="password_confirmation" onChange={handleInput} value={passInput.password_confirmation}  placeholder="confirmer nouveau mot de passe"  />
   <span className="focus-input100" />
@@ -120,6 +120,7 @@ function UResetPassword (){
 
 
 
+ {/* Le bouton changer Mot de passe   */}
 <div className="container-login100-form-btn">
   <button type="submit" className="login100-form-btn">
 
@@ -127,8 +128,6 @@ function UResetPassword (){
    
   </button>
 </div>
-
-
 
 
 </form>

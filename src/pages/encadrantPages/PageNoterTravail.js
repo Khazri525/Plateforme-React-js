@@ -8,13 +8,13 @@ function PageNoterTravail() {
 
 
   const Swal = require('sweetalert2');
-  const navigate=useNavigate();
 
   const [noteInput,setNote] =useState({});
 
-    //Stagiaire
+    
     const[userlist,setUserlist] = useState([]);
     useEffect(()=> {
+      //afficher la liste des stagiaires qui ont déposé leurs travaux
       axios.get('api/afficher-stagiaire').then(res=> {
         if(res.status ===200){
           setUserlist(res.data.stagiaire)
@@ -28,21 +28,22 @@ function PageNoterTravail() {
     setNote({...noteInput,[e.target.name] : e.target.value})
 
   }
-
-  const submitNote = (e) => {
+ 
+//En cliquant sur le bouton envoyer, les données seront envoyées dans la base de données
+  //chaque travail a sa propre note 
+const submitNote = (e) => {
     e.preventDefault();
     const data = {
       note:noteInput.note,
       message:noteInput.message,
      
     }
+           //appeler l'api du backend pour effectuer l'ajout d'une note
     axios.post('/api/ajouter-note',data).then(res =>
       {
         if(res.data.status === 200) {
           Swal.fire("Success",res.data.message,"success");
           window.location.reload(false);
-         // navigate('/encadrant/aceuil');
-         // document.getElementById('Question_form').reset();
         }
       })
   }
@@ -51,11 +52,11 @@ function PageNoterTravail() {
    
 
     //rechercher
-    const[searchTerm,setSearchTerm] = useState("");
+  //  const[searchTerm,setSearchTerm] = useState("");
    
 
 
-
+//Chargement des données
 if(loading){
   return <div class="d-flex justify-content-center "
   style={{marginTop: '.150' ,  position: 'absolute',
@@ -70,14 +71,17 @@ if(loading){
  </div>
 }
 else{
+  
   var afficher_User_Table ="";
+  //afficher la liste des stagiaires qui ont déposé leurs travaux
    afficher_User_Table =
+   //rechercher stagiaire par mot clé
   userlist.filter(val =>{
-    if(searchTerm === ""){
+   /*  if(searchTerm === ""){
       return val;
     }else if( val.name.toLowerCase().includes(searchTerm.toLowerCase())) {
       return val;
-    }
+    } */
   }).map( (ntrv , index) => {
     if(ntrv.Traveaux !==null  ){  
      return(
@@ -90,43 +94,27 @@ else{
               <td>
               <a href="#" className="btn" data-toggle="modal" data-target="#exampleModal"> <i className="fas fa-eye" style={{color: '#f4901e'}}></i></a>
               </td>
-         
-         {/*      <td>
-              <a href="#" className="btn" data-toggle="modal" data-target="#trv"> <i className="fas fa-eye" style={{color: '#f4901e'}}></i></a>
-              </td>
-            
-             */}
-            {/*   <td>
-              <a href="#" class="btn btn-primary btn-sm " data-toggle="modal" data-target="#exampleModal"><i class="fas fa-eye"></i></a>
-              </td>
-               */}
-
                <td>
+
+
+
+                 {/* Le formulaire de l'ajout d'une note d'un travail déposé*/}
+
                <form onSubmit={submitNote}>
               <div className="row"> 
-              {/* travail deposé */}
-         {/*      <div className="wrap-input100   col-lg-3   form-group" >
-                    <input className="input100 mt-4" type="file"  name="tfile"     />
-                   <span className="focus-input111" />
-                 <span className="symbol-input111">
-                   <i className=" fas fa-cloud-download-alt"  aria-hidden="true" />
-                   </span> 
-              </div> */}
-
-              {/* message deposé */}
- {/* travail envoyé */}
+              
     <div className="wrap-input100   col-lg-2 form-group  ">
                     <input className="input100 mt-4" type="text"  name="note"  onChange={handleInput} value={noteInput.note}    placeholder="Travail" />
                     <span className="focus-input111" />
                  
               </div>
-              {/* note envoyé */}
+              {/* note envoyé par l'encadrant*/}
               <div className="wrap-input100   col-lg-3 form-group  ">
                     <input className="input100 mt-4" type="text"  name="note"  onChange={handleInput} value={noteInput.note}    placeholder="Note" />
                     <span className="focus-input111" />
                  
               </div>
-               {/* message envoyé */}
+               {/* message envoyé par l'encadrant*/}
                <div className="wrap-input100   col-lg-4   form-group" >
                    <textarea className="input100" type="text"  name="message" placeholder="Message" onChange={handleInput} value={noteInput.message}     style={{height: '80px'}}/>
                    <span className="focus-input111" />
@@ -154,7 +142,7 @@ else{
 
 
               
-{/* Afficher détails   */}
+{/* Afficher les détails du travail déposé*/}
 <div>
 
 {/* Modal */}
@@ -178,48 +166,22 @@ else{
      <strong>Niveau étude  </strong> {ntrv.niveauetude}<br/>
      <strong>Spécialite  </strong>{ntrv.specialite}<br/>
      <strong>Filiére  </strong> {ntrv.filiere} <br/>
-  
-     {/* <strong>Type de stage{ntrv.typestage}</strong> <br/>
-     <strong>Nom département{ntrv.nom_dept}</strong> <br/> */}
-   
-{/* 
-     <form>
-             {/* utilisateur matricule 
-          <strong >Matricule Encadrant </strong> 
-        <div className="wrap-input100   col-lg-6 mb-4" >
-      <input className="input100" type="number" placeholder="Matricule" name="Matricule" />
-        <span className="focus-input111" />
-        <span className="symbol-input111">
-          
-        </span>
-        </div>
-     </form> */}
 
 </div>
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-secondary" data-dismiss="modal">Fermer</button>
-        {/* <button type="button" className="btn btn-primary">Save changes</button> */}
       </div>
     </div>
   </div>
 </div>
 </div>
 
-{/* .Afficher détails   */}
+{/* Afficher les détails du travail déposé*/}
 
 
 
-
-
-
-
-
-
-
-
-
-{/* Afficher détails   */}
+{/* Afficher détails  */}
 <div>
 
   {/* Modal */}
@@ -236,23 +198,11 @@ else{
 
   <div className="col-md-offset-3 col-md-12">
  
-{/* ********
-       <form>
-               {/* utilisateur matricule 
-            <strong >Matricule Encadrant </strong> 
-          <div className="wrap-input100   col-lg-6 mb-4" >
-        <input className="input100" type="number" placeholder="Matricule" name="Matricule" />
-          <span className="focus-input111" />
-          <span className="symbol-input111">
-            
-          </span>
-          </div>
-       </form> */}
+
   </div>
         </div>
         <div className="modal-footer">
           <button type="button" className="btn btn-secondary" data-dismiss="modal">Fermer</button>
-          {/* <button type="button" className="btn btn-primary">Save changes</button> */}
         </div>
       </div>
     </div>
@@ -266,21 +216,9 @@ else{
 
 
 
-
-
-
-
-
-
-
      )}
   });
 }
-
-
-
-
-
 
 
   return (
@@ -299,8 +237,7 @@ else{
 
           <div className="col-sm-6">
             <ol className="breadcrumb float-sm-right">
-             {/*  <li className="breadcrumb-item">Acceuil</li>
-              <li className="breadcrumb-item active">Comptes</li> */}
+             
 
               
 
@@ -326,7 +263,7 @@ else{
    <div className="card mt-4">
      <div className="card-header">
         
-     <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
+{/*      <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
             <div class="input-group">
               <input type="search" placeholder="Que cherchez-vous?" aria-describedby="button-addon1" class="form-control border-0 bg-light"
                onChange={(e)=> {
@@ -338,13 +275,9 @@ else{
                 <button id="button-addon1" type="submit" class="btn btn-link text-primary"><i class="fa fa-search"></i></button>
               </div>
             </div>
-          </div>
+          </div> */}
 
-     {/* 
-        <Link to="/coordinateur/ajouter-compte" className="btn btn-primary btn-sm float-right">
-           <i className="fas fa-plus"> </i>Ajouter Compte</Link> 
-
- */}
+    
      <div className="card-body mt-4"> 
          <br/>
          <table className="table table-striped projects ">
@@ -377,39 +310,6 @@ else{
   </div>
 
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

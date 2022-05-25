@@ -9,22 +9,17 @@ function PageAjouterDemandeStage() {
   const Swal = require('sweetalert2');
     const navigate = useNavigate();
 
-     //file cv 
+     //le fichier cv
       const [ filedata , setFiledata] = useState([]);
-      //const [ file , setFile] = useState();
-
-     //validation erreurs
-     const [ error , setError] =useState ([]);
+    //validation des données
+    const [ error , setError] =useState ([]);
 
      
    
-
-
     const [ userInput , setUser] =useState ({
         niveauetude: '',
        typestage:'',
         nom_dept:'', 
-        //cinoupassport_demande:'', 
        // cv:[],
         error_list:[],
      
@@ -39,31 +34,20 @@ function PageAjouterDemandeStage() {
      
       }     
 
-   
- 
- /*  const handleChange = (e) =>{
-    setFile(e.target.cv == e.target.files[0]);
-   }; */
   
- 
-
    const handleFile  = (e) =>{
-    //setFiledata({ cv:e.target.files[0]});
     setFiledata({cv:e.target.files[0]});
    }
  
-
+   //En cliquant sur le bouton Ajouter une demande de stage, les données seront envoyées à la base de données
       const demandeSubmit = (e) => {
         e.preventDefault();
       
       
          const data = {
-          //niveauetude:userInput.niveauetude,
-         // cinoupassport_demande:userInput.cinoupassport_demande,
           typestage:userInput.typestage,
           nom_dept:userInput.nom_dept,
           cv:filedata.cv,
-        // cv:filedata.cv,
           
           } 
 
@@ -74,9 +58,9 @@ function PageAjouterDemandeStage() {
     formData.append('typestage', userInput.typestage);
     formData.append('nom_dept', userInput.nom_dept); */
 
-      
-      
+     //appeler l'id du stagiaire connecté 
     const StId =   localStorage.getItem('id'); 
+          //appeler l'api du backend pour effectuer l'ajout d'une demande de stage
            axios.post(`api/ajouter-demande-stage/${StId}`,data ).then(res =>{
                 if(res.data.status === 200){
                   Swal.fire("Succès" , res.data.message ,"success");
@@ -112,40 +96,10 @@ function PageAjouterDemandeStage() {
         
         
 <div className="row">
-
-
-  {/*  <div className="wrap-input100   col-lg-12 mb-4  ">
-          <input className="input100" type="number"  name="cinoupassport_demande"  onChange={handleInput} value={userInput.cinoupassport_demande}  placeholder="  Num CIN ou Passport" />
-          <span className="focus-input111" />
-          <span className="symbol-input111">
-            <i className=" fas fa-address-card"  aria-hidden="true" />
-          </span>
-         
-        </div> */}
-
-{/* 
-<div className="wrap-input100   col-lg-12 mb-4  " >
-<select name="niveauetude"  onChange={handleInput} value={userInput.niveauetude}  className="input100 border-0 " type="text" >
-
-    <option selected hidden>--Niveau d'étude--</option>
-    <option name="niveauetude" value="Licence">Licence</option>
-    <option name="niveauetude" value="Mastére">Mastére</option>
-    <option name="niveauetude" value="Ingénieurie">Ingénieurie</option>
-
- </select>
-<span className="focus-input111" />
-<span className="symbol-input111">
-<i className=" fas fa-book-reader" aria-hidden="true" />
-</span>
-</div> */}
-
-
-
-
+{/* Le type de stage*/}
 <div className="wrap-input100   col-lg-12 mb-4  " >
 <select  name="typestage"  onChange={handleInput} value={userInput.typestage} className="input100 border-0 " type="text" >
 <option  selected hidden>--Type de stage--</option>
-    {/* <option name="typestage" value="PFE">PFE</option> */}
     <option name="typestage" value="Pérfectionnement">Pérfectionnement</option>
     <option name="typestage" value="Observation">Observation</option>
     <option name="typestage" value="Initiation">Initiation</option>
@@ -158,7 +112,7 @@ function PageAjouterDemandeStage() {
 
 
 
-
+{/* Le nom du département*/}
 <div className="wrap-input100   col-lg-12 mb-4  " >
 <select name="nom_dept" onChange={handleInput} value={userInput.nom_dept} className="input100 border-0 " type="text" >
 <option   selected hidden>--Nom Département--</option>
@@ -177,17 +131,6 @@ function PageAjouterDemandeStage() {
 </div>
 
 
- 
-
-       {/*Cv */}
-      {/* <div className="wrap-input100   col-lg-12 mb-4  form-group " >
-          <input className="input100 mt-4 " type="file"  name="cv"  onChange={handleFile}   />
-          <span className="focus-input111" />
-          <span className="symbol-input111">
-           <i className=" fas fa-cloud-upload-alt "  aria-hidden="true" />
-              
-          </span>
-        </div>   */}
 
 
 {/* cv */}
@@ -207,41 +150,15 @@ function PageAjouterDemandeStage() {
   </div>
 </div> 
        
-      
-    {/*    <label class="form-label" for="customFile">Default file input example</label>
-<input type="file"  onChange={handleFile}   class="form-control" id="customFile" />
- */}
-        {/*Cv */}
-        {/* <div class="custom-file">
-                      <input type="file" name="cv"  onChange={handleFile}   className="custom-file-input" id="customFile"/>
-                      <label className="custom-file-label" for="customFile">Choose file</label>
-         </div> */}
-
-
-
-
-
+ 
+   {/* Le bouton ajouter demande de stage */}
     <div className="container-login100-form-btn col-md-6 ">
           <button type="submit" className="login100-form-btn" >
           Envoyer
           </button>
         </div>
 
-     
-   {/*  
-        <div className="container-login100-form-btn col-md-6 ">
-        <Link className="login100-form-btn " to="/">Annuler</Link>
-        </div>
-  */}
-
-{/* 
-  
-<div className="container-login100-form-btn col-md-6 ">
-        <Link  to="#" className="login100-form-btn" style={{color: 'white'}}>Envoyer</Link>
-        </div>
-  */}
-     
-
+    {/* Le bouton annuler */}
         <div className="container-login100-form-btn col-md-6 ">
         <Link  to="/" className="login100-form-btn" style={{color: 'white'}}>Annuler</Link>
         </div>
@@ -252,134 +169,6 @@ function PageAjouterDemandeStage() {
       </form>
    </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- {/*  <section className="content"> */}
-{/*
-
-                
-<div className="form-group">                       
-  <select name="niveauetude"  onChange={handleInput} value={userInput.niveauetude}  className="form-control"  >
-    <option disabled selected>--Niveau d'étude--</option>
-    <option name="niveauetude" value="Licence">Licence</option>
-    <option name="niveauetude" value="Mastére">Mastére</option>
-    <option name="niveauetude" value="Ingénieurie">Ingénieurie</option>
-  </select>     
- </div>
-
-
-
-<div className="form-group">                       
-  <select name="typestage"  onChange={handleInput} value={userInput.typestage} className="form-control"   >
-    <option disabled selected>--Type de stage--</option>
-    <option name="typestage" value="PFE">PFE</option>
-    <option name="typestage" value="Pérfectionnement">Pérfectionnement</option>
-    <option name="typestage" value="Observation">Observation</option>
-  </select>     
- </div>
-
- <div  className="form-group">           
-  <select name="nom_dept" onChange={handleInput} value={userInput.nom_dept} className="form-control" >
-    <option disabled selected>--Nom Département--</option>
-    <option name="nom_dept" value="IT">IT</option>
-    <option name="nom_dept" value="Marketing">Marketing</option>
-    <option name="nom_dept" value="BI"> BI</option>
-    <option name="nom_dept" value="Développement web">Développement web</option>
-  </select>
-</div>
-
- 
-        
-      <div className="btn btn-primary btn-sm float-left waves-effect waves-light">
-      <i className="fas fa-upload" />
-    <span>   Votre CV   </span>
-        <input type="file"  name="cv" onChange={handleInput} value={userInput.cv}  />
-      </div>
-   
-  
-
-
-
-
-
-              </div>
-              
-              <div className="card-footer">
-                <button type="submit" className="btn btn-primary">Envoyer</button>
-              </div>
-            </form>
-          </div>
-         
-       </div>
-        </div>
-   </div>  */}
-   {/* </section> */}
     </>
   )
 }

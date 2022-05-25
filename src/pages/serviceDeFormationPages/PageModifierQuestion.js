@@ -1,6 +1,5 @@
 import {React,useState,useEffect} from 'react'
 import { useNavigate,useParams ,Link, NavLink} from 'react-router-dom';
-//import ErrorMessage from "../../src/ErrorMessage/ErrorMessage"
 import {Button, Form, FormGroup} from 'react-bootstrap'
 
 import axios from 'axios';
@@ -11,18 +10,19 @@ function PageModifierQuestion() {
 
   const Swal = require('sweetalert2');
   const navigate = useNavigate();
-
   const params=useParams();
   
   const [ questionInput , setQuestion] =useState ([]);
-  const [ error , setError] =useState ([]);
+  
+   //validation des données
+ const [error, setError] = useState([]);
+  
  
  
  
   useEffect(() => {
-     
     const questionId = params.id;
-     
+         //appeler l'api du backend qui effectue la recherche d'une question par son id
     axios.get(`api/question/${questionId}`).then(res =>{
        if(res.data.status === 200 ){
         setQuestion(res.data.question);
@@ -46,7 +46,7 @@ function PageModifierQuestion() {
    setQuestion({ ... questionInput , [e.target.name]: e.target.value})
  }
  
- 
+ //En cliquant sur le bouton modifier, les données seront modifiées dans la base de données
  const updateQuestion = (e) => {
     e.preventDefault();
  
@@ -55,11 +55,11 @@ function PageModifierQuestion() {
     
  
  
- 
+ //appeler l'api du backend qui effectue la modification d'une question à travers son id
     axios.put(`api/question/${questionId}` , data).then( res => {
       if(res.data.status === 200){
         Swal.fire ("Sucess" , res.data.message , "success");
-        
+        navigate("/service-de-formation/paramQuiz")
         setError([]);
  
       }
@@ -85,7 +85,7 @@ return(
       <div className="container-fluid">
         <div className="row mb-2">
           <div className="col-sm-6">
-            <h3>Modifier Département</h3>
+            <h3>Modifier Question</h3>
           </div>
 
           
@@ -94,25 +94,24 @@ return(
           
 
 <NavLink className={(ndata) => ndata.isActive && "active" }  to='/service-de-formation/acceuil'>Acceuil</NavLink>  <span> / </span>
-<NavLink className={(ndata) => ndata.isActive && "active" }  to='/service-de-formation/modifier-question'>Modifier Département</NavLink>
+<NavLink className={(ndata) => ndata.isActive && "active" }  to='/service-de-formation/modifier-question'>Modifier Question</NavLink>
 
             </ol>
           </div>
         </div>
-      </div>{/* /.container-fluid */}
+      </div>
     </section>
 
 
     <br/>
       <div className="col-md-offset-3 col-md-10 mx-auto">
         <div className="form-container">
-    {/* onSubmit={compteSubmit}       */}
 <form onSubmit={updateQuestion}>
   <div className="row">
 
 
-      {/*Question*/}
-      <div className="wrap-input100   col-lg-6 mb-4" >
+      {/*La question*/}
+      <div className="wrap-input100   col-lg-12 mb-4" >
               <input className="input100" type="textarea" name="question"   placeholder="Taper question"
         onChange={handleInput} value={questionInput.question}
         rows={3}  required/>
@@ -124,7 +123,7 @@ return(
             </div>
             
 
-              {/*Niveau de difficulté*/}
+              {/*Le niveau de difficulté d'une question*/}
     <div className="wrap-input100   col-lg-6 mb-4 " >
        <select name="niveau"
           onChange={handleInput} value={questionInput.niveau} className="input100 border-0 " type="text" >
@@ -134,16 +133,15 @@ return(
            <option name='niveau' value="difficile">difficile</option>
      </select>
           <span className="focus-input111" />
-          <span className="symbol-input111">
-         
-          </span>
+          {error.niveau? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Vous devez choisir Le niveau de difficulté de la question !</span> :""}  
+
         </div>
             
 
-         {/*Durée */}
+         {/*La durée d'une question */}
          <div className="wrap-input100   col-lg-6 mb-4" >
               <input className="input100" name='duree'
-      type="text"
+    type="number" min="1" 
       placeholder='durée de la question'
       onChange={handleInput} value={questionInput.duree}
       required  />
@@ -153,31 +151,14 @@ return(
               </span>
             
             </div>
-            
-
-                {/*Titre */}
+ 
+                    {/*Les points d'une question*/}
          <div className="wrap-input100   col-lg-6 mb-4" >
               <input className="input100" 
-     name='titre'
-     type="text"
-     placeholder='titre du test'
-     onChange={handleInput} value={questionInput.titre }
-
-     required  />
-              <span className="focus-input111" />
-              <span className="symbol-input111">
-            
-              </span>
-            
-            </div>
-
-                    {/*Points */}
-         <div className="wrap-input100   col-lg-12 mb-4" >
-              <input className="input100" 
    name='points'
-   type="text"
+   type="number" min="1" 
    placeholder='points du question'
-   onChange={handleInput} value={questionInput.points}
+   onChange={handleInput} value={questionInput.points} 
 
    required  />
               <span className="focus-input111" />
@@ -189,18 +170,29 @@ return(
              
      
 
+{/* L'état de question*/}
+<div className="wrap-input100   col-lg-6 mb-4 " >
+<select  name="etat"  onChange={handleInput} value={questionInput.etat}  className="input100 border-0 " type="text" >
+        <option selected  name="etat"  value="active">Activer</option>
+        <option  name="etat"  value="désactive">Désactiver</option> 
+ </select>
 
+        
+          <span className="focus-input111" />
+          <span className="symbol-input111">
+          </span>
+        </div>
 
 
 
  
-    {/* Cancel Button */}
-    <br/>
+{/* Le bouton annuler */}
+<br/>
     <div className="form-group col-lg-2 ">
    
           <button className="persb-btn">
 
-           <Link to="/service-de-formation/afficherQuestionReponse"  style={{color: 'white'}}>
+           <Link to="/service-de-formation/paramQuiz"  style={{color: 'white'}}>
           Annuler
             </Link> 
 
@@ -208,7 +200,7 @@ return(
        
         </div>
 
-    
+    {/* Le bouton modifier question */}
         <div className="form-group col-lg-3 ">
           <button type="submit" className="login100-form-btn"  style={{color: 'white'}}>
             

@@ -8,25 +8,15 @@ function PageDeposerRapport() {
   const Swal = require('sweetalert2');
   const navigate = useNavigate();
 
-    /*const [ travailInput , setTravail] =useState ({
-    description: '',
-  });
- 
- const handleInput = (e) => {
-    e.persist();
-   
-    setTravail({ ...travailInput , [e.target.name]: e.target.value})
-  }
- */
-      
- 
+ //le fichier rapport
  const [ filerapport, setFilerapport] = useState([]);
- /*   const handleFile  = (e) =>{
-    setFiledata({ rfile:e.target.files[0]});
-   }
- */
 
-  
+    const handleFile  = (e) =>{
+      setFilerapport({ rfile:e.target.files[0]});
+   }
+ 
+
+     //En cliquant sur le bouton Ajouter un rapport, les données seront envoyées à la base de données
    const rapportSubmit = (e) => {
     e.preventDefault();
     
@@ -36,12 +26,9 @@ function PageDeposerRapport() {
       } 
      
     
-    
+            //appeler l'id du stagiaire connecté 
       const StId =   localStorage.getItem('id'); 
-
-      /* const fd = new FormData();
-      fd.append('filerapport', filerapport, filerapport.name);
-       */
+          //appeler l'api du backend pour effectuer le dépot d'un rapport
     axios.post(`api/deposer-rapport/${StId}`, data).then(res =>{
                   if(res.data.status === 200){
                     Swal.fire("Succès" , res.data.message ,"success");
@@ -91,7 +78,7 @@ function PageDeposerRapport() {
      <div className="col-md-offset-3 col-md-12">
         <div className="form-container"> 
     <form onSubmit={rapportSubmit}>
- 
+   {/* Le rapport  */}     
  <div className="wrap-input100   col-lg-12 mb-4  form-group " >   
  <p className="text-center   text-secondary"> Déposer votre Rapport</p>
    <div className="frame">
@@ -99,10 +86,10 @@ function PageDeposerRapport() {
           <div className="dropzone">
               <img src="http://100dayscss.com/codepen/upload.svg" className="upload-icon  " />
               <input type="file"   name="filerapport"  className="upload-input "  onChange={(e) => {setFilerapport(e.target.files[0]);}}/>
-              {/* onChange={handleFile}  */}
+             
          </div>
      </div> 
-
+     {/* Le bouton déposer rapport */}
      <div className="d-flex justify-content-center">
      <div className="form-group col-lg-2  "> 
 

@@ -8,7 +8,7 @@ function PageModifierSujet() {
   const Swal = require('sweetalert2');
     const navigate = useNavigate();
 
-    //validation erreurs
+   //validation des données
     const [utiErrsujet,setUtiErrsujet]=useState(false);
     const [utiErrtechnologies,setUtiErrtechnologies]=useState(false);
     const [utiErrstrsujet,setUtiErrstrsujet]=useState(false);
@@ -78,7 +78,7 @@ function PageModifierSujet() {
            }
         
        
-        //erreur étre string  sujet
+       //le sujet doit etre string
        if( !(sujetInput.sujet.match('[a-z-A-Z]')) ) {  
         setUtiErrstrsujet(true)
        }
@@ -87,7 +87,7 @@ function PageModifierSujet() {
        }
 
 
-         //erreur étre string  technologies
+       
          if( !(sujetInput.technologies.match('[a-z-A-Z]')) ) {  
           setUtiErrstrtechnologies(true)
          }
@@ -95,7 +95,7 @@ function PageModifierSujet() {
           setUtiErrstrtechnologies(false)
          }
 
-          //erreur étre string   nom_dept
+          
        if( !(sujetInput.nom_dept.match('[a-z-A-Z]')) ) {  
         setUtiErrstrnom_dept(true)
        }
@@ -108,15 +108,15 @@ function PageModifierSujet() {
    }
    
    
- 
+ //En cliquant sur le bouton modifier, les données seront modifiées dans la base de données
    const updateSujet = (e) => {
     e.preventDefault();
  
     const sujetId = params.id;
     const data = sujetInput;
  
- 
- 
+ //appeler l'api du backend qui effectue la modification d'un sujet à travers de son id
+
     axios.put(`api/modifier-sujet/${sujetId}` , data).then( res => {
       if(res.data.status === 200){
         Swal.fire("Succès" , res.data.message , "success");
@@ -138,9 +138,19 @@ function PageModifierSujet() {
  }
  
 
- 
+ //chargement des données
  if(loading){
-   return <h5>Loading Modifier Sujet...</h5>
+  return <div class="d-flex justify-content-center "
+  style={{marginTop: '.150' ,  position: 'absolute',
+  height: '100px',
+  width: '100px',
+  top:' 50%',
+  left: '50%',
+ }}>
+  <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+  <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+  <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+ </div>
  }
 
 
@@ -168,14 +178,13 @@ function PageModifierSujet() {
             </ol>
           </div>
         </div>
-      </div>{/* /.container-fluid */}
+      </div>
     </section>
 
 
     <br/>
       <div className="col-md-offset-3 col-md-12">
         <div className="form-container">
-    {/* onSubmit={compteSubmit}       */}
 <form onSubmit={updateSujet} >
   <div className="row">
 
@@ -186,18 +195,17 @@ function PageModifierSujet() {
           <input className="input100" type="text"  name="sujet"  onChange={handleInput} value={sujetInput.sujet}  placeholder="Sujet" />
           <span className="focus-input111" />
           <span className="symbol-input111">
-            {/* <i className=" fas fa-copy"  aria-hidden="true" /> */}
           </span>
            {utiErrstrsujet ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> sujet est chaine de caractéres!</span> :""}  
           {utiErrsujet ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> sujet max 50 caractéres!</span> :""}  
          
         </div>
 
+   {/* Technologies */}
         <div className="wrap-input100   col-lg-6 mb-4  validate-input" >
           <input className="input100" type="text"  name="technologies"  onChange={handleInput} value={sujetInput.technologies}  placeholder="Technologies" />
           <span className="focus-input111" />
           <span className="symbol-input111">
-            {/* <i className=" fas fa-code"  aria-hidden="true" /> */}
           </span>
           {utiErrstrtechnologies ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> Technologies est chaine de caractéres!</span> :""}  
           {utiErrtechnologies ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> Technologies max 30 caractéres!</span> :""}  
@@ -226,13 +234,11 @@ function PageModifierSujet() {
 
         
           <span className="focus-input111" />
-          {/* <span className="symbol-input111">
-            <i className="fas fa-user-tie" aria-hidden="true" />
-          </span> */}
            {error.typestage ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Vous devez choisir un Type de Stage!</span> :""}  
 
         </div>
-       
+
+{/* nom département*/} 
 <div className="wrap-input100   col-lg-6 mb-4  " >
 <select name="nom_dept" onChange={handleInput} value={sujetInput.nom_dept} className="input100 border-0 " type="text" >
 <option   selected hidden>--Nom Département--</option>
@@ -242,22 +248,15 @@ function PageModifierSujet() {
     <option name="nom_dept" value="Développement">Développement </option>
     <option name="nom_dept" value="DSI">DSI </option>
     <option name="nom_dept" value="Finance">Finance </option>
-
-    {/* <option name="nom_dept" value="Projets et Innovation">Projets et Innovation </option>
-    <option name="nom_dept" value="Commerciale">Commerciale </option>
-    <option name="nom_dept" value="Production">Production</option>
-    <option name="nom_dept" value="Technique ">Technique</option> */}
-
  </select>
 <span className="focus-input111" />
 <span className="symbol-input111">
-{/* <i className=" fas fa-building"  aria-hidden="true" /> */}
 </span>
 {error.nom_dept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Vous devez choisir une Département!</span> :""}  
 
 </div>
 
-{/* Date*/}
+{/* Date de début de stage*/}
 <p style={{marginLeft: '40px'}}>Début Début   </p>
 <div className="wrap-input100   col-lg-12 mb-4  " >
           <input className="input100" type="date"  name="datedebut"  onChange={handleInput} value={sujetInput.datedebut}  required/> 
@@ -267,59 +266,13 @@ function PageModifierSujet() {
   <div className="wrap-input100   col-lg-6 mb-4  validate-input" >
           <input className="input100" type="number" min="1" max="12"  name="periode"  onChange={handleInput} value={sujetInput.periode}  placeholder="Période de stage par mois" />
           <span className="focus-input111" />
-          {/* <span className="symbol-input111">
-            <i className=" fas fa-copy"  aria-hidden="true" />
-          </span> */}
-        {/*    {utiErrstrsujet ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> sujet est chaine de caractéres!</span> :""}  
-          {utiErrsujet ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> sujet max 50 caractéres!</span> :""}  
-          */}
         </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{/* Stutus */}
-{/* <div className="wrap-input100   col-lg-6 mb-4 " >
-<select  name="stusujet"  onChange={handleInput} value={sujetInput.stusujet}  className="input100 border-0 " type="text" >
-
-  
-        <option selected  name="stusujet"  value="Active">Activer</option>
-        <option  name="stusujet"  value="Désactive">Désactiver</option> 
- </select>
-
-        
-          <span className="focus-input111" />
-          <span className="symbol-input111">
-        
-          </span>
-        </div>
- */}
 
 
  {/* Etat */}
 <div className="wrap-input100   col-lg-6 mb-4 " >
 <select  name="etatsujet"  onChange={handleInput} value={sujetInput.etatsujet}  className="input100 border-0 " type="text" >
-{/* <option  selected hidden>--Etat--</option> */}
-  
         <option selected  name="etatsujet"  value="Publié">Publier</option>
         <option  name="etatsujet"  value="Dépublié">Dépublier</option> 
  </select>
@@ -327,7 +280,7 @@ function PageModifierSujet() {
 
 </div>
 
- {/*Description */}
+ {/*Description du sujet */}
  <div className="wrap-input100   col-lg-12 mb-4  form-group" >
           <textarea className="input100" type="text"  name="description"  onChange={handleInput}  value={sujetInput.description} placeholder="Description"  style={{height: '80px'}}/>
           <span className="focus-input111" />
@@ -339,10 +292,8 @@ function PageModifierSujet() {
 
  
 
-
-
-    {/* Cancel Button */}
-    
+  
+    {/* Le bouton annuler */}
     <div className="form-group col-lg-2 ">
    
           <button className="persb-btn">
@@ -356,6 +307,7 @@ function PageModifierSujet() {
         </div>
 
     
+        {/* Le bouton modifier sujet */}
         <div className="form-group col-lg-3  i">
           <button type="submit" className="login100-form-btn"  style={{color: 'white'}}>
             

@@ -6,11 +6,12 @@ import Footer from '../components/Footer';
 import SSideBar from '../components/SSideBar';
 
 
+//Espace responsable de formation
 function SDashboard() {
   return (
     <>
           <Header/>
-        {/* Content  */}
+        {/* Contenu  */}
        <main className="content-wrapper">
             <Outlet />
       </main>

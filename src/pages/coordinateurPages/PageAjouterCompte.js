@@ -11,14 +11,13 @@ function PageAjouterCompte() {
   const navigate = useNavigate();
 
   
-    //validation erreurs
+    //validation des données
     const [ error , setError] =useState ([]);
     const [utiErrnom,setUtiErrnom]=useState(false);
     const [utiErrprenom,setUtiErrprenom]=useState(false);
     const [utiErremail,setUtiErremail]=useState(false);
     const [utiErrtelephone,setUtiErrtelephone]=useState(false);
-    const [utiErrmtpasse,setUtiErrmtpasse]=useState(false);
-  
+    const [utiErrmtpasse,setUtiErrmtpasse]=useState(false); 
     const [utiErrstrn,setUtiErrstrn]=useState(false);
     const [utiErrstrp,setUtiErrstrp]=useState(false);
 
@@ -97,16 +96,16 @@ const handleInput = (e) => {
     
          
 
-            //erreur étre string  ... 
-       if(  !userInput.nom.match('[a-zA-Z]')) { // !(userInput.nom.match('[a-z-A-Z]')) 
+            //le nom doit etre string 
+       if(  !userInput.nom.match('[a-zA-Z]')) {    
         setUtiErrstrn(true)
        }
        else{
         setUtiErrstrn(false)
        }
 
-          //erreur étre string  ... 
-          if(  !userInput.prenom.match('[a-zA-Z]') ) { // !(userInput.prenom.match('[a-z-A-Z]'))
+         
+          if(  !userInput.prenom.match('[a-zA-Z]') ) { 
             setUtiErrstrp(true)
            }
            else{
@@ -116,7 +115,7 @@ const handleInput = (e) => {
     
 }
 
-
+//En cliquant sur le bouton Ajouter un utilisateur, les données seront envoyées à la base de données
 const compteSubmit = (e) => {
   e.preventDefault();
 
@@ -136,15 +135,16 @@ const compteSubmit = (e) => {
     
     }
 
-
+//token == sécurité
   axios.get('/sanctum/csrf-cookie').then(response => {
+    //appeler l'api du backend pour effectuer l'ajout d'un utilisateur
      axios.post('api/register', data).then(res =>{
           if(res.data.status === 200){
               localStorage.setItem('auth_token' , res.data.access_token);
               localStorage.setItem('auth_name' , res.data.username);
        
             
-            
+            //vérifier le mot de passe 
           if( res.data.password === res.data.password_confirmation){
             Swal.fire("Succès" , res.data.message ,"success");
             navigate('/coordinateur/afficher-tous');
@@ -152,7 +152,7 @@ const compteSubmit = (e) => {
             setError([]);
             
           }   }
-        
+        //afficher des messages d'erreur au niveau des données saisies
           else if(res.data.status === 422){
             setError(res.data.validation_errors); 
            
@@ -211,7 +211,7 @@ const compteSubmit = (e) => {
 
 
 
-
+{/* Le formulaire de l'ajout d'un utilisateur */}
       <div className="col-md-offset-3 col-md-12">
         <div className="form-container">
           
@@ -219,12 +219,11 @@ const compteSubmit = (e) => {
   <div className="row">
     
 
-{/* First Name */}
+{/* Le nom */}
      <div className="wrap-input100   col-lg-6 mb-4  " >
           <input className="input100" type="text"  name="nom"  onChange={handleInput} value={userInput.nom}  placeholder="Nom"  required/>
           <span className="focus-input111" />
           <span className="symbol-input111">
-            {/* <i className="fas fa-user"  aria-hidden="true" /> */}
           </span>
           {utiErrstrn ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> nom est chaine de caractéres! </span> :""}  
           {utiErrnom ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> nom entre 3 et 20 caractéres!</span> :""}  
@@ -234,12 +233,11 @@ const compteSubmit = (e) => {
         
      
 
-   {/* Last Name */}
+   {/*Le prénom */}
    <div className="wrap-input100   col-lg-6 mb-4 " >
           <input className="input100" type="text"  name="prenom"  onChange={handleInput} value={userInput.prenom}  placeholder="Prénom" required />
           <span className="focus-input111" />
           <span className="symbol-input111">
-            {/* <i className="fas fa-user"  aria-hidden="true" /> */}
           </span>
             {utiErrstrp ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> prénom est chaine de caractéres!  </span> :""}  
             {utiErrprenom ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />prénom entre 3 et 20 caractéres!</span> :""}  
@@ -247,12 +245,11 @@ const compteSubmit = (e) => {
         </div>
       
 
-     {/* Email Address */}
+     {/* L'adresse email */}
      <div className="wrap-input100   col-lg-6 mb-4  " >
           <input className="input100" type="text"  name="email"  onChange={handleInput} value={userInput.email}  placeholder="Email" required/>
           <span className="focus-input111" />
           <span className="symbol-input111">
-            {/* <i className="fas fa-envelope"  aria-hidden="true" /> */}
           </span>
            {utiErremail ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> email doit contenir symbol @ </span> :""}  
 
@@ -260,14 +257,12 @@ const compteSubmit = (e) => {
        
 
 
-
-  {/* Phone Number */}
+  {/* Le numéro de téléphone */}
 
   <div className="wrap-input100   col-lg-6 mb-4  " >
           <input className="input100" type="tel"  name="numTel"  onChange={handleInput} value ={userInput.numTel}  placeholder="Num Telephone" required />
           <span className="focus-input111" />
           <span className="symbol-input111">
-            {/* <i className="fas fa-phone-alt"  aria-hidden="true" /> */}
           </span>
           {utiErrtelephone ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />le numéro de télephone doit contenir 8 chiffres </span> :""}  
 
@@ -275,25 +270,14 @@ const compteSubmit = (e) => {
         </div>
   
 
-
-
-
-
-
- {/* Date*/}
+ {/* Date de naissance*/}
  <div className="wrap-input100   col-lg-6 mb-4  " >
           <input className="input100" type="date"  name="datenaissance"  onChange={handleInput} value={userInput.datenaissance}  placeholder="Date naissance" required/>
           <span className="focus-input111" />
           <span className="symbol-input111">
-            {/* <i className="fas fa-calendar"  aria-hidden="true" /> */}
           </span>
         </div>
     
-
-
-
-
-
 
 
 {/* Matricule */}
@@ -302,17 +286,9 @@ const compteSubmit = (e) => {
           <input className="input100" type="text"  name="matricule"  onChange={handleInput} value={userInput.matricule}  placeholder="Matricule" required />
           <span className="focus-input111" />
           <span className="symbol-input111">
-            {/* <i className=" fas fa-clone" aria-hidden="true" /> */}
           </span>
         </div>
       
-
-
-
-
-
-
-
 
  {/* Role */}
 <div className="wrap-input100   col-lg-6 mb-4 " >
@@ -330,7 +306,6 @@ const compteSubmit = (e) => {
         
           <span className="focus-input111" />
           <span className="symbol-input111">
-            {/* <i className="fas fa-user-tie" aria-hidden="true" /> */}
           </span>
         </div>
 
@@ -351,12 +326,11 @@ const compteSubmit = (e) => {
 </div>
 
 
- {/* Password */}
+ {/* mot de passe */}
  <div className="wrap-input100   col-lg-6 mb-4 " >
           <input className="input100" type="password"  name="password"  onChange={handleInput} value ={userInput.password}  placeholder="Mot de passe"  required/>
           <span className="focus-input111" />
           <span className="symbol-input111">
-            {/* <i className=" fas fa-lock"  aria-hidden="true" /> */}
           </span>
             {utiErrmtpasse? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />le mot de passe doit contenir au minimum  5 caractères </span> :""}  
 
@@ -366,12 +340,11 @@ const compteSubmit = (e) => {
 
 
 
- {/* Password Confirmation */}
+ {/* La confirmation du mot de passe */}
  <div className="wrap-input100   col-lg-6 mb-4 " >
           <input className="input100" type="password"  name="password_confirmation"  onChange={handleInput} value={userInput.password_confirmation}  placeholder="Confirmer Mot de passe" required />
           <span className="focus-input111" />
           <span className="symbol-input111">
-            {/* <i className=" fas fa-lock"  aria-hidden="true" /> */}
           </span>
           {error.password ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> vous devez Confirmer le mot de passe</span> :""}  
 
@@ -381,7 +354,7 @@ const compteSubmit = (e) => {
 
 
 
-    {/* Cancel Button */}
+    {/* Le bouton annuler */}
     
     <div className="form-group col-lg-2">
    
@@ -398,7 +371,7 @@ const compteSubmit = (e) => {
 
 
 
-    
+     {/* Le bouton ajouter compte */}
         <div className="form-group col-lg-3 ">
           <button type="submit" className="login100-form-btn">
             

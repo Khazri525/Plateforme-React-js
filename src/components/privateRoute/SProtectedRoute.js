@@ -5,6 +5,7 @@ import swal from 'sweetalert';
 import Swal from 'sweetalert2';
 
 
+//Protéger les routes de responsable de formation
 
     function SProtectedRoute () {
         const Swal = require('sweetalert2');
@@ -15,6 +16,7 @@ import Swal from 'sweetalert2';
         const [loading , setloading] = useState(true);
 
         useEffect(()=> {
+               //appeler l'api du backend pour vérifier  la connexion à la plateforme
             axios.get( `/api/checkingAuthenticated`).then(res => {
                 if(res.status ===  200)
                 {
@@ -43,10 +45,23 @@ import Swal from 'sweetalert2';
 
 
 
-        if(loading){
-            return <h2>Loading...</h2>
-        }
-    
+//chargement des données
+if(loading){
+
+    return <div class="d-flex justify-content-center "
+    style={{marginTop: '.150' ,  position: 'absolute',
+    height: '100px',
+    width: '100px',
+    top:' 50%',
+    left: '50%',
+   }}>
+    <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+    <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+    <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+   </div>
+   
+       
+   }
    
 
       if(Authentificated && localStorage.getItem('role')=='service_formation'){

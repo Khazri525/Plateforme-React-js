@@ -8,10 +8,8 @@ function PageDeposerTravail() {
   const Swal = require('sweetalert2');
   const navigate = useNavigate();
 
-  const [ travailInput , setTravail] =useState ({
-    description: '',
-  });
- 
+   // le champs description du travail
+  const [ travailInput , setTravail] =useState ([]);
   const handleInput = (e) => {
     e.persist();
    
@@ -19,17 +17,14 @@ function PageDeposerTravail() {
   }
 
       
-  
+  //le fichier du travail
  const [ filedata , setFiledata] = useState([]);
-
-
-
   const handleFile  = (e) =>{
     setFiledata({ tfile:e.target.files[0]});
    }
 
 
-  
+     //En cliquant sur le bouton Ajouter un travail, les données seront envoyées à la base de données
    const travailSubmit = (e) => {
     e.preventDefault();
     
@@ -38,7 +33,9 @@ function PageDeposerTravail() {
        description:travailInput.description,
 
       } 
+       //appeler l'id du stagiaire connecté 
       const StId = localStorage.getItem('id');
+      //appeler l'api du backend pour effectuer le dépot d'un travail 
     axios.post(`api/deposer-travail/${StId} `, data).then(res =>{
                   if(res.data.status === 200){
                     Swal.fire("Succès" , res.data.message ,"success");
@@ -103,16 +100,16 @@ function PageDeposerTravail() {
  </div>
 </div>
 
- {/*Description */}
+ {/*La description du travail*/}
  <div className="wrap-input100   col-lg-12 mb-4  form-group" >
           <textarea className="input100" type="text"  name="description"  onChange={handleInput}  value={travailInput.description} placeholder="Description"  style={{height: '80px'}}/>
           <span className="focus-input111" />
           <span className="symbol-input111">
-            {/* <i className=" fas fa-file-alt"  aria-hidden="true" />  */}
           </span>
        
         </div>
 
+        {/* Le bouton déposer travail */}
          <div className="form-group col-lg-2 ">
           <button type="submit" className="login100-form-btn">
           

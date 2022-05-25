@@ -1,7 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useNavigate  ,useParams ,Link} from 'react-router-dom'; 
-
+/* la page de profil selon le role de l'acteur :  utilisateur et page stagiaire 
+                                                -coordinateur
+                                                -responsable formation
+                                                -encadrant
+                                                -chef de département
+*/
 function TProfile() {
 
 
@@ -12,26 +17,22 @@ function TProfile() {
   
     const params=useParams();
       const[loading,setLoading] = useState(true);
-      //const[userprofile,setUserprofile] = useState([]);
-  
-    //  const [ profileInput , setProfile] =useState ([]);
-  
+ 
     const [userInput , setUserInput] =useState ([]);
   
       const [ error , setError] =useState ([]);
   
-      //const[toroute,setToroute] = useState([]);
-     // const[torouteprofile,setTorouteprofile] = useState([]);
+      
 
 
 
 
-      //erreurs
+      //validation des données
       const [utiErremail,setUtiErremail]=useState(false);
       const [utiErrtelephone,setUtiErrtelephone]=useState(false);
       const [utiErrtel,setUtiErrtel]=useState();
 
-      //.erreurs
+     
   
   
       const handleInput = (e) => {
@@ -58,15 +59,6 @@ function TProfile() {
     setUtiErrtelephone(false)
    }
 
-
-      /*   if( !(userInput.telephone.match('[0-9]{7}')) ) {  
-          setUtiErrtel(true)
-         }
-         else{
-          setUtiErrtel(false)
-         }
-   */
-
           //erreur e-mail
        if(!userInput.email.includes('@')){
         setUtiErremail(true)
@@ -74,39 +66,27 @@ function TProfile() {
        else{
         setUtiErremail(false)
        }
-
-
-
-    
-
-
-
-
       }    
   
 
      useEffect(()=> {
+        /*appeler l'api du backend pour consulter le profil 
+        d'un utilisateur ou stagiaire selon le role de l'acteur connecté*/
         axios.get('api/profile').then(res=> {
-          //if(res.status ===200){
              setUserInput(res.data.user.original)
-         // }
           setLoading(false);
         });
     },[]);
   
   
-      //test changer 
-      
-      //const [nom, setName] = useState(); 
+   ////En cliquant sur le bouton modifier le profil utilisateur
 
       const updatProfile = (e) => {
         e.preventDefault();
-        // let userObj = { displayName: nom };
-   
-  
+
         const data = userInput;
        
-  
+         //appeler l'api du backend pour effectuer la modification du profil utilisateur
         axios.put('api/modifier-profile' , data ).then(res=> {
           if(res.status ===200){
             Swal.fire("Succès" , res.data.message , "success ");
@@ -127,15 +107,12 @@ function TProfile() {
 
 
 
-
+   ////En cliquant sur le bouton modifier le profil stagiaire
       const updatProfileStagiaire = (e) => {
         e.preventDefault();
-        // let userObj = { displayName: nom };
-   
-  
         const data = userInput;
        
-  
+         //appeler l'api du backend pour effectuer la modification du profil satagiaire
         axios.put('api/modifier-profile-stagiaire' , data ).then(res=> {
           if(res.status ===200){
             Swal.fire("Succès" , res.data.message , "success");
@@ -153,7 +130,7 @@ function TProfile() {
   
       };
     
-      
+    //chargement des données
     if(loading){
       return <div class="d-flex justify-content-center "
  style={{marginTop: '.150' ,  position: 'absolute',
@@ -167,7 +144,10 @@ function TProfile() {
  <div class="spinner-grow spinner-grow-sm " role="status"> </div>
 </div>
       }
+
+  //si l'acteur connecté est un utilisateur     
       else if(userInput.role === 'encadrant' || userInput.role === 'chef_dept' ||userInput.role === 'service_formation'||userInput.role === 'coordinateur'  ){
+  //afficher profil utilisateur
   return (
     <>
       
@@ -248,7 +228,7 @@ function TProfile() {
            </div>
    
 
-    {/* Cancel Button */}
+  {/* Le bouton modifier profil utilisateur */}
     
 
     <br/>
@@ -279,7 +259,7 @@ function TProfile() {
 
 
 
-{/* Afficher détails   */}
+{/* Modifier profil utilisateur   */}
 <div>
 
 
@@ -294,20 +274,14 @@ function TProfile() {
           </button>
         </div>
         <div className="modal-body">
-
-{/* body */}
-
         <div className="col-md-offset-3 col-md-12">
-     {/*    <div className="form-container"> */}
-  
+
 <form  onSubmit={updatProfile}  >
   <div className="row">
 
 
-
-
  
-     {/* utilisateur */}
+     {/* Le nom utilisateur */}
      <div className="wrap-input100   col-lg-6 mb-4" >
           <input className="input100" type="text"  placeholder="Nom" name="nom"   onChange={handleInput} value={userInput.nom} readOnly/>
           <span className="focus-input111" />
@@ -316,7 +290,7 @@ function TProfile() {
           </span>
         
         </div>
-             {/* utilisateur */}
+             {/*Le prénom utilisateur */}
      <div className="wrap-input100   col-lg-6 mb-4" >
           <input className="input100" type="text" placeholder="Prénom"  name="prenom" onChange={handleInput} value={userInput.prenom} readOnly/>
           <span className="focus-input111" />
@@ -325,7 +299,7 @@ function TProfile() {
           </span>
         
         </div>
-             {/* utilisateur */}
+             {/*L'email utilisateur */}
      <div className="wrap-input100   col-lg-12 mb-4" >
           <input className="input100" type="text"   placeholder="Email" name="email" onChange={handleInput} value={userInput.email}/>
        
@@ -338,7 +312,7 @@ function TProfile() {
 
        
 
-        {/* utilisateur */}
+        {/*Le telephone utilisateur */}
      <div className="wrap-input100   col-lg-6 mb-4" >
           <input className="input100" type="number" min="0"  placeholder="Num Télephone" name="numTel"   onChange={handleInput} value={userInput.numTel}  required />
           <span className="focus-input111" />
@@ -349,7 +323,7 @@ function TProfile() {
           {utiErrtelephone ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />le numéro de télephone doit contenir 8 chiffres </span> :""}  
 
         </div>
-             {/* utilisateur */}
+             {/*La date de naissance utilisateur */}
      <div className="wrap-input100   col-lg-6 mb-4" >
           <input className="input100" type="date"  placeholder="Date naissance"  name="datenaissance" onChange={handleInput} value={userInput.datenaissance} readOnly />
           <span className="focus-input111" />
@@ -359,7 +333,7 @@ function TProfile() {
         
         </div>
 
-          {/* utilisateur */}
+          {/*La matricule utilisateur */}
           <div className="wrap-input100   col-lg-6 mb-4" >
           <input className="input100" type="number" placeholder="Matricule" name="matricule"  onChange={handleInput} value={userInput.matricule} readOnly/>
           <span className="focus-input111" />
@@ -369,7 +343,7 @@ function TProfile() {
         
         </div>
 
-     {/* utilisateur */}
+     {/* Le role utilisateur */}
         <div className="wrap-input100   col-lg-6 mb-4 " >
 <select name="role"   onChange={handleInput} value={userInput.role}   className="input100 border-0 " type="text" >
   
@@ -385,14 +359,9 @@ function TProfile() {
 
 
 
-
-
- 
-    {/* Cancel Button */}
-    
   
 
-    
+    {/* Le bouton  modifier profil utilisateur */}
         <div className="form-group col-lg-6">
           <button type="submit" className="login100-form-btn"  style={{color: 'white'}}>
             
@@ -405,27 +374,22 @@ function TProfile() {
 
 
 </form>
-   
-     {/*    </div> */}
+
       </div>
 
-
-
-      {/* body */}
 
 
 
         </div>
         <div className="modal-footer">
           <button type="button" className="btn btn-secondary" data-dismiss="modal">Fermer</button>
-          {/* <button type="button" className="btn btn-primary">Save changes</button> */}
         </div>
       </div>
     </div>
   </div>
 </div>
 
-{/* .Afficher détails   */}
+{/* . Modifier profil utilisateur   */}
 
     </>
   )
@@ -435,9 +399,9 @@ function TProfile() {
 
 
 
-      //Stagiaire----------------------------------------------
-
+      //si l'acteur connecté est un stagiare
       else{
+      //afficher profil satagiaire
         return (
           <>
             
@@ -526,8 +490,7 @@ function TProfile() {
       
                  </div>
          
-      
-          {/* Cancel Button */}
+       {/* Le bouton modifier profil stagiaire */}
           
       
           <br/>
@@ -547,18 +510,10 @@ function TProfile() {
             </div>
             <br/><br/>
       
+  
       
       
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      {/* Afficher détails   */}
+      {/* Modifier profil stagaire  */}
       <div>
       
       
@@ -574,11 +529,10 @@ function TProfile() {
               </div>
               <div className="modal-body">
       
-      {/* body */}
+   
       
               <div className="col-md-offset-3 col-md-12">
-           {/*    <div className="form-container"> */}
-        
+  
       <form onSubmit={updatProfileStagiaire }  >
         <div className="row">
       
@@ -586,7 +540,7 @@ function TProfile() {
       
       
        
-           {/* utilisateur */}
+           {/* Le nom stagiaire */}
            <div className="wrap-input100   col-lg-6 mb-4" >
                 <input className="input100" type="text"  placeholder="Nom" name="name"   onChange={handleInput} value={userInput.name} readOnly/>
                 <span className="focus-input111" />
@@ -595,7 +549,7 @@ function TProfile() {
                 </span>
               
               </div>
-                   {/* utilisateur */}
+                   {/* Le prénom stagiaire */}
            <div className="wrap-input100   col-lg-6 mb-4" >
                 <input className="input100" type="text" placeholder="Prénom"  name="prenom" onChange={handleInput} value={userInput.prenom} readOnly />
                 <span className="focus-input111" />
@@ -604,14 +558,14 @@ function TProfile() {
                 </span>
               
               </div>
-                   {/* utilisateur */}
+                   {/* L'email stagiaire */}
            <div className="wrap-input100   col-lg-12 mb-4" >
                 <input className="input100" type="text"   placeholder="Email" name="email" onChange={handleInput} value={userInput.email}/>
                 {utiErremail ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> email doit contenir symbol @ </span> :""}  
 
               </div>
       
-              {/* utilisateur */}
+              {/* La telephone stagiaire */}
            <div className="wrap-input100   col-lg-6 mb-4" >
                 <input className="input100" type="number" min="0"  placeholder="Num Télephone" name="telephone"   onChange={handleInput} value={userInput.telephone}  required/>
                <span className="focus-input111" />
@@ -621,7 +575,7 @@ function TProfile() {
                  {utiErrtel? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />le numéro de télephone doit contenir 8 chiffres </span> :""}  
 
               </div>
-                   {/* utilisateur */}
+                   {/* La date de naissance */}
            <div className="wrap-input100   col-lg-6 mb-4" >
                 <input className="input100" type="date"  placeholder="Date naissance"  name="datenaissance" onChange={handleInput} value={userInput.datenaissance} readOnly />
                 <span className="focus-input111" />
@@ -631,7 +585,7 @@ function TProfile() {
               
               </div>
       
-                {/* utilisateur */}
+                {/* L'adresse stagiaire */}
                 <div className="wrap-input100   col-lg-12 mb-4" >
                 <input className="input100" type="text" placeholder="Adresse" name="adresse"  onChange={handleInput} value={userInput.adresse}  required />
                 <span className="focus-input111" />
@@ -641,7 +595,7 @@ function TProfile() {
               
               </div>
 
-                {/* utilisateur */}
+                {/* Le niveau d'étude stagiaire */}
                 <div className="wrap-input100   col-lg-12 mb-4" >
                 <input className="input100" type="text" placeholder="Niveau d'étude" name="niveauetude"  onChange={handleInput} value={userInput.niveauetude}  required/>
                 <span className="focus-input111" />
@@ -650,7 +604,7 @@ function TProfile() {
                 </span>
               
               </div>
-                {/* utilisateur */}
+                {/*La spécialite stagiare */}
                 <div className="wrap-input100   col-lg-12 mb-4" >
                 <input className="input100" type="text" placeholder="Spécialite" name="specialite"  onChange={handleInput} value={userInput.specialite}  required/>
                 <span className="focus-input111" />
@@ -660,7 +614,7 @@ function TProfile() {
               
               </div>
 
-                   {/* utilisateur */}
+                   {/*La filiére stagiaire */}
                    <div className="wrap-input100   col-lg-12 mb-4" >
                 <input className="input100" type="text" placeholder="Filiére" name="filiere"  onChange={handleInput} value={userInput.filiere} required/>
                 <span className="focus-input111" />
@@ -672,16 +626,7 @@ function TProfile() {
       
 
       
-      
-      
-      
-      
-       
-          {/* Cancel Button */}
-          
-        
-      
-          
+             {/* Le bouton modifier profil stagiaire */}
               <div className="form-group col-lg-6">
                 <button type="submit" className="login100-form-btn"  style={{color: 'white'}}>
                   
@@ -694,27 +639,20 @@ function TProfile() {
       
       
       </form>
-         
-           {/*    </div> */}
+
             </div>
-      
-      
-      
-            {/* body */}
-      
-      
       
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                {/* <button type="button" className="btn btn-primary">Save changes</button> */}
+         
               </div>
             </div>
           </div>
         </div>
       </div>
       
-      {/* .Afficher détails   */}
+  {/*. Modifier profil stagaire  */}
       
           </>
         )

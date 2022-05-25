@@ -10,10 +10,9 @@ function PageModifierDepartement() {
   const Swal = require('sweetalert2');
   const navigate = useNavigate();
 
-    //validation erreurs
-    const [utiErrnomdept,setUtiErrnomdept]=useState(false);
+   //validation des données
+
     const [utiErrnomchefdept,setUtiErrnomchefdept]=useState(false);
-    const [utiErrstrdept,setUtiErrstrdept]=useState(false);
     const [utiErrstrchefdept,setUtiErrstrchefdept]=useState(false);
 
   const params=useParams();
@@ -26,7 +25,7 @@ function PageModifierDepartement() {
   useEffect(() => {
      
     const deptId = params.id;
-     
+         //appeler l'api du backend qui effectue la recherche d'un département par son id
     axios.get(`api/find-departement/${deptId}`).then(res =>{
        if(res.data.status === 200 ){
         setDept(res.data.dept);
@@ -48,16 +47,8 @@ function PageModifierDepartement() {
   
    setDept({ ... deptInput , [e.target.name]: e.target.value})
 
-    //erreur nom dept
-  
-    if(deptInput.nom_dept.length < 2 || deptInput.nom_dept.length >20){
-      setUtiErrnomdept(true)
-     }
-     else{
-      setUtiErrnomdept(false)
-     }
-     
-      //erreur nom chef dept
+ 
+      //erreur nom chef de département
 
       if(deptInput.nom_chef_dept.length < 2 || deptInput.nom_chef_dept.length >20){
         setUtiErrnomchefdept(true)
@@ -66,15 +57,9 @@ function PageModifierDepartement() {
         setUtiErrnomchefdept(false)
        }
      
-      //erreur étre string  dept
-     if( !(deptInput.nom_dept.match('[a-z-A-Z]')) ) {  
-      setUtiErrstrdept(true)
-     }
-     else{
-      setUtiErrstrdept(false)
-     }
 
-        //erreur étre string dept
+
+        //le nom du chef de département doit etre string 
         if( !(deptInput.nom_chef_dept.match('[a-z-A-Z]')) ) {  
           setUtiErrstrchefdept(true)
          }
@@ -84,7 +69,7 @@ function PageModifierDepartement() {
     
  }
  
- 
+ //En cliquant sur le bouton modifier, les données seront modifiées dans la base de données
  const updateDept = (e) => {
     e.preventDefault();
  
@@ -92,7 +77,7 @@ function PageModifierDepartement() {
     const data = deptInput;
  
  
- 
+ //appeler l'api du backend qui effectue la modification d'un département à travers son id
     axios.put(`api/modifier-departement/${deptId}` , data).then( res => {
       if(res.data.status === 200){
         Swal.fire("Succès" , res.data.message , "success");
@@ -102,7 +87,6 @@ function PageModifierDepartement() {
       }
        else if(res.data.status === 422){
              setError(res.data.validation_errors);
-            //  Swal.fire("Erreur dans les champs" , "Vérifier les champs!", "error");
       }
       else if(res.data.status === 404){
         Swal.fire("Erreur" , res.data.message , "error");
@@ -113,9 +97,19 @@ function PageModifierDepartement() {
  }
  
 
- 
+ //chargement des données
  if(loading){
-   return <h5>Loading Modifier Département...</h5>
+  return <div class="d-flex justify-content-center "
+  style={{marginTop: '.150' ,  position: 'absolute',
+  height: '100px',
+  width: '100px',
+  top:' 50%',
+  left: '50%',
+ }}>
+  <div  class="spinner-grow spinner-grow-sm " role="status"> </div>
+  <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+  <div class="spinner-grow spinner-grow-sm " role="status"> </div>
+ </div>
  }
 
 
@@ -144,34 +138,17 @@ function PageModifierDepartement() {
             </ol>
           </div>
         </div>
-      </div>{/* /.container-fluid */}
+      </div>
     </section>
 
 
     <br/>
       <div className="col-md-offset-3 col-md-12">
         <div className="form-container">
-    {/* onSubmit={compteSubmit}       */}
+
 <form onSubmit={updateDept}>
   <div className="row">
-
-
-
-   {/* Nom département */}
-  {/* <div className="wrap-input100   col-lg-6 mb-4  validate-input" data-validate="Valid email is required: ex@abc.xyz">
-          <input className="input100" type="text"  name="nom_dept"  onChange={handleInput} value={deptInput.nom_dept}  placeholder="Nom déparatement" />
-          <span className="focus-input111" />
-          <span className="symbol-input111">
-            {/* <i className=" fas fa-building"  aria-hidden="true" />
-          </span>
-
-          {error.nom_dept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" />Vous devez choisir une Département!</span> :""}  
-
-          {utiErrstrdept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> nom dept est chaine de caractéres!</span> :""}  
-          {utiErrnomdept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> nom dept max20 caractéres!</span> :""}  
-        </div>
-        
-    */}
+{/* Le nom du département*/}
     <div className="wrap-input100   col-lg-6 mb-4 " >
 <select  name="nom_dept" onChange={handleInput} value={deptInput.nom_dept}  className="input100 border-0 " type="text" required >
   
@@ -188,12 +165,11 @@ function PageModifierDepartement() {
 
 </div>
 
-     {/* Nom Chef département */}
+     {/* Le nom du chef de département */}
      <div className="wrap-input100   col-lg-6 mb-4  " >
           <input className="input100" type="text"  name="nom_chef_dept"    onChange={handleInput} value={deptInput.nom_chef_dept}  placeholder="Nom Chef déparatement"  required/>
           <span className="focus-input111" />
           <span className="symbol-input111">
-            {/* <i className=" fas fa-user-tie"  aria-hidden="true" /> */}
           </span>
            {utiErrstrchefdept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> nom chef est chaine de caractéres! </span> :""}  
           {utiErrnomchefdept ? <span className='text-danger txt00 '><i className="far fa-times-circle" aria-hidden="true" /> nom chef max 20 caractéres!</span> :""}  
@@ -202,10 +178,10 @@ function PageModifierDepartement() {
       
 
 
-{/* Etat */}
+{/* L'état du département*/}
 <div className="wrap-input100   col-lg-6 mb-4 " >
 <select  name="etat"  onChange={handleInput} value={deptInput.etat}  className="input100 border-0 " type="text" >
-{/* <option  selected hidden>--Etat--</option> */}
+
   
         <option selected  name="etat"  value="Active">Activer</option>
         <option  name="etat"  value="Désactive">Désactiver</option> 
@@ -214,13 +190,12 @@ function PageModifierDepartement() {
         
           <span className="focus-input111" />
           <span className="symbol-input111">
-            {/* <i className="fas fa-user-tie" aria-hidden="true" /> */}
           </span>
         </div>
 
 
  
-    {/* Cancel Button */}
+{/* Le bouton annuler */}
     <div className="wrap-input100   col-lg-6 mb-4 " ></div>
     <div className="form-group col-lg-2 ">
    
@@ -234,7 +209,7 @@ function PageModifierDepartement() {
        
         </div>
 
-    
+    {/* Le bouton modifier département */}
         <div className="form-group col-lg-3  ">
           <button type="submit" className="login100-form-btn"  style={{color: 'white'}}>
             

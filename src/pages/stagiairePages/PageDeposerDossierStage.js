@@ -12,35 +12,20 @@ function  PageDeposerDossierStage() {
 
     const navigate = useNavigate();
 
-    //validation erreurs
-    const [utiErrnomdept,setUtiErrnomdept]=useState(false);
-    const [utiErrnomchefdept,setUtiErrnomchefdept]=useState(false);
-    const [utiErrstrdept,setUtiErrstrdept]=useState(false);
-    const [utiErrstrchefdept,setUtiErrstrchefdept]=useState(false);
-
     const [ error , setError] =useState ([]);
   
     const [ dossierInput , setDossier] =useState ({});
    
    
-   
-   
-   const handleInput = (e) => {
-      e.persist();
-     
-      setDossier({ ...dossierInput , [e.target.name]: e.target.value})
-
-      
-      
-   }
-   
-   
-   const [ filedata , setFiledata] = useState([]);
+ 
+     //les fichiers cin , convention de stage , cv , lettre d'affectation
+  const [ filedata , setFiledata] = useState([]);
 
   const handleFile  = (e) =>{
     setFiledata({ cinfile:e.target.files[0] , convfile:e.target.files[1]  , cvfile:e.target.files[2]  ,lettfile:e.target.files[3] });
    }
 
+   //En cliquant sur le bouton Ajouter un dossier, les données seront envoyées à la base de données
    const dossierSubmit = (e) => {
      e.preventDefault();
    
@@ -54,25 +39,17 @@ function  PageDeposerDossierStage() {
        }
 
 
-
-
-
-
-
-   
+      //appeler l'id du stagiaire connecté 
        const StId =   localStorage.getItem('id'); 
   
+         //appeler l'api du backend pour effectuer le dépot d'un dossier
         axios.post(`api/ajouter-dossier-stage/${StId}`, data).then(res =>{
              if(res.data.status === 200){
               Swal.fire ("Succès" , res.data.message ,"success");
-              //navigate('/service-de-formation/afficher-departements');
-             
+
              }
 
           else if(res.data.status === 400){
-            // Swal.fire("Erreur dans les champs" , "Vérifier les champs!", "error");
-          
-           //setDept({...deptInput  , error_list : res.data.validation_errors});
            setError(res.data.validation_errors);
            
         }
@@ -81,19 +58,7 @@ function  PageDeposerDossierStage() {
      });
    } 
    
-   
-   /* var display_errors = [];
-   if(deptInput.error_list)
-   {
-       display_errors = [
-           deptInput.error_list.nom_dept,
-           deptInput.error_list.nom_chef_dept,
 
-       ]
-
-   } */
-
-   
 
   return (
     <>
@@ -121,24 +86,19 @@ function  PageDeposerDossierStage() {
             </ol>
           </div>
         </div>
-      </div>{/* /.container-fluid */}
+      </div>
     </section>
 
 
     <br/>
       <div className="col-md-offset-3 col-md-12">
         <div className="form-container">
-    {/* onSubmit={compteSubmit}       */}
+
 <form onSubmit={dossierSubmit} >
   <div className="row">
 
-
-
-
-
-
-
-        <div className="wrap-input100   col-lg-3 mb-3  form-group " >   
+ {/* Copie de CIN  */}  
+<div className="wrap-input100   col-lg-3 mb-3  form-group " >   
 <p className=" text-center text-secondary"> Déposer votre copie de CIN</p>
   <div className="frame">
   <div className="d-flex justify-content-center ">
@@ -155,7 +115,7 @@ function  PageDeposerDossierStage() {
 
 
 
-
+{/* Convention de stage */}  
 <div className="wrap-input100   col-lg-3 mb-3  form-group " >   
 <p className=" text-center text-secondary"> Déposer votre convention de stage</p>
   <div className="frame">
@@ -171,7 +131,7 @@ function  PageDeposerDossierStage() {
 </div>
 
 
-
+{/* Cv */}  
 <div className="wrap-input100   col-lg-3 mb-3  form-group " >   
 <p className=" text-center text-secondary"> Déposer votre CV</p>
   <div className="frame">
@@ -187,7 +147,7 @@ function  PageDeposerDossierStage() {
 </div>
 
 
-
+{/* Lettre d'affectation */}  
 <div className="wrap-input100   col-lg-3 mb-3  form-group " >   
 <p className=" text-center text-secondary"> Déposer votre lettre d'affectation</p>
   <div className="frame">
@@ -203,16 +163,7 @@ function  PageDeposerDossierStage() {
 </div>
 
 
-   
-    
- 
-
-
-
-
-
- 
-    {/* Cancel Button */}
+    {/*  Le bouton annuler */}
     
     <div className="form-group col-lg-2 ">
    
@@ -226,7 +177,7 @@ function  PageDeposerDossierStage() {
        
         </div>
 
-    
+       {/* Le bouton déposer dossier */}
         <div className="form-group col-lg-3  i">
           <button type="submit" className="login100-form-btn"  style={{color: 'white'}}>
             

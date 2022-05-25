@@ -6,9 +6,9 @@ import { Outlet ,Link} from 'react-router-dom'
 
 function Landing() {
 
-   if(  localStorage.getItem('role' ) ==='stagiaire' ){
+   if(  localStorage.getItem('role' ) ==='stagiaire'  &&  localStorage.getItem('etatSt' ) ==='etudiant'){
     var afficher_S ="";
-   afficher_S = <div className="hero-cta"><Link className="button button-primary" to="/liste-sujets">Liste sujets</Link><Link className="button" to="/demande-stage">Passer demande de stage</Link></div>
+   afficher_S = <div className="hero-cta"><a className="button button-primary" href="/liste-sujets">Liste sujets</a><a className="button" href="/demande-stage">Passer demande de stage</a></div>
   
   } 
 
@@ -18,7 +18,7 @@ function Landing() {
 
 
 
-   {/*  navbar */}
+   {/* La barre de navigation */}
 
 
 <div style={{background: '#011642'}}>
@@ -26,7 +26,6 @@ function Landing() {
 <br/>
 <section className="ftco-section container">
 
-   {/* */}
 <div className="container ">
 
 
@@ -41,10 +40,10 @@ function Landing() {
   </button>
   <div className="collapse navbar-collapse" id="navbarSupportedContent">
     <ul className="navbar-nav ml-auto">
-    <li className="nav-item"> <Link to="/" className="nav-link text-decoration-none"   >Acceuil</Link> </li>
-            {/* <li className="nav-item"><Link to="/" className="nav-link text-decoration-none"   >à Propos</Link> </li> */}
 
-            <li class="nav-item dropdown">
+
+    <li className="nav-item"> <Link to="/" className="nav-link text-decoration-none"   >Acceuil</Link> </li>
+          {/*   <li class="nav-item dropdown">
             <Link class="nav-link dropdown-toggle text-decoration-none" to="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-expanded="false">
           Espace
         </Link>
@@ -57,7 +56,7 @@ function Landing() {
         </div>
       </li>
 
-
+ */}
             <li class="nav-item dropdown">
         <Link class="nav-link dropdown-toggle text-decoration-none" to="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-expanded="false">
           Stagiaire
@@ -90,57 +89,32 @@ function Landing() {
  
 </section>
 
-
-    {/* .navbar */}
     
-       <div className="body-wrap">
-
-  {/* <header className="site-header">
-    <div className="container">
-      <div className="site-header-inner">
-        <div className="brand header-brand">
-          <h1 className="m-0">
-        
-          </h1>
-        </div>
-      </div>
-    </div>
-  </header> */}
- 
-
-       
-  
+     <div className="body-wrap">
       <br/><br/>
+      {/* Contenu */}
           <Outlet /> 
-
-   {/* ******************************** */}
-
- 
 
     <section className="cta section">
       <div className="container">
-
-
 
 <div>
   <div className="hero-inner  col-md-7">
     <div className="hero-copy ">
       <h1 className="hero-title mt-0 text-white">Topnet Stages</h1>
-      <p className="hero-paragraph">Our landing page template works on all devices, so you only have to set it up once, and get beautiful results forever.</p>
-      {/* <div className="hero-cta"><Link className="button button-primary" to="/liste-sujets">Liste sujets</Link><Link className="button" to="/demande-stage">Passer demande de stage</Link></div> */}
-
+      <p className="hero-paragraph">Topstage est une plateforme de stages dédiée aux nouveaux stagiaires
+qui souhaitent postuler à un stage au sein de l'agence Topnet.</p>
       { afficher_S }
     </div>
   </div>
-   
-   {/* <Outlet /> */}
+
    
  <br /><br />
 </div>
         <div className="cta-inner section-inner">
-          <h3 className="section-title mt-0  text-white">Still not convinced on buying?</h3>
+          <h3 className="section-title mt-0  text-white">pour plus d'informations sur l'agence Topnet</h3>
           <div className="cta-cta">
-            <Link className="button button-primary button-wide-mobile" to="#">Get in touch</Link>
+            <a className="button button-primary button-wide-mobile" href="https://www.topnet.tn/">Lien Topnet</a>
           </div>
         </div>
       </div> 
@@ -157,20 +131,6 @@ function Landing() {
             <img className="header-logo-image" src="../../dist111/images/logo.svg" alt="Logo" />
           </a>
         </div>
-      {/*   <ul className="footer-links list-reset">
-          <li>
-            <a href="#">Contact</a>
-          </li>
-          <li>
-            <a href="#">About us</a>
-          </li>
-          <li>
-            <a href="#">FAQ's</a>
-          </li>
-          <li>
-            <a href="#">Support</a>
-          </li>
-        </ul> */}
         <ul className="footer-social-links list-reset">
           <li>
             <a href="#">
@@ -197,7 +157,7 @@ function Landing() {
             </a>
           </li>
         </ul>
-        <div className="footer-copyright text-white">© 2022, all rights reserved</div>
+        <div className="footer-copyright text-white">© 2022, tous droits réservés</div>
       </div>
     </div>
   </footer>
@@ -205,38 +165,10 @@ function Landing() {
 
 
 </div>
+</div>  
 
 
-
-
-    </div>  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   
+  
     </>
   )
 }
